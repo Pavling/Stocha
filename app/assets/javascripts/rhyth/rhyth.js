@@ -12,7 +12,7 @@ rhyth.paramBuilder = function(maxIn,minIn){
 		absoluteMaximum: maxIn,
 		absoluteMinimum: minIn,
 		calc: function(velocity){
-			return ((this.set.max-this.set.min)*((100-velocity)/100))+this.set.min
+			return ((this.set.max-this.set.min)*(velocity/100))+this.set.min
 		}
 	}
 }

@@ -1,6 +1,6 @@
 var kick = kick || {};
 
-kick.ctx = ctx.context;
+kick.ctx = ctx;
 
 // set up paramaters interface
 kick.params = {}
@@ -22,13 +22,77 @@ kick.params.shell = {
 }
 
 // set up output node
-kick.output = kick.ctx.createChannelMerger(3);
+kick.output = kick.ctx.context.createChannelMerger(3);
 
-// set up batterHead section of voice
+// set up resoHead section of voice
 kick.resoHead = {};
-// envelope & mixer
-kick.resoHead.envelope = kick.ctx.createGain();
-kick.resoHead.envelope.value = 0.0;
-kick.resoHead.envelope.connect(kick.output);
+// create vca and connect to output
+kick.resoHead.vca = kick.ctx.context.createGain();
+kick.resoHead.vca.value = 0.0;
+kick.resoHead.vca.connect(kick.output);
+//oscillator
+kick.resoHead.vco = kick.ctx.context.createOscillator();
+kick.resoHead.vco.type = 'sine'
+kick.resoHead.vco.frequency.value = 20.0
+kick.resoHead.vco.start();
+//connect vco to vca
+kick.resoHead.vco.connect(kick.resoHead.vca);
 
-// make envelopes and event triggers inside the object?
+//trig method
+kick.resoHead.trig = function(velocity){
+	var now = kick.ctx.now;
+
+	kick.params.resoHead = {
+		tuning: rhyth.paramBuilder(20.0, 80.0),
+		decay: rhyth.paramBuilder(75.0, 500.0),
+		stiffness: rhyth.paramBuilder(35.0, 350.0),
+		mix: rhyth.paramBuilder(0.00001, 1.0)
+	}
+
+	// clear any still running envelopes
+	this.vca.cancelScheduledValues(now);
+	this.vco.frequency.cancelScheduledValues(now);
+	
+	// attack
+		// ***check batter head for this value ***
+	// this.vco.frequency.value = kick.params.resoHead.tuning.calc(velocity);
+		// ***check batter head for this value ***
+	this.vca.gain.value = kick.params.resoHead.mix.calc(velocity);
+
+	// decay
+	this.vco.frequency.exponentialRampToValueAtTime(kick.params.resoHead.tuning.calc(velocity), (now + (kick.params.resoHead.stiffness.calc(velocity))/1000));
+	this.vca.gain.exponentialRampToValueAtTime(0.00001, now + (kick.params.resoHead.decay.calc(velocity)/1000));
+}
+
+// set up resoHead section of voice
+kick.batterHead = {};
+// create vca and connect to output
+kick.batterHead.vca = kick.ctx.context.createGain();
+kick.batterHead.vca.value = 0.0;
+kick.batterHead.vca.connect(kick.output);
+//oscillator
+kick.batterHead.vco = kick.ctx.context.createOscillator();
+kick.batterHead.vco.type = 'sine'
+kick.batterHead.vco.frequency.value = 20.0
+kick.batterHead.vco.start();
+//connect vco to vca
+kick.batterHead.vco.connect(kick.batterHead.vca);
+
+//trig method
+kick.batterHead.trig = function(velocity){
+	// var now = kick.ctx.now;
+
+	// // clear any still running envelopes
+	// this.vca.cancelScheduledValues(now);
+	// this.vco.frequency.cancelScheduledValues(now);
+	
+	// // attack
+	// 	// ***check batter head for this value ***
+	// // this.vco.frequency.value = kick.params.resoHead.tuning.calc(velocity);
+	// 	// ***check batter head for this value ***
+	// this.vca.gain.value = kick.params.resoHead.mix.calc(velocity);
+
+	// // decay
+	// this.vco.frequency.exponentialRampToValueAtTime(kick.params.resoHead.tuning.calc(velocity), (now + (kick.params.resoHead.stiffness.calc(velocity))/1000));
+	// this.vca.gain.exponentialRampToValueAtTime(0.00001, now + (kick.params.resoHead.decay.calc(velocity)/1000));
+}
