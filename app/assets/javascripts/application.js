@@ -13,4 +13,6 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require_tree ./audio_ctx
+//= require ./rhyth/rhyth.js
 //= require_tree .
