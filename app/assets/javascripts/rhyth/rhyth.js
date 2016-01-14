@@ -1,18 +1,4 @@
 var rhyth = rhyth || {};
 
-rhyth.context = ctx.context
-
-rhyth.paramBuilder = function(maxIn,minIn){
-
-	return {
-		set: {
-			max: maxIn,
-			min: minIn
-		},
-		absoluteMaximum: maxIn,
-		absoluteMinimum: minIn,
-		calc: function(velocity){
-			return ((this.set.max-this.set.min)*(velocity/100))+this.set.min
-		}
-	}
-}
+rhyth.output = ctx.context.createChannelMerger(8);
+rhyth.output.connect(ctx.channel1);

@@ -13,3 +13,14 @@
  *= require_tree .
  *= require_self
  */
+
+.step{
+	height: 20px;
+	width: 20px;
+	float: left;
+	padding: 15px;
+}
+
+.active{
+	background-color: #066
+}
