@@ -87,3 +87,25 @@ ctx.channel4 = ctx.gainBuilder(ctx.output, 1);
 // ****************
 // *4* master-clock
 // ****************
+
+ctx.clock = {};
+ctx.clock.t = 0;
+ctx.clock.running = false;
+ctx.clock.bpm = 120;
+ctx.clock.guiUpdateInterval = 250;
+
+ctx.clock.interval = function(){
+	return (60/ctx.clock.bpm)/4
+}
+
+
+ctx.clock.start = function(){
+	ctx.clock.running = true;
+	var start = new Event('start');
+	var update = new Event('update')
+	this.dispatchEvent(start);
+}
+
+ctx.clock.stop = function(){
+	ctx.clock.running = false;
+}
