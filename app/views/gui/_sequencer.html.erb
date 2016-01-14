@@ -1,7 +1,7 @@
 <% 16.times do |i| %>
 
 	<div class="step" id="<%="step#{i}"%>">
-		<%= check_box_tag "step#{i}_checkbox" %>
+		<%= check_box_tag "step#{i}_checkbox", i%>
 	</div>
 
 <% end %>

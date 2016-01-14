@@ -91,8 +91,8 @@ ctx.channel4 = ctx.gainBuilder(ctx.output, 1);
 ctx.clock = {};
 ctx.clock.t = 0;
 ctx.clock.running = false;
-ctx.clock.bpm = 120;
-ctx.clock.timeoutInterval = 450;
+ctx.clock.bpm = 80;
+ctx.clock.timeoutInterval = 500;
 
 
 ctx.clock.interval = function(){
@@ -101,7 +101,8 @@ ctx.clock.interval = function(){
 
 ctx.clock.start = function(){
 	ctx.clock.running = true;
-	setInterval(function(){ctx.clock.continue()}, ctx.clock.timeoutInterval-50)
+	ctx.clock.continue();
+	setInterval(function(){ctx.clock.continue()}, ctx.clock.timeoutInterval-150)
 }
 
 ctx.clock.continue = function(){

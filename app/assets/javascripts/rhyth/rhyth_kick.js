@@ -14,15 +14,15 @@ var kick = kick || {};
 // set up paramaters interface
 kick.params = {}
 kick.params.beaterHead = {
-	tuning: ctx.paramBuilder(1.0, 6.0),
-	stiffness: ctx.paramBuilder(1.0, 4.0),
+	tuning: ctx.paramBuilder(1.0, 4.0),
+	stiffness: ctx.paramBuilder(1.0, 3.0),
 	material: ctx.paramBuilder(1.0, 1.5),
 	mix: ctx.paramBuilder(0.00001, 1.0)
 };
 kick.params.resoHead = {
-	tuning: ctx.paramBuilder(20.0, 80.0),
-	decay: ctx.paramBuilder(75.0, 500.0),
-	stiffness: ctx.paramBuilder(35.0, 350.0),
+	tuning: ctx.paramBuilder(20.0, 60.0),
+	decay: ctx.paramBuilder(75.0, 250.0),
+	stiffness: ctx.paramBuilder(35.0, 150.0),
 	mix: ctx.paramBuilder(0.00001, 1.0)
 }
 kick.params.shell = {
@@ -31,7 +31,7 @@ kick.params.shell = {
 }
 
 // set up output node w/ lowpass filtering, and merger node to join the three sections together
-kick.output = ctx.filterBuilder(rhyth.output, 1000.0, "lowpass", 0.1);
+kick.output = ctx.filterBuilder(rhyth.output, 300.0, "lowpass", 0.1);
 
 // *************
 // *2* resoHead
@@ -45,7 +45,6 @@ kick.resoHead.vco = ctx.oscillatorBuilder(kick.resoHead.vca, 20, 'sine');
 
 //trig method
 kick.resoHead.trig = function(velocity, time){
-
 	// get scaled variables
 	var params = kick.params.resoHead
 	var tuning = params.tuning.calc(velocity);
@@ -66,8 +65,8 @@ kick.resoHead.trig = function(velocity, time){
 	vco.setValueAtTime(pitchEnvStart, time);
 
 	// decay
-	vca.exponentialRampToValueAtTime(0.0000001, time + decay);
-	vco.exponentialRampToValueAtTime(tuning, time + stiffness);
+	vca.linearRampToValueAtTime(0.0000001, time + decay);
+	vco.linearRampToValueAtTime(tuning, time + stiffness);
 }
 
 // ***************
@@ -99,13 +98,12 @@ kick.beaterHead.trig = function(velocity, time){
 	var vca = kick.beaterHead.vca.gain;
 	// schedule pitch changes for beater emulator 10ms before hit
 	for (var i = 1; i <= 6; i++){
-		this.beater["osc"+i].frequency.setValueAtTime(basePitch*((i*material)+1), time-0.01)
+		this.beater["osc"+i].frequency.setValueAtTime(basePitch*((i*material)+1), time)
 	}
-
 	// attack
 	vca.setValueAtTime(mix, time);
 	// decay (always 50ms for beater)
-	vca.exponentialRampToValueAtTime(0.0000001, time + 0.05);
+	vca.linearRampToValueAtTime(0.0000001, time + 0.03);
 
 }
 
@@ -118,7 +116,7 @@ kick.shell = {};
 
 kick.shell.bandpass2 = ctx.filterBuilder(kick.output, 160, 'bandpass', 0.9, 0.9);
 kick.shell.bandpass1 = ctx.filterBuilder(kick.shell.bandpass2, 160, 'bandpass', 0.9, 0.9);
-kick.shell.delay = ctx.delayBuilder(kick.shell.bandpass1, 1, 0.2);
+kick.shell.delay = ctx.delayBuilder(kick.shell.bandpass1, 1, 0.02);
 kick.shell.feedback = ctx.gainBuilder(kick.shell.delay, 0.5);
 kick.shell.bandpass2.connect(kick.shell.feedback);
 
@@ -145,5 +143,5 @@ kick.shell.trig = function(velocity, time){
 kick.trig = function(velocity, time){
 	kick.resoHead.trig(velocity, time);
 	kick.beaterHead.trig(velocity, time);
-	kick.shell.trig(velocity, time);
+	kick.shell.trig(velocity, time); 
 }
