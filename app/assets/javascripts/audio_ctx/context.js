@@ -92,7 +92,7 @@ ctx.clock = {};
 ctx.clock.t = 0;
 ctx.clock.running = false;
 ctx.clock.bpm = 80;
-ctx.clock.timeoutInterval = 500;
+ctx.clock.timeoutInterval = 350;
 
 
 ctx.clock.interval = function(){
@@ -102,15 +102,25 @@ ctx.clock.interval = function(){
 ctx.clock.start = function(){
 	ctx.clock.running = true;
 	ctx.clock.continue();
-	setInterval(function(){ctx.clock.continue()}, ctx.clock.timeoutInterval-150)
+	setInterval(function(){ctx.clock.continue()}, ctx.clock.timeoutInterval-75)
 }
 
 ctx.clock.continue = function(){
 	if (ctx.clock.running) {
-		setTimeout(function(){sequencer.run()}, ctx.clock.timeoutInterval);
+		setTimeout(function(){ctx.clock.runAll()}, ctx.clock.timeoutInterval);
 	}
 };
 	
 ctx.clock.stop = function(){
 	ctx.clock.running = false;
+	ctx.clock.stopAll();
 }
+
+ctx.clock.runAll = function(){
+	sequencer.run();
+}
+
+ctx.clock.stopAll = function(){
+	sequencer.stop();
+}
+

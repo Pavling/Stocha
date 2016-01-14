@@ -13,14 +13,14 @@ sequencer.params.sequenceLength = 16;
 sequencer.params.steps = {};
 
 for (var i = 0; i <= 15; i++){
-	sequencer.params.steps[i] = {velocity: 30, active: false}
+	sequencer.params.steps[i] = {velocity: 10, active: false}
 }
 
 // *2* sequencer start and stop
 
 sequencer.run = function(){
 	if (ctx.clock.running){
-		// if (sequencer.focused){sequencer.gui.queueEvents()};
+		if (sequencer.focused){sequencer.gui.queueEvents()};
 		sequencer.audio.queueEvents();
 	}
 };
@@ -28,7 +28,8 @@ sequencer.run = function(){
 
 sequencer.stop = function(){
 	sequencer.lastStep = null;
-	sequencer.audio.queue.cleanUp(ctx.now());
+	sequencer.step = 0;
+	console.log('stop')
 }
 
 // *3* audio events
@@ -50,16 +51,14 @@ sequencer.audio.nextStep = function(previousStep) {
   var nextStep = previousStep + interval;
   var stepParams = sequencer.params.steps[sequencer.step]
   var velocity = stepParams.velocity
+  if (stepParams.active){sequencer.target.trig(velocity, nextStep)};
+  console.log(sequencer.step);
   sequencer.step++;
   if (sequencer.step >= sequencer.params.sequenceLength) {sequencer.step = 0};
-  if (stepParams.active){sequencer.target.trig(velocity, nextStep)};
   return nextStep;
 }
 
 //  *4* gui events
 
-//  *5* start/stop 
 
-
-	
-	rhyth.sequener = sequencer
+rhyth.sequener = sequencer

@@ -4,6 +4,6 @@ $(function(){
 		sequencer.params.steps[box.value].active = box.checked;
 	})
 
-	sequencer.focused = true;
+	// sequencer.focused = true;
 
 })
