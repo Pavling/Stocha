@@ -107,7 +107,8 @@ ctx.clock.interval = function(){
 
 ctx.clock.start = function(){
 	ctx.clock.running = true;
-	setTimeout(ctx.clock.runAll(), 350);
+	setInterval(function(){ctx.clock.continue()}, ctx.clock.timeoutInterval-75);
+	ctx.clock.runAll();
 }
 
 ctx.clock.continue = function(){
@@ -122,8 +123,7 @@ ctx.clock.stop = function(){
 }
 
 ctx.clock.runAll = function(){
-	sequencer.run(); // will need to be updated with run functions for each instrument
-	setInterval(function(){ctx.clock.continue()}, ctx.clock.timeoutInterval-75);
+	sequencer.run();
 }
 
 ctx.clock.stopAll = function(){
