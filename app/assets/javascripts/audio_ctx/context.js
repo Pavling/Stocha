@@ -1,7 +1,6 @@
 
 var ctx = ctx || {};
 ctx.context = new (window.AudioContext || window.webkitAudioContext)()
-ctx.output = ctx.context.destination
 
 // index
 // *1* webAudioAPI builders
@@ -78,11 +77,18 @@ ctx.now = function(){
 // **************************
 // *3* channel & mixer set up
 // **************************
+ctx.output = ctx.mergerBuilder(ctx.context.destination, 2)
+ctx.leftOut = ctx.gainBuilder(ctx.output, 1);
+ctx.rightOut = ctx.gainBuilder(ctx.output, 1);
 
-ctx.channel1 = ctx.gainBuilder(ctx.output, 1);
-ctx.channel2 = ctx.gainBuilder(ctx.output, 1);
-ctx.channel3 = ctx.gainBuilder(ctx.output, 1);
-ctx.channel4 = ctx.gainBuilder(ctx.output, 1);
+ctx.channel1 = ctx.gainBuilder(ctx.leftOut, 1);
+ctx.channel1.connect(ctx.leftOut);
+ctx.channel2 = ctx.gainBuilder(ctx.leftOut, 1);
+ctx.channel2.connect(ctx.leftOut);
+ctx.channel3 = ctx.gainBuilder(ctx.leftOut, 1);
+ctx.channel3.connect(ctx.leftOut);
+ctx.channel4 = ctx.gainBuilder(ctx.leftOut, 1);
+ctx.channel4.connect(ctx.leftOut);
 
 // ****************
 // *4* master-clock
@@ -91,7 +97,7 @@ ctx.channel4 = ctx.gainBuilder(ctx.output, 1);
 ctx.clock = {};
 ctx.clock.t = 0;
 ctx.clock.running = false;
-ctx.clock.bpm = 80;
+ctx.clock.bpm = 120;
 ctx.clock.timeoutInterval = 350;
 
 
@@ -101,8 +107,7 @@ ctx.clock.interval = function(){
 
 ctx.clock.start = function(){
 	ctx.clock.running = true;
-	ctx.clock.continue();
-	setInterval(function(){ctx.clock.continue()}, ctx.clock.timeoutInterval-75)
+	setTimeout(ctx.clock.runAll(), 350);
 }
 
 ctx.clock.continue = function(){
@@ -117,7 +122,8 @@ ctx.clock.stop = function(){
 }
 
 ctx.clock.runAll = function(){
-	sequencer.run();
+	sequencer.run(); // will need to be updated with run functions for each instrument
+	setInterval(function(){ctx.clock.continue()}, ctx.clock.timeoutInterval-75);
 }
 
 ctx.clock.stopAll = function(){

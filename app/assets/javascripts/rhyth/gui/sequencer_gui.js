@@ -1,9 +1,8 @@
-$(function(){
-	$(":checkbox").click(function(ev){
-		var box = ev.target;
-		sequencer.params.steps[box.value].active = box.checked;
-	})
+$(function(){	
 
-	// sequencer.focused = true;
+	$('#start_play').click(function() { ctx.clock.start(); });
+	$('#stop_play').click(function() { ctx.clock.stop(); });
+
+	sequencer.gui.activate();
 
 })

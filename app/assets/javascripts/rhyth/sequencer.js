@@ -5,60 +5,74 @@ var sequencer = {};
 sequencer.target = kick
 
 sequencer.step = 0;
-sequencer.focused = false
+sequencer.incrementStep = function(){
+	sequencer.step++;
+	if (sequencer.step >= sequencer.params.sequenceLength) {sequencer.step = 0};
+}
+
+sequencer.focused = false;
 sequencer.lastStep = null;
+sequencer.queue = [];
+sequencer.queueStart = null;
 
 sequencer.params = {};
 sequencer.params.sequenceLength = 16;
 sequencer.params.steps = {};
 
+//patch init
 for (var i = 0; i <= 15; i++){
-	sequencer.params.steps[i] = {velocity: 10, active: false}
+	sequencer.params.steps[i] = {velocity: 50, active: false}
 }
 
-// *2* sequencer start and stop
+// *2* audio events
 
-sequencer.run = function(){
-	if (ctx.clock.running){
-		if (sequencer.focused){sequencer.gui.queueEvents()};
-		sequencer.audio.queueEvents();
+sequencer.audio = {};
+
+sequencer.audio.queueEvents = function(){
+	sequencer.queueStart = ctx.now();
+	var thisStep = sequencer.lastStep || ctx.now();
+	while ((sequencer.lastStep < (sequencer.queueStart + ctx.clock.timeoutInterval/1000)) && ctx.clock.running){
+		sequencer.lastStep = sequencer.audio.nextStep(sequencer.lastStep);
 	}
 };
 
 
+sequencer.audio.nextStep = function(previousStepTime) {
+	var nextStepTime = previousStepTime + ctx.clock.interval();
+	var stepParams = sequencer.params.steps[sequencer.step]
+	if (stepParams.active){
+		sequencer.target.trig(stepParams.velocity, nextStepTime)
+	};
+	sequencer.incrementStep();
+	return nextStepTime;
+}
+
+//  *3* gui events - reconsider gui
+
+sequencer.gui = {};
+
+sequencer.gui.activate = function(){
+	sequencer.focused = true;
+	sequencer.gui.addCheckboxListeners();
+}
+
+sequencer.gui.addCheckboxListeners = function(){
+	$(':checkbox').click(function(event){
+		var target = event.target
+		sequencer.params.steps[$(target).val()].active = $(target).prop('checked')
+	})
+}
+
+// *4* start and stop etc.
+
+sequencer.run = function(){
+	if (ctx.clock.running){
+		sequencer.audio.queueEvents();
+	}
+};
+
 sequencer.stop = function(){
 	sequencer.lastStep = null;
 	sequencer.step = 0;
-	console.log('stop')
+	sequencer.gui.step = 0
 }
-
-// *3* audio events
-
-sequencer.audio = {};
-sequencer.audio.queue = {};
-
-sequencer.audio.queueEvents = function(){
-	var queueStart = ctx.now()
-	var thisStep = sequencer.lastStep || ctx.now();
-	while ((sequencer.lastStep < (queueStart + ctx.clock.timeoutInterval/1000)) && ctx.clock.running){
-		sequencer.lastStep = sequencer.audio.nextStep(sequencer.lastStep);
-	};
-};
-
-
-sequencer.audio.nextStep = function(previousStep) {
-  var interval = ctx.clock.interval();	
-  var nextStep = previousStep + interval;
-  var stepParams = sequencer.params.steps[sequencer.step]
-  var velocity = stepParams.velocity
-  if (stepParams.active){sequencer.target.trig(velocity, nextStep)};
-  console.log(sequencer.step);
-  sequencer.step++;
-  if (sequencer.step >= sequencer.params.sequenceLength) {sequencer.step = 0};
-  return nextStep;
-}
-
-//  *4* gui events
-
-
-rhyth.sequener = sequencer

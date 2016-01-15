@@ -31,7 +31,7 @@ kick.params.shell = {
 }
 
 // set up output node w/ lowpass filtering, and merger node to join the three sections together
-kick.output = ctx.filterBuilder(rhyth.output, 300.0, "lowpass", 0.1);
+kick.output = ctx.filterBuilder(rhyth.output, 300.0, "lowpass", 0.3);
 
 // *************
 // *2* resoHead
