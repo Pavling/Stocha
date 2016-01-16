@@ -4,8 +4,7 @@ var kick = kick || {};
 // *1* params & main output
 // *2* resoHead
 // *3* beaterHead
-// *4* shell
-// *5* master trigger function
+// *4* master trigger function
 
 // ************************
 // *1* params & main output
@@ -107,38 +106,9 @@ kick.beaterHead.trig = function(velocity, time){
 
 }
 
-// *********
-// *4* shell ### behaving strange
-// *********
-
-// kick.shell = {};
-
-
-// kick.shell.bandpass2 = ctx.filterBuilder(kick.output, 160, 'bandpass', 0.9, 0.9);
-// kick.shell.bandpass1 = ctx.filterBuilder(kick.shell.bandpass2, 160, 'bandpass', 0.9, 0.9);
-// kick.shell.delay = ctx.delayBuilder(kick.shell.bandpass1, 1, 0.02);
-// kick.shell.feedback = ctx.gainBuilder(kick.shell.delay, 0.5);
-// kick.shell.bandpass2.connect(kick.shell.feedback);
-
-
-//trigger function
-// kick.shell.trig = function(velocity, time){
-// 	// shortcuts to nodes
-// 	var bp1 = kick.shell.bandpass1.frequency;
-// 	var bp2 = kick.shell.bandpass2.frequency;
-// 	// get scaled values
-// 	var resonance = kick.params.shell.resonance.calc(velocity);
-// 	var material = kick.params.shell.material.calc(velocity);
-
-// 	// // set values
-// 	kick.shell.feedback.gain.setValueAtTime(resonance, time);
-// 	bp1.setValueAtTime(material, time);
-// 	bp2.setValueAtTime(material, time);
-// }
-
-// ***************************
-// *5* master trigger function
-// ***************************
+// *************************
+// *4* master trig function 
+// *************************
 
 kick.trig = function(velocity, time){
 	kick.resoHead.trig(velocity, time);
