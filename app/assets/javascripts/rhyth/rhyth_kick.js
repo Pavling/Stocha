@@ -34,7 +34,7 @@ rhyth.kickBuilder = function(outputConnection){
 		mix: ctx.paramBuilder(0.00001, 1.0)
 	};
 
-	kick.params.keysIndex = (function(){
+	kick.keysIndex = (function(){
 		var indexOfKeys = {};
 		$.each(kick.params, function(key, paramsObj){
 			indexOfKeys[key] = [];
@@ -155,7 +155,7 @@ rhyth.kickBuilder = function(outputConnection){
  kick.gui.linkSlidersToParams = function(){
  	var collectionIndex = 0;
  	var sliderIndex = 0;
-	$.each(kick.params.keysIndex, function(superParamKey, subParamArray){
+	$.each(kick.keysIndex, function(superParamKey, subParamArray){
 		$('#collection-'+ collectionIndex +'-title').text(superParamKey);
 		$.each(subParamArray, function(index, subParamKey){
 			kick.gui.setAndTitleSlider(superParamKey, subParamKey, collectionIndex, sliderIndex);
@@ -179,6 +179,18 @@ rhyth.kickBuilder = function(outputConnection){
  	// *6* save & load functions
  	// *************************
 
+ 	kick.save = function(){
+ 		var data = {};
+ 		data.params = kick.params;
+ 		data.sequencer = kick.sequencer.save();
+ 		return data;
+ 	}
+
+ 	kick.load = function(params){
+
+ 	}
+
 
  return kick;
+
 };

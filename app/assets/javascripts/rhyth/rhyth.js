@@ -26,9 +26,11 @@ rhyth.gui.draw = function(voice){
 // *3* save and load functions
 
 rhyth.save = function(){
-	rhyth.kick.save();
+	var data = {};
+	data.kick = rhyth.kick.save();
+	console.log(data)
 }
 
-rhyth.load = function(){
-	rhyth.kick.load();
+rhyth.load = function(params){
+	rhyth.kick.load(params);
 }

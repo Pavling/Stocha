@@ -1,9 +1,19 @@
 rhyth = rhyth || {};
 
 rhyth.sequencerBuilder = function(target){
+
 	var sequencer = {};
 
+	// index 
 	// *1* internal params
+	// *2* audio events
+	// *3* gui events
+	// *4* start and stop
+	// *5* load and save functions
+
+	// *******************
+	// *1* internal params
+	// *******************
 
 	sequencer.target = target
 
@@ -27,7 +37,9 @@ rhyth.sequencerBuilder = function(target){
 		sequencer.params.steps[i] = {velocity: 50, active: false}
 	}
 
+	// ****************
 	// *2* audio events
+	// ****************
 
 	sequencer.audio = {};
 
@@ -50,7 +62,9 @@ rhyth.sequencerBuilder = function(target){
 		return nextStepTime;
 	}
 
+	// *********************************
 	//  *3* gui events - reconsider gui
+	// *********************************
 
 	sequencer.gui = {};
 
@@ -88,7 +102,9 @@ rhyth.sequencerBuilder = function(target){
 		};
 	};
 
+	// *************************
 	// *4* start and stop etc.
+	// *************************
 
 	sequencer.run = function(){
 		if (ctx.clock.running){
@@ -101,6 +117,18 @@ rhyth.sequencerBuilder = function(target){
 		sequencer.step = 0;
 		sequencer.gui.step = 0
 	};
+
+	// *************************
+	// *5* save & load functions
+	// *************************
+
+	sequencer.save = function(){
+		var data = {};
+		for (var i = 0; i <= 15; i++){
+			data[i] = sequencer.params.steps[i];
+		}
+		return data;
+	}
 
 	return sequencer;
 };
