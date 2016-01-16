@@ -14,15 +14,17 @@
  *= require_tree .
  *= require_self
  */
+
 .body{
 	margin: none;
 }
 
 .step{
 	height: 20px;
-	width: 20px;
+	width: 6.25%;
 	float: left;
 	padding: 15px;
+	box-sizing: border-box;
 }
 
 .active{
@@ -31,9 +33,10 @@
 
 .param-slider{
 	float:left;
-	width: 18%;
+	width: 20%;
 	margin: 10px 2.5%;
 	height: 10px;
+	box-sizing: border-box;
 }
 
 #param-display{

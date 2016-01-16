@@ -15,5 +15,17 @@
 //= require jquery-ui
 //= require turbolinks
 //= require_tree ./audio_ctx
-//= require ./rhyth/rhyth.js
+//= require_tree ./rhyth
 //= require_tree .
+
+rhyth.setup();
+
+
+$(function(){	
+
+	$('#start_play').click(function() { ctx.clock.start(); });
+	$('#stop_play').click(function() { ctx.clock.stop(); });
+
+
+	rhyth.gui.draw(rhyth.kick);
+})

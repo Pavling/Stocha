@@ -123,7 +123,7 @@ ctx.clock.stop = function(){
 }
 
 ctx.clock.runAll = function(){
-	sequencer.run();
+	rhyth.run();
 }
 
 ctx.clock.stopAll = function(){
