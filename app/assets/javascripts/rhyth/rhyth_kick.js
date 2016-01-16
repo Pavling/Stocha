@@ -15,13 +15,13 @@ var kick = kick || {};
 kick.params = {}
 kick.params.resoHead = {
 	tuning: ctx.paramBuilder(20.0, 100.0),
-	stiffness: ctx.paramBuilder(500.0, 35.0),
-	decay: ctx.paramBuilder(75.0, 750.0),
+	slack: ctx.paramBuilder(35.0, 450.0),
+	decay: ctx.paramBuilder(75.0, 600.0),
 	mix: ctx.paramBuilder(0.00001, 1.0)
 }
 kick.params.beaterHead = {
-	tuning: ctx.paramBuilder(1.0, 6.0),
-	stiffness: ctx.paramBuilder(1.0, 4.0),
+	tuning: ctx.paramBuilder(1.0, 4.0),
+	slack: ctx.paramBuilder(2.3, 0.4),
 	material: ctx.paramBuilder(0.5, 2.0),
 	mix: ctx.paramBuilder(0.00001, 1.0)
 };
@@ -58,7 +58,7 @@ kick.resoHead.trig = function(velocity, time){
 	var tuning = params.tuning.calc(velocity);
 	var decay = params.decay.calc(velocity)/1000;
 	var mix = params.mix.calc(velocity);
-	var stiffness = params.stiffness.calc(velocity)/1000;
+	var slack = params.slack.calc(velocity)/1000;
 	var pitchEnvStart = tuning * kick.params.beaterHead.tuning.calc(velocity);
 	// get the gainNode and oscillatorNode we need to apply envelopes to
 	var vca = kick.resoHead.vca.gain;
@@ -74,7 +74,7 @@ kick.resoHead.trig = function(velocity, time){
 
 	// decay
 	vca.linearRampToValueAtTime(0.0000001, time + decay);
-	vco.linearRampToValueAtTime(tuning, time + stiffness);
+	vco.linearRampToValueAtTime(tuning, time + slack);
 }
 
 // ***************
@@ -101,7 +101,7 @@ kick.beaterHead.trig = function(velocity, time){
 	// get scaled variables
 	var material = kick.params.beaterHead.material.calc(velocity);
 	var mix = kick.params.beaterHead.mix.calc(velocity);
-	var basePitch = kick.params.resoHead.tuning.calc(velocity) * kick.params.beaterHead.stiffness.calc(velocity);
+	var basePitch = kick.params.resoHead.tuning.calc(velocity) * kick.params.beaterHead.slack.calc(velocity);
 	// shortcut to vca
 	var vca = kick.beaterHead.vca.gain;
 	// schedule pitch changes for beater emulator
