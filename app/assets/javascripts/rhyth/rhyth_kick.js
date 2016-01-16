@@ -5,6 +5,7 @@ var kick = kick || {};
 // *2* resoHead
 // *3* beaterHead
 // *4* master trigger function
+// *5* gui drawer and listeners
 
 // ************************
 // *1* params & main output
@@ -12,25 +13,33 @@ var kick = kick || {};
 
 // set up paramaters interface
 kick.params = {}
+kick.params.resoHead = {
+	tuning: ctx.paramBuilder(20.0, 100.0),
+	stiffness: ctx.paramBuilder(500.0, 35.0),
+	decay: ctx.paramBuilder(75.0, 750.0),
+	mix: ctx.paramBuilder(0.00001, 1.0)
+}
 kick.params.beaterHead = {
-	tuning: ctx.paramBuilder(1.0, 4.0),
-	stiffness: ctx.paramBuilder(1.0, 3.0),
-	material: ctx.paramBuilder(1.0, 1.5),
+	tuning: ctx.paramBuilder(1.0, 6.0),
+	stiffness: ctx.paramBuilder(1.0, 4.0),
+	material: ctx.paramBuilder(0.5, 2.0),
 	mix: ctx.paramBuilder(0.00001, 1.0)
 };
-kick.params.resoHead = {
-	tuning: ctx.paramBuilder(20.0, 60.0),
-	decay: ctx.paramBuilder(75.0, 500.0),
-	stiffness: ctx.paramBuilder(35.0, 350.0),
-	mix: ctx.paramBuilder(0.00001, 1.0)
-}
-kick.params.shell = {
-	resonance: ctx.paramBuilder(0.0, 0.75),
-	material: ctx.paramBuilder(40.0, 160.0)
-}
+
+
+kick.params.keysIndex = (function(){
+	var indexOfKeys = {};
+	$.each(kick.params, function(key, paramsObj){
+		indexOfKeys[key] = [];
+		$.each(paramsObj, function(subKey, storedParams){
+			indexOfKeys[key].push(subKey);
+		});
+	});
+	return indexOfKeys;
+})();
 
 // set up output node w/ lowpass filtering, and merger node to join the three sections together
-kick.output = ctx.filterBuilder(rhyth.output, 300.0, "lowpass", 0.3);
+kick.output = ctx.filterBuilder(rhyth.output, 500.0, "lowpass", 0.5);
 
 // *************
 // *2* resoHead
@@ -95,7 +104,7 @@ kick.beaterHead.trig = function(velocity, time){
 	var basePitch = kick.params.resoHead.tuning.calc(velocity) * kick.params.beaterHead.stiffness.calc(velocity);
 	// shortcut to vca
 	var vca = kick.beaterHead.vca.gain;
-	// schedule pitch changes for beater emulator 10ms before hit
+	// schedule pitch changes for beater emulator
 	for (var i = 1; i <= 6; i++){
 		this.beater["osc"+i].frequency.setValueAtTime(basePitch*((i*material)+1), time)
 	}
@@ -113,5 +122,47 @@ kick.beaterHead.trig = function(velocity, time){
 kick.trig = function(velocity, time){
 	kick.resoHead.trig(velocity, time);
 	kick.beaterHead.trig(velocity, time);
-	// kick.shell.trig(velocity, time); ###out of order
 }
+
+// *************************
+// *5* gui drawer and binder
+// *************************
+
+kick.gui = {};
+
+kick.gui.drawSliders = function() {
+   $( ".param-slider" ).slider({
+     range: true,
+     min: 0,
+     max: 100,
+     slide: function(event, ui) {
+      var target = $(ui.handle.parentNode).data();
+      var values = ui.values
+      kick.params[target.superParam][target.subParam].range.min = ui.values[0];
+     	kick.params[target.superParam][target.subParam].range.max = ui.values[1];
+     }
+   });
+ };
+
+ kick.gui.linkSlidersToParams = function(){
+ 	var collectionIndex = 0;
+ 	var sliderIndex = 0;
+	$.each(kick.params.keysIndex, function(superParamKey, subParamArray){
+		$('#collection-'+ collectionIndex +'-title').text(superParamKey);
+		$.each(subParamArray, function(index, subParamKey){
+			kick.gui.setAndTitleSlider(superParamKey, subParamKey, collectionIndex, sliderIndex);
+			sliderIndex++;
+		});
+		sliderIndex = 0;
+		collectionIndex++;
+	});
+ };
+
+ kick.gui.setAndTitleSlider = function(superParamKey, subParamKey, collectionIndex, sliderIndex){
+ 	var id = collectionIndex + "-" + sliderIndex + "-"
+ 	$('#'+id+"title").text(subParamKey)
+ 	$('#'+id+"slider").attr({'data-super-param': superParamKey, 'data-sub-param': subParamKey});
+ 	var setMin = kick.params[superParamKey][subParamKey].range.min;
+ 	var setMax = kick.params[superParamKey][subParamKey].range.max ;
+ 	$('#'+id+"slider").slider('values', [setMin, setMax]);
+ };

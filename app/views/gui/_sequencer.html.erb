@@ -1,7 +1,10 @@
-<% 16.times do |i| %>
+<div id="sequencer">
+	<% 16.times do |i| %>
 
-	<div class="step" id="<%="step#{i}"%>">
-		<%= check_box_tag "step#{i}_checkbox", i%>
-	</div>
+		<div class="step" id="<%="step#{i}"%>">
+		<div class="step-slider" id="<%= "step#{i}_slider"%>"></div>
+			<%= check_box_tag "step#{i}_checkbox", i%>
+		</div>
 
-<% end %>
+	<% end %>
+</div>

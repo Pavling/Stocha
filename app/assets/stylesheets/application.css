@@ -10,9 +10,13 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
+ *= require jquery-ui
  *= require_tree .
  *= require_self
  */
+.body{
+	margin: none;
+}
 
 .step{
 	height: 20px;
@@ -23,4 +27,30 @@
 
 .active{
 	background-color: #066
+}
+
+.param-slider{
+	float:left;
+	width: 18%;
+	margin: 10px 2.5%;
+	height: 10px;
+}
+
+#param-display{
+	width: 90%;
+	margin: 20px auto;
+}
+
+#sequencer{
+	width: 90%;
+	margin: 20px auto;
+}
+
+.clear-float{
+	clear:both;
+}
+
+.step-slider{
+	width: 75%;
+	margin: 10px auto;
 }
