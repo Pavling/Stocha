@@ -15,18 +15,18 @@ ctx.context = new (window.AudioContext || window.webkitAudioContext)()
 ctx.paramBuilder = function(minIn, maxIn){
 	return {
 		range: {
-			max: maxIn,
-			min: minIn
+			max: 100,
+			min: 0
 		},
 		absoluteMaximum: maxIn,
 		absoluteMinimum: minIn,
 		calc: function(velocity){
-			return ((this.range.max-this.range.min)*(velocity/100))+this.range.min
+			var precentage = (((this.range.max-this.range.min)*(velocity/100))+this.range.min)/100
+			return ((this.absoluteMaximum - this.absoluteMinimum)*precentage)+this.absoluteMinimum
 		}
 	}
 };
 
-// not sure why the or values have to be in here to shut it up
 ctx.filterBuilder = function(connection, freq, topology, res, gain){
 	var filter = this.context.createBiquadFilter();
 	filter.frequency.value = freq || 350.0;

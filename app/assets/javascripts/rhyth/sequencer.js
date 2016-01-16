@@ -63,6 +63,28 @@ sequencer.gui.addCheckboxListeners = function(){
 	})
 }
 
+sequencer.gui.drawSliders = function(){
+	$( ".step-slider" ).slider({
+		orientation: "vertical",
+		range: "min",
+		min: 0,
+		max: 100,
+		slide: function( event, ui ) {
+			var stepId = ui.handle.parentNode.id.replace(/\D+/g,'');
+			sequencer.params.steps[stepId].velocity = ui.value
+		}
+	});
+	sequencer.gui.loadParamsIntoSliders();
+};
+
+sequencer.gui.loadParamsIntoSliders = function(){
+	for(var i = 0; i < 16; i++){ 
+		var id = "#step"+i+"_slider";
+		var velocity = sequencer.params.steps[i].velocity
+		$(id).slider('value', velocity);
+	};
+};
+
 // *4* start and stop etc.
 
 sequencer.run = function(){
