@@ -22,10 +22,6 @@ rhyth.setup();
 
 
 $(function(){	
-
-	$('#start_play').click(function() { ctx.clock.start(); });
-	$('#stop_play').click(function() { ctx.clock.stop(); });
-
-
+	menu.setup();
 	rhyth.gui.draw(rhyth.kick);
 })

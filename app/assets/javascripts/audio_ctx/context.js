@@ -7,6 +7,7 @@ ctx.context = new (window.AudioContext || window.webkitAudioContext)()
 // *2* audioConext query helpers
 // *3* channel & mixer set up
 // *4* master-clock
+// *5* master save and load functions
 
 // ************************
 // *1* webAudioAPI builders
@@ -130,3 +131,10 @@ ctx.clock.stopAll = function(){
 	sequencer.stop();
 }
 
+// *5* master save & load functions
+
+ctx.save = function(){
+	var data = {};
+	data.rhyth = rhyth.save();
+	return data;
+}

@@ -1,0 +1,5 @@
+<%= form_for @song do |f| %>
+	<%= f.label :title %>
+	<%= f.text_field :title %>
+	<%= f.submit "save", id: "popup_save_button" %>
+<% end %>

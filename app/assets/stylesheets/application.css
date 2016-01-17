@@ -15,9 +15,7 @@
  *= require_self
  */
 
-.body{
-	margin: none;
-}
+html, body { margin:0; padding:0; }
 
 .step{
 	height: 20px;
@@ -56,4 +54,46 @@
 .step-slider{
 	width: 75%;
 	margin: 10px auto;
+}
+
+#transport{
+	height: 30px;
+	padding: 5px;
+	background-color: #EEE;
+}
+
+#userloginout{
+	float:right;
+}
+
+#bpminput{
+	width: 150px;
+	height: 20px;
+}
+
+.verticaldevider{
+	height: 100%;
+	box-sizing: border-box;
+	border: 2px solid rgba(0,0,0,0.25);
+	margin: 1px 10px;
+	float: left;
+}
+
+#clockcontrols{
+	float:left;
+}
+
+#dbcontrols{
+	float: left;
+	height: 20px;
+	padding: 4px;
+}
+
+#popup {
+  position: relative;
+  background: #FFF;
+  padding: 20px;
+  width: auto;
+  max-width: 500px;
+  margin: 20px auto;
 }

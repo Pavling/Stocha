@@ -179,9 +179,24 @@ rhyth.kickBuilder = function(outputConnection){
  	// *6* save & load functions
  	// *************************
 
+	kick.saveParams = function(){
+		var params = {};
+		$.each(kick.params, function(key, storedObj){
+			params[key] = {};
+			$.each(storedObj, function(subKey, value){
+				//begin of each for sub param
+					var max = value.range.max 
+					var min = value.range.min
+					params[key][subKey] = {max: max, min: min}
+				//end of each for sub param
+			})
+		})
+		return params
+	}	
+
  	kick.save = function(){
  		var data = {};
- 		data.params = kick.params;
+ 		data.params = kick.saveParams();
  		data.sequencer = kick.sequencer.save();
  		return data;
  	}

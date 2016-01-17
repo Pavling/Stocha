@@ -1,0 +1,21 @@
+
+<div id="transport">
+	<div id="clockcontrols">
+		<input id="bpminput" name="bpminput">
+		<%= button_tag 'start', id: :start_play %>
+		<%= button_tag 'stop', id: :stop_play %>
+	</div>
+
+	<div class="verticaldevider"></div>
+
+	<div id="dbcontrols">
+		<%= button_tag 'save', id: :save_to_db %>
+		<%= button_tag 'load', id: :load_from_db %>
+	</div>
+
+
+	<div id="userloginout">
+	<%= user_signed_in? ? link_to("log out", destroy_user_session_path, method: :delete) : link_to("log in", new_user_session_path) %>
+	</div>
+
+</div>

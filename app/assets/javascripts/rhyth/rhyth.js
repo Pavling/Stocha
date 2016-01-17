@@ -28,7 +28,7 @@ rhyth.gui.draw = function(voice){
 rhyth.save = function(){
 	var data = {};
 	data.kick = rhyth.kick.save();
-	console.log(data)
+	return data
 }
 
 rhyth.load = function(params){
