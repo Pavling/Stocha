@@ -4,9 +4,7 @@ class Song
   belongs_to :user
 
   field :title, type: String, default: ""
-  			
+  field :song_data, type: Hash, default: {}
 
-  field :sequencers, type: Hash, default: {}
-  field :parameters, type: Hash, default: {}
 
 end

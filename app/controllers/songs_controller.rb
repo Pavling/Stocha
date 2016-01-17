@@ -12,9 +12,8 @@ class SongsController < ApplicationController
 	end
 
 	def create
-		@params = params
-		@song = Song.new
-		
+		Song.create(title: params["title"], song_data: params["songData"])
+		render html: "<h4>Save successful!</h4>"
 	end
 
 
