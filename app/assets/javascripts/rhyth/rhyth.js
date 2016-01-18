@@ -32,5 +32,5 @@ rhyth.save = function(){
 }
 
 rhyth.load = function(params){
-	rhyth.kick.load(params);
+	rhyth.kick.load(params.kick);
 }

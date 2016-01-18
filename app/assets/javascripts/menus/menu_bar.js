@@ -3,7 +3,6 @@ var menu = menu || {};
 // *1* popups generic functions
 
 menu.popup = function(content){
-	console.log(content);
 	$('#popup').html(content);
 	$.magnificPopup.open({
 	  items: {
@@ -14,7 +13,7 @@ menu.popup = function(content){
 }
 
 menu.successDialog = function(data){
-	console.log('success!' + data)
+	console.log('success! ' + data)
 }
 
 // *2* saving songs
@@ -26,21 +25,18 @@ menu.saveDialog = function(ev){
 			menu.popup(data.content);
 			menu.saveDialogAjaxSubmission();
 		},
-		// error: function(x,t,s){ console.log('error! '+x+", "+t+", "+s);}
 	});
 };
 
 menu.saveDialogAjaxSubmission = function(){
 	$('#new_song').submit(function(ev){
 		ev.preventDefault(); 
-		var songData = rhyth.save(); // this should be the result of whatever save function
+		var songData = rhyth.save(); // update later with master save function
 		var title = ev.target[2].value;
 		$.ajax({
 			url: '/songs',
 			method: 'POST',
 			data: {title: title, songData: ctx.save()},
-			success: menu.successDialog('what theeeee'),
-			// error: function(x,t,s){ console.log('error! '+x+", "+t+", "+s); }
 		})
 	})
 }
@@ -48,8 +44,30 @@ menu.saveDialogAjaxSubmission = function(){
 // *3* loading songs
 
 menu.loadDialog = function(){
-	console.log('load!');
+	$.ajax({
+			url: '/songs',
+			success: function(data){
+				menu.popup(data.content);
+			 	menu.addSongListeners();
+			},
+		});
 };
+
+menu.addSongListeners = function(){
+	$('.songdisplay').click(function(ev){
+		menu.loadDialogAjaxRetreival($(ev.target).attr('id'));
+	})
+}
+
+menu.loadDialogAjaxRetreival = function (songId){
+	$.ajax({
+		url: ('/songs/'+songId),
+		method: 'GET',
+		success: function(data){
+			rhyth.load(data.song_data.rhyth);
+		}
+	})
+}
 
 // *9* setting up on document ready
 

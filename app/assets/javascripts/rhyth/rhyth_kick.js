@@ -45,7 +45,14 @@ rhyth.kickBuilder = function(outputConnection){
 		return indexOfKeys;
 	})();
 
-
+	kick.params.load = function(data){
+		$.each(data, function(paramGroupKey, paramGroupObject){
+			$.each(paramGroupObject, function(paramNameKey, paramValues){
+				var convertedValues = {max: parseFloat(paramValues.max), min: parseFloat(paramValues.min)}
+				rhyth.kick.params[paramGroupKey][paramNameKey].range = convertedValues
+			})
+		})
+	}
 
 	kick.sequencer = rhyth.sequencerBuilder(kick)
 
@@ -175,6 +182,10 @@ rhyth.kickBuilder = function(outputConnection){
  	$('#'+id+"slider").slider('values', [setMin, setMax]);
  };
 
+ kick.gui.updateSliders = function(){
+
+ }
+
  	// *************************
  	// *6* save & load functions
  	// *************************
@@ -201,8 +212,9 @@ rhyth.kickBuilder = function(outputConnection){
  		return data;
  	}
 
- 	kick.load = function(params){
-
+ 	kick.load = function(data){
+ 		kick.params.load(data.params);
+ 		kick.sequencer.load(data.sequencer);
  	}
 
 
