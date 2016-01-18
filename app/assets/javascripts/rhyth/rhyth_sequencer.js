@@ -102,6 +102,14 @@ rhyth.sequencerBuilder = function(target){
 		};
 	};
 
+	sequencer.gui.loadValuesIntoCheckboxes = function(){
+		for(var i = 0; i < 16; i++){ 
+			var id = "#step"+i+"_checkbox";
+			var active = sequencer.params.steps[i].active
+			$(id).prop('checked', active);
+		};
+	}
+
 	// *************************
 	// *4* start and stop etc.
 	// *************************
@@ -128,6 +136,15 @@ rhyth.sequencerBuilder = function(target){
 			data[i] = sequencer.params.steps[i];
 		}
 		return data;
+	}
+
+	sequencer.load = function(data){
+		$.each(data, function(key, value){
+			var converted = {velocity: parseFloat(value.velocity), active: $.parseJSON(value.active)}
+			sequencer.params.steps[key] = converted
+		});
+		sequencer.gui.loadParamsIntoSliders();
+		sequencer.gui.loadValuesIntoCheckboxes();
 	}
 
 	return sequencer;

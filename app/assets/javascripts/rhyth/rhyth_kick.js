@@ -182,10 +182,6 @@ rhyth.kickBuilder = function(outputConnection){
  	$('#'+id+"slider").slider('values', [setMin, setMax]);
  };
 
- kick.gui.updateSliders = function(){
-
- }
-
  	// *************************
  	// *6* save & load functions
  	// *************************
@@ -214,6 +210,7 @@ rhyth.kickBuilder = function(outputConnection){
 
  	kick.load = function(data){
  		kick.params.load(data.params);
+ 		kick.gui.linkSlidersToParams();
  		kick.sequencer.load(data.sequencer);
  	}
 

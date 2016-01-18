@@ -69,6 +69,13 @@ menu.loadDialogAjaxRetreival = function (songId){
 	})
 }
 
+// *4* User Login & Out
+
+menu.loginDialog = function(){
+	
+}
+
+
 // *9* setting up on document ready
 
 menu.spinnerOptions = {
