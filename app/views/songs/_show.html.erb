@@ -1,0 +1,7 @@
+<% @songs.each do |song| %>
+
+<div class="songdisplay">
+	<h5><%= song.title %> by <%= song.user.username %></h5>
+</div>
+
+<% end %>

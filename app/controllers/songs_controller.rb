@@ -4,6 +4,7 @@ class SongsController < ApplicationController
 
 	def index
 		@songs = Songs.all
+		render json: {content: render_to_string(partial: 'show.html.erb', collection: )}
 	end
 
 	def new 
