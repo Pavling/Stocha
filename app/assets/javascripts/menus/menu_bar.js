@@ -71,10 +71,60 @@ menu.loadDialogAjaxRetreival = function (songId){
 
 // *4* User Login & Out
 
-menu.loginDialog = function(){
 	
+
+menu.loginDialog = function(){
+	$.ajax({
+		url: 'users/sign_in',
+		success: function(data){
+			menu.popup(data);
+			$('#login_submit').click(function(ev){
+				ev.preventDefault();
+				var remember_me_box = (function(){ if ($(ev.target.form[4]).is(':checked')) { return 1 } else { return 0 };})();
+				var data = {
+					username: $(ev.target.form[1]).val(),
+					password: $(ev.target.form[2]).val(),
+					remember_me: remember_me_box
+				};
+				menu.loginPostViaAJAX(data);
+			});
+		}
+	})
 }
 
+menu.loginPostViaAJAX = function(dataIn){
+	$.post('/users/sign_in', {user: dataIn}, function(){
+		menu.popup(data);
+	});
+}
+
+// URL: /users  
+// Method: POST  
+// Payload: {  
+//     user: {
+//         email: email,
+//         password: password,
+//         password_confirmation: password
+//     }
+// }
+// Response:  
+//     User JSON { "id":1,"email": ... }
+//     or
+//     { errors: { fieldName: ['Error'] }
+
+// URL: /users/sign_in  
+// Method: POST  
+// Payload: {  
+//     user: {
+//         email: email,
+//         password: password,
+//         remember_me: 1
+//     }
+// }
+// Response:  
+//     User JSON { "id":1,"email": ... }
+//     or
+//     { errors: { fieldName: ['Error'] }
 
 // *9* setting up on document ready
 
@@ -91,5 +141,6 @@ menu.setup = function(){
 	$('#start_play').click(function() { ctx.clock.start(); });
 	$('#stop_play').click(function() { ctx.clock.stop(); });
 	$('#save_to_db').click(function(ev) { menu.saveDialog(ev); });
-	$('#load_from_db').click(function() { menu.loadDialog();})
+	$('#load_from_db').click(function() { menu.loadDialog(); })
+	$('#user_login').click(function(ev) { menu.loginDialog(); })
 };

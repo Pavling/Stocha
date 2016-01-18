@@ -1,5 +1,4 @@
 class SongsController < ApplicationController
-
 	before_filter :redirect_unless_ajax
 
 	def index

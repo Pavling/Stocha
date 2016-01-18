@@ -1,6 +1,7 @@
-<h2>Log in</h2>
+<h4>Log in or something</h4>
 
-<%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+<%= form_for(resource, as: resource_name, url: session_path(resource_name), remote: true, format: :json) do |f| %>
+
   <div class="field">
     <%= f.label :username %><br />
     <%= f.text_field :username, autofocus: true %>
@@ -19,7 +20,7 @@
   <% end -%>
 
   <div class="actions">
-    <%= f.submit "Log in" %>
+    <%= f.submit "Log in", id: "login_submit" %>
   </div>
 <% end %>
 
