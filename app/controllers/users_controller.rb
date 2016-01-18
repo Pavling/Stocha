@@ -1,7 +1,9 @@
-class UsersController < ApplicationController
+class Users::RegistrationsController < Devise::RegistrationsController
 
-	def index
-	end
+	before_filter :redirect_unless_ajax
+
+	# def index
+	# end
 
 	def new
 	end
@@ -19,6 +21,14 @@ class UsersController < ApplicationController
 	end
 
 	def destroy
+	end
+
+	private
+
+	def redirect_unless_ajax
+		unless request.xhr?
+			redirect_to root_path
+		end
 	end
 
 end
