@@ -2,11 +2,19 @@ class User::SessionsController < Devise::SessionsController
   clear_respond_to 
   respond_to :json
   layout false
-
+  before_action :authenticate_user!
   # GET /resource/sign_in
   def new
     @user = User.new
     render text: render_to_string(partial: 'new')
+  end
+
+  def get_current_user
+    if user_signed_in?
+      respond_with current_user
+    else
+      render :nothing => true, :status => 200, :content_type => 'text/html'
+    end
   end
 
   # POST /resource/sign_in

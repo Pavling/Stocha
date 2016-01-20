@@ -1,5 +1,6 @@
 class SongsController < ApplicationController
 	before_filter :redirect_unless_ajax
+	# before_action :authenticate_user! -- just for create/edit etc
 
 	def index
 		@songs = Song.all.to_a

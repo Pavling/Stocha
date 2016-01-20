@@ -1,6 +1,15 @@
 var menu = menu || {};
 
+// index
 // *1* popups generic functions
+// *2* saving songs
+// *3* loading songs
+// *4* User Login/out & logged in user id retreiver
+
+
+// ****************************
+// *1* popups generic functions
+// ****************************
 
 menu.popup = function(content){
 	$('#popup').html(content);
@@ -16,7 +25,9 @@ menu.successDialog = function(data){
 	console.log('success! ' + data)
 }
 
+// ****************
 // *2* saving songs
+// ****************
 
 menu.saveDialog = function(ev){
 	$.ajax({
@@ -41,7 +52,9 @@ menu.saveDialogAjaxSubmission = function(){
 	})
 }
 
+// *****************
 // *3* loading songs
+// *****************
 
 menu.loadDialog = function(){
 	$.ajax({
@@ -69,9 +82,9 @@ menu.loadDialogAjaxRetreival = function (songId){
 	})
 }
 
-// *4* User Login & Out
-
-	
+// ************************************************
+// *4* User Login/out & logged in user id retreiver
+// ************************************************
 
 menu.loginDialog = function(){
 	$.ajax({
@@ -93,40 +106,53 @@ menu.loginDialog = function(){
 }
 
 menu.loginPostViaAJAX = function(dataIn){
-	$.post('/users/sign_in', {user: dataIn}, function(){
-		menu.popup(data);
+	$.ajax({
+		url: '/users/sign_in',
+		method: 'POST',
+		data: {user: dataIn}, 
+		success: function(data){ 
+			menu.popup('Log in successful');
+			menu.user_id = data._id.$oid;
+			// some way of changing the button to a log out then loginoutlisteners
+		},
+		error: function(data){
+			menu.popup("Something went wrong. If you are getting this message frequently, check your internet connection or refresh the page");
+			console.log(data);
+		}
 	});
 }
 
-// URL: /users  
-// Method: POST  
-// Payload: {  
-//     user: {
-//         email: email,
-//         password: password,
-//         password_confirmation: password
-//     }
-// }
-// Response:  
-//     User JSON { "id":1,"email": ... }
-//     or
-//     { errors: { fieldName: ['Error'] }
+menu.logoutDialog = function(){
+	$.ajax({
+		url: 'users/sign_out',
+		method: 'DELETE',
+		success: function(data){
+			menu.popup('Log out successful');
+			delete menu.user_id;
+			// some way of adding a log in button back then loginoutlisteners
+		},
+		error: function(data){
+			menu.popup("Something went wrong. If you are getting this message frequently, check your internet connection or refresh the page");
+			console.log(data);
+		}
+	});
+}
 
-// URL: /users/sign_in  
-// Method: POST  
-// Payload: {  
-//     user: {
-//         email: email,
-//         password: password,
-//         remember_me: 1
-//     }
-// }
-// Response:  
-//     User JSON { "id":1,"email": ... }
-//     or
-//     { errors: { fieldName: ['Error'] }
+menu.getCurrentUser = function(){
+	$.ajax({
+		url: 'get_current_user',
+		success: function(data){
+			menu.user_id = data._id.$oid;
+		},
+		error: function(data){
+			console.log(data);
+		}
+	})
+}
 
+// ********************************
 // *9* setting up on document ready
+// ********************************
 
 menu.spinnerOptions = {
 	max: 280,
@@ -136,11 +162,17 @@ menu.spinnerOptions = {
 	spin: function(ev, ui){ ctx.clock.bpm = parseFloat(ev.target.value);}
 }
 
+menu.logInOutListeners = function(){
+	menu.getCurrentUser();
+	$('#user_login').click(function(ev) { menu.loginDialog(); })
+	$('#user_logout').click(function(ev) { menu.logoutDialog(); })
+}
+
 menu.setup = function(){
 	$( "#bpminput" ).spinner(menu.spinnerOptions).val(ctx.clock.bpm);
 	$('#start_play').click(function() { ctx.clock.start(); });
 	$('#stop_play').click(function() { ctx.clock.stop(); });
 	$('#save_to_db').click(function(ev) { menu.saveDialog(ev); });
 	$('#load_from_db').click(function() { menu.loadDialog(); })
-	$('#user_login').click(function(ev) { menu.loginDialog(); })
+	menu.logInOutListeners();
 };
