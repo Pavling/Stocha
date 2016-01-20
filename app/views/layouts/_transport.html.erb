@@ -6,19 +6,24 @@
 		<%= button_tag 'stop', id: :stop_play %>
 	</div>
 
-	<div class="verticaldevider"></div>
+	<div class="verticaldivider"></div>
 
 	<div id="dbcontrols">
-		<%= button_tag 'save', id: :save_to_db %>
 		<%= button_tag 'load', id: :load_from_db %>
+		<p id="song_title">untitled</p>
+		<%= button_tag 'save', id: :save_to_db, class: :float_right_button %>
+		<%= button_tag 'update', id: :update_in_db, class: :float_right_button  %>
 	</div>
 
 
-
+	
 
 
 	<div id="userloginout">
-	<%= user_signed_in? ? (button_tag 'log out', id: :user_logout) : (button_tag 'log in', id: :user_login) %>
+	<%= button_tag 'log out', id: :user_logout %>
+	<%= button_tag 'log in', id: :user_login %>
 	</div>
+
+	<div class="verticaldivider_right"></div>
 
 </div>

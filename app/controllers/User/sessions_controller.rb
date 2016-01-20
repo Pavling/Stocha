@@ -1,8 +1,12 @@
 class User::SessionsController < Devise::SessionsController
+
   clear_respond_to 
   respond_to :json
   layout false
   before_action :authenticate_user!
+  before_filter :redirect_unless_ajax
+  skip_before_action :verify_authenticity_token
+  skip_before_filter :verify_signed_out_user
   # GET /resource/sign_in
   def new
     @user = User.new
@@ -17,24 +21,17 @@ class User::SessionsController < Devise::SessionsController
     end
   end
 
-  # POST /resource/sign_in
-  # def create
-  #   self.resource = warden.authenticate!(auth_options)
-  #   set_flash_message(:notice, :signed_in) if is_flashing_format?
-  #   sign_in(resource_name, resource)
-  #   yield resource if block_given?
-  #   respond_with action: render_to_string("successful")
-  # end
-
   # DELETE /resource/sign_out
-  # def destroy
-  #   super
-  # end
+  def destroy
+    signed_out = (Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name))
+  end
 
-  # protected
+  private
 
-  # If you have extra params to permit, append them to the sanitizer.
-  # def configure_sign_in_params
-  #   devise_parameter_sanitizer.for(:sign_in) << :attribute
-  # end
+  def redirect_unless_ajax
+    unless request.xhr?
+      redirect_to root_path
+    end
+  end
+
 end

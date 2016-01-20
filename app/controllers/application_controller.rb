@@ -10,6 +10,12 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:sign_up) { |u| u.permit(:username, :email, :password, :password_confirmation) }
   end
 
+
+  protected
+
+  def after_sign_out_path_for(resource)
+   	nil
+  end
  
 
 end

@@ -13,13 +13,13 @@ class SongsController < ApplicationController
 	end
 
 	def create
-		Song.create(title: params["title"], song_data: params["songData"])
-		render html: "<h4>Save successful!</h4>"
+		Song.create(title: params["title"], song_data: params["songData"], user_id: params["user_id"])
+		render html: "Save successful!"
 	end
 
 	def show
 		@song = Song.find_by(_id: params["id"])
-		render json: {title: @song.title, song_data: @song.song_data}
+		render json: {title: @song.title, song_data: @song.song_data, user_id: @song.user_id}
 	end
 
 	private

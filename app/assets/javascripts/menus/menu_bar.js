@@ -47,7 +47,10 @@ menu.saveDialogAjaxSubmission = function(){
 		$.ajax({
 			url: '/songs',
 			method: 'POST',
-			data: {title: title, songData: ctx.save()},
+			data: {title: title, songData: ctx.save(), user_id: menu.user_id},
+			success: function(data){
+				menu.popup(data);
+			}
 		})
 	})
 }
@@ -77,7 +80,9 @@ menu.loadDialogAjaxRetreival = function (songId){
 		url: ('/songs/'+songId),
 		method: 'GET',
 		success: function(data){
+			menu.current_song_owner = data.user_id.$oid;
 			rhyth.load(data.song_data.rhyth);
+			menu.updateMenu();
 		}
 	})
 }
@@ -113,6 +118,7 @@ menu.loginPostViaAJAX = function(dataIn){
 		success: function(data){ 
 			menu.popup('Log in successful');
 			menu.user_id = data._id.$oid;
+			menu.updateMenu();
 			// some way of changing the button to a log out then loginoutlisteners
 		},
 		error: function(data){
@@ -120,7 +126,7 @@ menu.loginPostViaAJAX = function(dataIn){
 			console.log(data);
 		}
 	});
-}
+};
 
 menu.logoutDialog = function(){
 	$.ajax({
@@ -129,6 +135,7 @@ menu.logoutDialog = function(){
 		success: function(data){
 			menu.popup('Log out successful');
 			delete menu.user_id;
+			menu.updateMenu();
 			// some way of adding a log in button back then loginoutlisteners
 		},
 		error: function(data){
@@ -136,18 +143,63 @@ menu.logoutDialog = function(){
 			console.log(data);
 		}
 	});
-}
+};
 
 menu.getCurrentUser = function(){
 	$.ajax({
+		async: false,
 		url: 'get_current_user',
 		success: function(data){
-			menu.user_id = data._id.$oid;
+			if(data){menu.user_id = data._id.$oid;};
 		},
 		error: function(data){
 			console.log(data);
 		}
-	})
+	});
+};
+
+menu.updateLogInOutButton = function(){
+	if (menu.user_id) {
+		$('#user_login').hide();
+		$('#user_logout').show();
+	} else if (!menu.user_if){
+		$('#user_logout').hide();
+		$('#user_login').show();
+	};
+};
+
+// *********************************************
+// *5* update interface according to user rights
+// *********************************************
+
+// menu.current_song_owner = function(){
+
+// }
+
+menu.updateSaveButton = function(){
+	if (menu.user_id) {
+		$('#save_to_db').show();
+	} else if (!menu.user_if){
+		$('#save_to_db').hide();
+	};
+};
+
+menu.updateUpdateButton = function(){
+	if (menu.user_id === menu.current_song_owner) {
+		$('#update_in_db').show();
+	} else {
+		$('#update_in_db').hide();
+	};
+};
+
+// *****************************
+// *6* master menu update button
+// *****************************
+
+menu.updateMenu = function(){
+	menu.updateLogInOutButton();
+	menu.updateSaveButton();
+	menu.updateUpdateButton();
 }
 
 // ********************************
@@ -163,16 +215,25 @@ menu.spinnerOptions = {
 }
 
 menu.logInOutListeners = function(){
-	menu.getCurrentUser();
 	$('#user_login').click(function(ev) { menu.loginDialog(); })
 	$('#user_logout').click(function(ev) { menu.logoutDialog(); })
 }
 
-menu.setup = function(){
+menu.dbButtonListeners = function(){
+	$('#save_to_db').click(function(ev) { menu.saveDialog(ev); });
+	$('#load_from_db').click(function() { menu.loadDialog(); });
+}
+
+menu.sequencerControlButtonListeners = function(){
 	$( "#bpminput" ).spinner(menu.spinnerOptions).val(ctx.clock.bpm);
 	$('#start_play').click(function() { ctx.clock.start(); });
 	$('#stop_play').click(function() { ctx.clock.stop(); });
-	$('#save_to_db').click(function(ev) { menu.saveDialog(ev); });
-	$('#load_from_db').click(function() { menu.loadDialog(); })
+}
+
+menu.setup = function(){	
+	menu.getCurrentUser();
 	menu.logInOutListeners();
+	menu.dbButtonListeners();
+	menu.sequencerControlButtonListeners();
+	menu.updateMenu();
 };

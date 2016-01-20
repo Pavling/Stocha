@@ -64,6 +64,7 @@ html, body { margin:0; padding:0; }
 
 #userloginout{
 	float:right;
+	padding-top: 4px;
 }
 
 #bpminput{
@@ -71,12 +72,20 @@ html, body { margin:0; padding:0; }
 	height: 20px;
 }
 
-.verticaldevider{
+.verticaldivider{
 	height: 100%;
 	box-sizing: border-box;
 	border: 2px solid rgba(0,0,0,0.25);
 	margin: 1px 10px;
 	float: left;
+}
+
+.verticaldivider_right{
+	height: 100%;
+	box-sizing: border-box;
+	border: 2px solid rgba(0,0,0,0.25);
+	margin: 1px 10px;
+	float: right;
 }
 
 #clockcontrols{
@@ -87,6 +96,7 @@ html, body { margin:0; padding:0; }
 	float: left;
 	height: 20px;
 	padding: 4px;
+	width: 70%;
 }
 
 #popup {
@@ -107,4 +117,13 @@ html, body { margin:0; padding:0; }
 	border-radius: 10px;
 	background-color: #EEE;
 	cursor: pointer;
+}
+
+#song_title{
+	margin: 0px 10px 0px 10px;
+	display: inline-block;
+}
+
+.float_right_button{
+	float: right;
 }
