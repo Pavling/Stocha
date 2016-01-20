@@ -1,5 +1,6 @@
 class SongsController < ApplicationController
 	before_filter :redirect_unless_ajax
+	skip_before_action :verify_authenticity_token
 	# before_action :authenticate_user! -- just for create/edit etc
 
 	def index
