@@ -136,5 +136,6 @@ ctx.clock.stopAll = function(){
 ctx.save = function(){
 	var data = {};
 	data.rhyth = rhyth.save();
+	data.bpm = ctx.clock.bpm
 	return data;
 }

@@ -19,7 +19,13 @@ class SongsController < ApplicationController
 
 	def show
 		@song = Song.find_by(_id: params["id"])
-		render json: {title: @song.title, song_data: @song.song_data, user_id: @song.user_id}
+		render json: {title: @song.title, song_data: @song.song_data, user_id: @song.user_id, song_id: @song._id}
+	end
+
+	def update
+		@song = Song.find_by(_id: params["id"])
+		@song.update(song_data: params["songData"])
+		render :nothing => true, :status => 200, :content_type => 'text/html'
 	end
 
 	private

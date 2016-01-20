@@ -80,15 +80,38 @@ menu.loadDialogAjaxRetreival = function (songId){
 		url: ('/songs/'+songId),
 		method: 'GET',
 		success: function(data){
-			menu.current_song_owner = data.user_id.$oid;
-			rhyth.load(data.song_data.rhyth);
-			menu.updateMenu();
+			menu.loadSongData(data);
+		}
+	})
+}
+
+menu.loadSongData = function(data){
+	menu.current_song_owner = data.user_id.$oid;
+	rhyth.load(data.song_data.rhyth);
+	ctx.clock.bpm = data.song_data.bpm;
+	menu.song_id = data.song_id.$oid;
+	$('#song_title').text(data.title)
+	$( "#bpminput" ).spinner("value", data.song_data.bpm);
+	menu.updateMenu();
+}
+
+// ******************
+// *4* updating songs
+// ******************
+
+menu.updateDialog = function(){
+	$.ajax({
+		url: ('/songs/' + menu.song_id),
+		method: 'PUT',
+		data: {songData: ctx.save()},
+		success: function(){
+			menu.popup('Song updated')
 		}
 	})
 }
 
 // ************************************************
-// *4* User Login/out & logged in user id retreiver
+// *5* User Login/out & logged in user id retreiver
 // ************************************************
 
 menu.loginDialog = function(){
@@ -169,12 +192,8 @@ menu.updateLogInOutButton = function(){
 };
 
 // *********************************************
-// *5* update interface according to user rights
+// *6* update interface according to user rights
 // *********************************************
-
-// menu.current_song_owner = function(){
-
-// }
 
 menu.updateSaveButton = function(){
 	if (menu.user_id) {
@@ -193,7 +212,7 @@ menu.updateUpdateButton = function(){
 };
 
 // *****************************
-// *6* master menu update button
+// *7* master menu update button
 // *****************************
 
 menu.updateMenu = function(){
@@ -222,6 +241,7 @@ menu.logInOutListeners = function(){
 menu.dbButtonListeners = function(){
 	$('#save_to_db').click(function(ev) { menu.saveDialog(ev); });
 	$('#load_from_db').click(function() { menu.loadDialog(); });
+	$('#update_in_db').click(function() { menu.updateDialog(); });
 }
 
 menu.sequencerControlButtonListeners = function(){
