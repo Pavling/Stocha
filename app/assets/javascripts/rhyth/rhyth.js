@@ -24,9 +24,10 @@ rhyth.gui.draw = function(voice){
 	rhyth.current_voice = voice;
 	voice.sequencer.gui.drawSliders();
 	voice.sequencer.gui.activate();
+	voice.sequencer.gui.loadValuesIntoCheckboxes();
+	
 	voice.gui.drawSliders();
 	voice.gui.linkSlidersToParams();
-	voice.sequencer.gui.loadValuesIntoCheckboxes();
 }
 
 rhyth.gui.drawSliders = function(){

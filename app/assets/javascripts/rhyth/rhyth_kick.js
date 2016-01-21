@@ -151,11 +151,8 @@ rhyth.kickBuilder = function(outputConnection){
 	     min: 0,
 	     max: 100,
 	     slide: function(event, ui) {
-	     	var target = null;
-	      target = (function(){return $(ui.handle.parentNode).data()})(); 
 	      var values = ui.values;
-	      console.log(target.superParam + "" + target.subParam);
-	      console.log(ui);
+	      var target = ui.handle.parentNode.dataset
 	      kick.params[target.superParam][target.subParam].range.min = ui.values[0];
 	     	kick.params[target.superParam][target.subParam].range.max = ui.values[1];
 	     }
