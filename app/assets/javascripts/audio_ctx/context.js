@@ -139,3 +139,8 @@ ctx.save = function(){
 	data.bpm = ctx.clock.bpm
 	return data;
 }
+
+ctx.load = function(data){
+	rhyth.load(data.rhyth);
+	ctx.clock.bpm = data.bpm;
+}

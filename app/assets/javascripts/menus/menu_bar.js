@@ -87,8 +87,7 @@ menu.loadDialogAjaxRetreival = function (songId){
 
 menu.loadSongData = function(data){
 	menu.current_song_owner = data.user_id.$oid;
-	rhyth.load(data.song_data.rhyth);
-	ctx.clock.bpm = data.song_data.bpm;
+	ctx.load(data.song_data);
 	menu.song_id = data.song_id.$oid;
 	$('#song_title').text(data.title)
 	$( "#bpminput" ).spinner("value", data.song_data.bpm);
