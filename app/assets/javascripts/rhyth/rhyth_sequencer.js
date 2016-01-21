@@ -71,6 +71,8 @@ rhyth.sequencerBuilder = function(target){
 	sequencer.gui.activate = function(){
 		sequencer.focused = true;
 		sequencer.gui.addCheckboxListeners();
+		sequencer.gui.loadParamsIntoSliders();
+		sequencer.gui.loadValuesIntoCheckboxes();
 	}
 
 	sequencer.gui.addCheckboxListeners = function(){

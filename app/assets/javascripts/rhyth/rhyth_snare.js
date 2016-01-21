@@ -195,6 +195,17 @@ rhyth.snareBuilder = function(outputConnection){
 
 	snare.gui.drawSliders = function() {
 		snare.gui.focused = true
+	   $( ".param-slider" ).slider({
+	     range: true,
+	     min: 0,
+	     max: 100,
+	     slide: function(event, ui) {
+	      var target = $(ui.handle.parentNode).data();
+	      var values = ui.values
+	      snare.params[target.superParam][target.subParam].range.min = ui.values[0];
+	     	snare.params[target.superParam][target.subParam].range.max = ui.values[1];
+	     }
+	   });
 	 };
 
  snare.gui.linkSlidersToParams = function(){

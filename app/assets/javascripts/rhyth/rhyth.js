@@ -22,7 +22,9 @@ rhyth.gui = {};
 
 rhyth.gui.draw = function(voice){
 	rhyth.current_voice = voice;
+	voice.sequencer.gui.drawSliders();
 	voice.sequencer.gui.activate();
+	voice.gui.drawSliders();
 	voice.gui.linkSlidersToParams();
 	voice.sequencer.gui.loadValuesIntoCheckboxes();
 }
@@ -35,11 +37,13 @@ rhyth.gui.drawSliders = function(){
 	  slide: function(event, ui) {
 	   var target = $(ui.handle.parentNode).data();
 	   var values = ui.values
-	   	rhyth.current_voice.params[target.superParam][target.subParam].range.min = ui.values[0];
-	  	rhyth.current_voice.params[target.superParam][target.subParam].range.max = ui.values[1];
+	   var current_voice = function(){return rhyth.current_voice};
+	   	current_voice().params[target.superParam + ""][target.subParam + ""].range.min = ui.values[0];
+	  	current_voice().params[target.superParam + ""][target.subParam + ""].range.max = ui.values[1];
 	  }
 	});
 }
+
 
 rhyth.gui.activate = function(){
 	rhyth.gui.drawSliders();
