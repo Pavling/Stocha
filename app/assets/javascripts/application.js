@@ -23,5 +23,5 @@ rhyth.setup();
 
 $(function(){	
 	menu.setup();
-	rhyth.gui.draw(rhyth.kick);
+	rhyth.gui.activate();
 })

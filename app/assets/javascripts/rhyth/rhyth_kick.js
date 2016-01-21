@@ -80,8 +80,8 @@ rhyth.kickBuilder = function(outputConnection){
 		var vco = kick.resoHead.vco.frequency;
 
 		// clear any still running envelopes
-		// vca.cancelScheduledValues(time-0.01);
-		// vco.cancelScheduledValues(time-0.01);
+		vca.cancelScheduledValues(time);
+		vco.cancelScheduledValues(time);
 		
 		// attack
 		vca.setValueAtTime(mix, time);
@@ -168,18 +168,30 @@ rhyth.kickBuilder = function(outputConnection){
 			kick.gui.setAndTitleSlider(superParamKey, subParamKey, collectionIndex, sliderIndex);
 			sliderIndex++;
 		});
+		while (sliderIndex < 4) { 
+			var id = collectionIndex + "-" + sliderIndex + "-slider";
+			$('#'+id).hide();
+			sliderIndex++
+		}
 		sliderIndex = 0;
 		collectionIndex++;
 	});
+	while (collectionIndex < 4) { 
+		var id = "#collection-" + collectionIndex ;
+		$(id).hide();
+		collectionIndex++;
+	}
  };
 
  kick.gui.setAndTitleSlider = function(superParamKey, subParamKey, collectionIndex, sliderIndex){
- 	var id = collectionIndex + "-" + sliderIndex + "-"
- 	$('#'+id+"title").text(subParamKey)
+ 	var id = collectionIndex + "-" + sliderIndex + "-";
+ 	$('#'+id+"slider").show();
+ 	$('#'+id+"title").text(subParamKey);
  	$('#'+id+"slider").attr({'data-super-param': superParamKey, 'data-sub-param': subParamKey});
  	var setMin = kick.params[superParamKey][subParamKey].range.min;
  	var setMax = kick.params[superParamKey][subParamKey].range.max ;
  	$('#'+id+"slider").slider('values', [setMin, setMax]);
+ 	$('#'+id).show();
  };
 
  	// *************************
@@ -210,7 +222,6 @@ rhyth.kickBuilder = function(outputConnection){
 
  	kick.load = function(data){
  		kick.params.load(data.params);
- 		kick.gui.linkSlidersToParams();
  		kick.sequencer.load(data.sequencer);
  	}
 

@@ -74,6 +74,7 @@ rhyth.sequencerBuilder = function(target){
 	}
 
 	sequencer.gui.addCheckboxListeners = function(){
+		$(':checkbox').off();
 		$(':checkbox').click(function(event){
 			var target = event.target
 			sequencer.params.steps[$(target).val()].active = $(target).prop('checked')
@@ -109,6 +110,7 @@ rhyth.sequencerBuilder = function(target){
 			$(id).prop('checked', active);
 		};
 	}
+
 
 	// *************************
 	// *4* start and stop etc.

@@ -37,12 +37,12 @@ html, body { margin:0; padding:0; }
 	box-sizing: border-box;
 }
 
-#param-display{
+#param-display, #voice-selection, #sequencer{
 	width: 90%;
 	margin: 20px auto;
 }
 
-#sequencer{
+{
 	width: 90%;
 	margin: 20px auto;
 }

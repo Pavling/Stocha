@@ -112,6 +112,10 @@ ctx.clock.start = function(){
 	ctx.clock.runAll();
 }
 
+ctx.clock.runAll = function(){
+	rhyth.run();
+}
+
 ctx.clock.continue = function(){
 	if (ctx.clock.running) {
 		setTimeout(function(){ctx.clock.runAll()}, ctx.clock.timeoutInterval);
@@ -123,12 +127,8 @@ ctx.clock.stop = function(){
 	ctx.clock.stopAll();
 }
 
-ctx.clock.runAll = function(){
-	rhyth.run();
-}
-
 ctx.clock.stopAll = function(){
-	sequencer.stop();
+	rhyth.stop();
 }
 
 // *5* master save & load functions
