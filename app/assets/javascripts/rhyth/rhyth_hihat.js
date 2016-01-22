@@ -27,12 +27,12 @@ rhyth.hihatBuilder = function(outputConnection){
 		ring: ctx.paramBuilder(-0.25, 0.25)
 	}
 	hihat.params.strike = {
+		decay: ctx.paramBuilder(25.0, 75.0),
 		tone: ctx.paramBuilder(8000.0, 12000.0),
-		decay: ctx.paramBuilder(0.25, 0.75),
 		mix: ctx.paramBuilder(0.00001, 1.0)
 	};
 	hihat.params.sizzle = {
-		decay: ctx.paramBuilder(75.0, 500.0),
+		decay: ctx.paramBuilder(50.0, 350.0),
 		tone: ctx.paramBuilder(6000.0, 10000.0),
 		mix: ctx.paramBuilder(0.00001, 1.0)
 	}
@@ -85,7 +85,7 @@ rhyth.hihatBuilder = function(outputConnection){
 		var sizzleParams = hihat.params.sizzle;
 
 		// get the gainNodes and filterNodes we need to apply envelopes to
-		var strikeVCA = hihat.filters.sizzle.output.gain;
+		var strikeVCA = hihat.filters.strike.output.gain;
 		var sizzleVCA = hihat.filters.sizzle.output.gain;
 
 		var strikeFilter = hihat.filters.strike.filter.frequency;
@@ -104,8 +104,8 @@ rhyth.hihatBuilder = function(outputConnection){
 
 
 		// decay
-		sizzleVCA.exponentialRampToValueAtTime(0.0000001, time + sizzleParams.decay.calc(velocity));
-		strikeVCA.exponentialRampToValueAtTime(0.0000001, time + strikeParams.decay.calc(velocity));
+		sizzleVCA.exponentialRampToValueAtTime(0.0000001, time + (sizzleParams.decay.calc(velocity)/1000));
+		strikeVCA.exponentialRampToValueAtTime(0.0000001, time + (strikeParams.decay.calc(velocity)/1000));
 		
 	}
 

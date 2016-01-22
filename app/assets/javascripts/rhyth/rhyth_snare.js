@@ -17,7 +17,7 @@ rhyth.snareBuilder = function(outputConnection){
 	// ************************
 
 	// set up output node w/ lowpass filtering, and merger node to join the three sections together
-	snare.output = ctx.filterBuilder(outputConnection, 4000.0, "lowpass", 0.75);
+	snare.output = ctx.filterBuilder(outputConnection, 8000.0, "lowpass", 0.3);
 
 	// set up paramaters interface
 	snare.params = {}
@@ -33,8 +33,8 @@ rhyth.snareBuilder = function(outputConnection){
 	};
 	snare.params.noise = {
 		decay: ctx.paramBuilder(25.0, 250.0),
-		locut: ctx.paramBuilder(1000.0, 2000.0),
-		hicut: ctx.paramBuilder(2000.0, 4000.0),
+		locut: ctx.paramBuilder(500.0, 2000.0),
+		hicut: ctx.paramBuilder(6000.0, 8000.0),
 		mix: ctx.paramBuilder(0.00001, 2.0)
 	}
 
@@ -131,14 +131,6 @@ rhyth.snareBuilder = function(outputConnection){
 	snare.noise.hicut = ctx.filterBuilder(snare.noise.vca, 2000.0, "lowpass", 0.8, 1.5);
 	snare.noise.locut = ctx.filterBuilder(snare.noise.hicut, 250.0, "highpass", 0.8, 1.5);
 
-	snare.noise.noisegen = function(){
-		var oneSample = Math.random() * 2 - 1;
-		if (oneSample < 0){
-			return 0;
-		} else {
-			return oneSample;
-		}
-	}
 
 	// create noise wavetable
 	snare.noise.osc = (function(){
@@ -146,7 +138,7 @@ rhyth.snareBuilder = function(outputConnection){
 			    noiseBuffer = ctx.context.createBuffer(1, bufferSize, ctx.context.sampleRate),
 			    output = noiseBuffer.getChannelData(0);
 			for (var i = 0; i < bufferSize; i++) {
-			    output[i] = snare.noise.noisegen() * 2 - 1;
+			    output[i] = Math.random() * 2 - 1;
 			}
 
 			Math.random

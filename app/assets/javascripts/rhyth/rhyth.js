@@ -53,6 +53,7 @@ rhyth.gui.activate = function(){
 	rhyth.gui.draw(rhyth.kick);
 	$('#select_kick').click( function(){ rhyth.gui.draw(rhyth.kick); });
 	$('#select_snare').click( function(){ rhyth.gui.draw(rhyth.snare); });
+	$('#select_hihat').click( function(){ rhyth.gui.draw(rhyth.hihat); });
 }
 
 // *3* save and load functions
