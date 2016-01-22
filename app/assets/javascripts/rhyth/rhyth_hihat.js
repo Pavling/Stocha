@@ -69,45 +69,43 @@ rhyth.hihatBuilder = function(outputConnection){
 	hihat.filters = {};
 
 	hihat.filters.sizzle = {};
-	hihat.filters.sizzle.output = ctx.gainBuilder(hihat.output, 1.0);
+	hihat.filters.sizzle.output = ctx.gainBuilder(hihat.output);
 	hihat.filters.sizzle.filter = ctx.filterBuilder(hihat.filters.sizzle.output, 6000.0, "highpass", 0.75, 1.0);
 
-	hihat.filters.sizzle = {}
-	hihat.filters.sizzle.output = ctx.gainBuilder(hihat.output, 1.0)
-	hihat.filters.sizzle.filter = ctx.filterBuilder(hihat.filters.sizzle.output, 6000.0, "highpass", 0.75, 1.0);
+	hihat.filters.strike = {}
+	hihat.filters.strike.output = ctx.gainBuilder(hihat.output)
+	hihat.filters.strike.filter = ctx.filterBuilder(hihat.filters.strike.output, 8000.0, "bandpass", 0.75, 1.0);
 
 
 	//trig method
 	hihat.filters.trig = function(velocity, time){
-		// get scaled variables
-		var osc1Params = hihat.params.osc1;
-		var osc2Params = hihat.params.osc2;
-
 		
-		// get the gainNode and oscillatorNode we need to apply envelopes to
-		var osc1vca = hihat.oscillators.osc1.vca.gain;
-		var osc2vca = hihat.oscillators.osc2.vca.gain;
+		// get scaled variables
+		var strikeParams = hihat.params.strike;
+		var sizzleParams = hihat.params.sizzle;
 
-		var osc1vco = hihat.oscillators.osc1.vco.frequency;
-		var osc2vco = hihat.oscillators.osc2.vco.frequency;
+		// get the gainNodes and filterNodes we need to apply envelopes to
+		var strikeVCA = hihat.filters.sizzle.output.gain;
+		var sizzleVCA = hihat.filters.sizzle.output.gain;
+
+		var strikeFilter = hihat.filters.strike.filter.frequency;
+		var sizzleFilter = hihat.filters.sizzle.filter.frequency;
 
 		// clear any still running envelopes
-		osc1vca.cancelScheduledValues(time);
-		osc1vco.cancelScheduledValues(time);
-
-		osc2vca.cancelScheduledValues(time);
-		osc2vco.cancelScheduledValues(time);
+		strikeVCA.cancelScheduledValues(time);
+		sizzleVCA.cancelScheduledValues(time);
 		
 		// attack
-		osc1vca.setValueAtTime(osc1Mix, time);
-		osc1vco.setValueAtTime(osc1Tuning, time);
+		strikeVCA.setValueAtTime(strikeParams.mix.calc(velocity), time);
+		strikeFilter.setValueAtTime(strikeParams.tone.calc(velocity), time);
 
-		osc2vca.setValueAtTime(osc2Mix, time);
-		osc2vco.setValueAtTime(osc2Tuning, time);
+		sizzleVCA.setValueAtTime(sizzleParams.mix.calc(velocity), time);
+		sizzleFilter.setValueAtTime(sizzleParams.tone.calc(velocity), time);
+
 
 		// decay
-		osc1vca.exponentialRampToValueAtTime(0.0000001, time + osc1Decay);
-		osc2vca.exponentialRampToValueAtTime(0.0000001, time + osc2Decay);
+		sizzleVCA.exponentialRampToValueAtTime(0.0000001, time + sizzleParams.decay.calc(velocity));
+		strikeVCA.exponentialRampToValueAtTime(0.0000001, time + strikeParams.decay.calc(velocity));
 		
 	}
 
@@ -116,70 +114,36 @@ rhyth.hihatBuilder = function(outputConnection){
 	// ***************
 
 	hihat.oscillators = {};
-	hihat.oscillators.osc1 = ctx.oscillatorBuilder(hihat.oscillators.osc1.vca, 40, 'square');
-	hihat.oscillators.osc2 = ctx.oscillatorBuilder(hihat.oscillators.osc2.vca, 50, 'sine');
+	hihat.oscillators.output = ctx.gainBuilder(hihat.filters.sizzle.filter, 1.0);
+	hihat.oscillators.output.connect(hihat.filters.strike.filter);
 
-	hihat.noise = {};
+	hihat.oscillators.osc1 = ctx.oscillatorBuilder(hihat.oscillators.output, 40, 'square');
+	hihat.oscillators.osc2 = ctx.oscillatorBuilder(hihat.oscillators.output, 40, 'square');
+	hihat.oscillators.osc3 = ctx.oscillatorBuilder(hihat.oscillators.output, 40, 'square');
+	hihat.oscillators.osc4 = ctx.oscillatorBuilder(hihat.oscillators.output, 40, 'square');
+	hihat.oscillators.osc5 = ctx.oscillatorBuilder(hihat.oscillators.output, 40, 'square');
+	hihat.oscillators.osc6 = ctx.oscillatorBuilder(hihat.oscillators.output, 40, 'square');
 
-	// create vca and connect filters
-	hihat.noise.vca = ctx.gainBuilder(hihat.output);
-
-	hihat.noise.hicut = ctx.filterBuilder(hihat.noise.vca, 2000.0, "lowpass", 0.8, 1.5);
-	hihat.noise.locut = ctx.filterBuilder(hihat.noise.hicut, 250.0, "highpass", 0.8, 1.5);
-
-	hihat.noise.noisegen = function(){
-		var oneSample = Math.random() * 2 - 1;
-		if (oneSample < 0){
-			return 0;
-		} else {
-			return oneSample;
-		}
-	}
-
-	// create noise wavetable
-	hihat.noise.osc = (function(){
-			var bufferSize = 2 * ctx.context.sampleRate,
-			    noiseBuffer = ctx.context.createBuffer(1, bufferSize, ctx.context.sampleRate),
-			    output = noiseBuffer.getChannelData(0);
-			for (var i = 0; i < bufferSize; i++) {
-			    output[i] = hihat.noise.noisegen() * 2 - 1;
-			}
-
-			Math.random
-	
-			var whiteNoise = ctx.context.createBufferSource();
-			whiteNoise.buffer = noiseBuffer;
-			whiteNoise.loop = true;
-			whiteNoise.start(0);
-
-			return whiteNoise;
-		})();
-
-	hihat.noise.osc.connect(hihat.noise.locut);
 
 	//trig method
-	hihat.noise.trig = function(velocity, time){
+	hihat.oscillators.trig = function(velocity, time){
+
+		hihat.params.oscillators = {
+			tuning: ctx.paramBuilder(40.0, 80.0),
+			shimmer: ctx.paramBuilder(1.0, 2.0),
+			ring: ctx.paramBuilder(-0.25, 0.25)
+		}
+
+
 		// get scaled variables
-		var mix = hihat.params.noise.mix.calc(velocity);
-		var decay = hihat.params.noise.decay.calc(velocity)/1000;
-		var locutFreq = hihat.params.noise.locut.calc(velocity);
-		var hicutFreq = hihat.params.noise.hicut.calc(velocity);
+		var basePitch = hihat.params.oscillators.tuning.calc(velocity);
+		var scale = hihat.params.oscillators.shimmer.calc(velocity);
+		var offset = hihat.params.oscillators.ring.calc(velocity);
 
-		// shortcut to vca and filters
-		var vca = hihat.noise.vca.gain;
-		var locut = hihat.noise.locut.frequency;
-		var hicut = hihat.noise.hicut.frequency;
-
-		// clear any still running envelopes
-		// vca.cancelScheduledValues(time);
-
-		// attack
-		vca.setValueAtTime(mix, time-0.01);
-		hicut.setValueAtTime(hicutFreq, time-0.01);
-		locut.setValueAtTime(locutFreq, time-0.01);
-
-		// decay
-		vca.exponentialRampToValueAtTime(0.0000001, time + decay);
+		for (var i = 1; i <= 6; i++){
+			var frequency = (basePitch * ((scale*i) + (offset * (6-i))));
+			hihat.oscillators["osc"+i].frequency.setValueAtTime(frequency, time)
+		}
 
 	}
 
@@ -189,7 +153,7 @@ rhyth.hihatBuilder = function(outputConnection){
 
 	hihat.trig = function(velocity, time){
 		hihat.oscillators.trig(velocity, time);
-		hihat.noise.trig(velocity, time);
+		hihat.filters.trig(velocity, time);
 	}
 
 	// *************************

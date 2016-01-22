@@ -9,11 +9,13 @@ rhyth.current_voice = rhyth.kick;
 rhyth.run = function(){
 	rhyth.kick.sequencer.run();
 	rhyth.snare.sequencer.run();
+	rhyth.hihat.sequencer.run();
 }
 
 rhyth.setup = function(){
 	rhyth.kick = rhyth.kickBuilder(rhyth.output);
 	rhyth.snare = rhyth.snareBuilder(rhyth.output);
+	rhyth.hihat = rhyth.hihatBuilder(rhyth.output);
 }
 
 // *2* gui functions
@@ -59,12 +61,14 @@ rhyth.save = function(){
 	var data = {};
 	data.kick = rhyth.kick.save();
 	data.snare = rhyth.snare.save();
+	data.hihat = rhyth.hihat.save()
 	return data
 }
 
 rhyth.load = function(params){
 	rhyth.kick.load(params.kick);
 	rhyth.snare.load(params.snare);
+	rhyth.hihat.load(params.hihat)
 	rhyth.gui.draw(rhyth.current_voice);
 }
 
@@ -73,4 +77,5 @@ rhyth.load = function(params){
 rhyth.stop = function(){
 	rhyth.kick.sequencer.stop();
 	rhyth.snare.sequencer.stop();
+	rhyth.hihat.sequencer.stop();
 }
