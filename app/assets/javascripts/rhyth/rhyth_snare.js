@@ -22,20 +22,20 @@ rhyth.snareBuilder = function(outputConnection){
 	// set up paramaters interface
 	snare.params = {}
 	snare.params.osc1 = {
-		tuning: ctx.paramBuilder(50.0, 500.0),
-		decay: ctx.paramBuilder(35.0, 1000.0),
+		tuning: ctx.paramBuilder(200.0, 300.0),
+		decay: ctx.paramBuilder(35.0, 500.0),
 		mix: ctx.paramBuilder(0.00001, 1.0)
 	}
 	snare.params.osc2 = {
-		offset: ctx.paramBuilder(1.0, 2.5),
+		offset: ctx.paramBuilder(1.25, 1.75),
 		decay: ctx.paramBuilder(1.0, 100.0),
 		mix: ctx.paramBuilder(0.00001, 1.0)
 	};
 	snare.params.noise = {
-		decay: ctx.paramBuilder(35.0, 500.0),
-		lopass: ctx.paramBuilder(250.0, 2000.0),
-		hipass: ctx.paramBuilder(2000.0, 8000.0),
-		mix: ctx.paramBuilder(0.00001, 1.0)
+		decay: ctx.paramBuilder(25.0, 250.0),
+		locut: ctx.paramBuilder(2000.0, 4000.0),
+		hicut: ctx.paramBuilder(4000.0, 8000.0),
+		mix: ctx.paramBuilder(0.00001, 2.0)
 	}
 
 
@@ -128,8 +128,17 @@ rhyth.snareBuilder = function(outputConnection){
 	// create vca and connect filters
 	snare.noise.vca = ctx.gainBuilder(snare.output);
 
-	snare.noise.hipass = ctx.filterBuilder(snare.noise.vca, 2000.0, "lowpass", 0.5, 0.5);
-	snare.noise.lopass = ctx.filterBuilder(snare.noise.hipass, 250.0, "highpass", 0.5, 0.5);
+	snare.noise.hicut = ctx.filterBuilder(snare.noise.vca, 2000.0, "lowpass", 0.8, 1.5);
+	snare.noise.locut = ctx.filterBuilder(snare.noise.hicut, 250.0, "highpass", 0.8, 1.5);
+
+	snare.noise.noisegen = function(){
+		var oneSample = Math.random() * 2 - 1;
+		if (oneSample < 0){
+			return 0;
+		} else {
+			return oneSample;
+		}
+	}
 
 	// create noise wavetable
 	snare.noise.osc = (function(){
@@ -137,8 +146,10 @@ rhyth.snareBuilder = function(outputConnection){
 			    noiseBuffer = ctx.context.createBuffer(1, bufferSize, ctx.context.sampleRate),
 			    output = noiseBuffer.getChannelData(0);
 			for (var i = 0; i < bufferSize; i++) {
-			    output[i] = Math.random() * 2 - 1;
+			    output[i] = snare.noise.noisegen() * 2 - 1;
 			}
+
+			Math.random
 	
 			var whiteNoise = ctx.context.createBufferSource();
 			whiteNoise.buffer = noiseBuffer;
@@ -148,28 +159,28 @@ rhyth.snareBuilder = function(outputConnection){
 			return whiteNoise;
 		})();
 
-	snare.noise.osc.connect(snare.noise.lopass);
+	snare.noise.osc.connect(snare.noise.locut);
 
 	//trig method
 	snare.noise.trig = function(velocity, time){
 		// get scaled variables
 		var mix = snare.params.noise.mix.calc(velocity);
 		var decay = snare.params.noise.decay.calc(velocity)/1000;
-		var lopassFreq = snare.params.noise.lopass.calc(velocity);
-		var hipassFreq = snare.params.noise.hipass.calc(velocity);
+		var locutFreq = snare.params.noise.locut.calc(velocity);
+		var hicutFreq = snare.params.noise.hicut.calc(velocity);
 
 		// shortcut to vca and filters
 		var vca = snare.noise.vca.gain;
-		var lopass = snare.noise.lopass.frequency;
-		var hipass = snare.noise.hipass.frequency;
+		var locut = snare.noise.locut.frequency;
+		var hicut = snare.noise.hicut.frequency;
 
 		// clear any still running envelopes
 		// vca.cancelScheduledValues(time);
 
 		// attack
 		vca.setValueAtTime(mix, time);
-		hipass.setValueAtTime(hipassFreq, time);
-		lopass.setValueAtTime(lopassFreq, time);
+		hicut.setValueAtTime(hicutFreq, time);
+		locut.setValueAtTime(locutFreq, time);
 
 		// decay
 		vca.linearRampToValueAtTime(0.0000001, time + decay);

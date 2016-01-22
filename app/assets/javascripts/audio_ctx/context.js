@@ -78,18 +78,18 @@ ctx.now = function(){
 // **************************
 // *3* channel & mixer set up
 // **************************
-ctx.output = ctx.mergerBuilder(ctx.context.destination, 2)
+ctx.output = ctx.context.destination
 ctx.leftOut = ctx.gainBuilder(ctx.output, 1);
 ctx.rightOut = ctx.gainBuilder(ctx.output, 1);
 
 ctx.channel1 = ctx.gainBuilder(ctx.leftOut, 1);
-ctx.channel1.connect(ctx.leftOut);
+ctx.channel1.connect(ctx.rightOut);
 ctx.channel2 = ctx.gainBuilder(ctx.leftOut, 1);
-ctx.channel2.connect(ctx.leftOut);
+ctx.channel2.connect(ctx.rightOut);
 ctx.channel3 = ctx.gainBuilder(ctx.leftOut, 1);
-ctx.channel3.connect(ctx.leftOut);
+ctx.channel3.connect(ctx.rightOut);
 ctx.channel4 = ctx.gainBuilder(ctx.leftOut, 1);
-ctx.channel4.connect(ctx.leftOut);
+ctx.channel4.connect(ctx.rightOut);
 
 // ****************
 // *4* master-clock

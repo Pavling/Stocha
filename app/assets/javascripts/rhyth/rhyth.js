@@ -64,7 +64,7 @@ rhyth.save = function(){
 
 rhyth.load = function(params){
 	rhyth.kick.load(params.kick);
-	// rhyth.snare.load(params.snare);
+	rhyth.snare.load(params.snare);
 	rhyth.gui.draw(rhyth.current_voice);
 }
 

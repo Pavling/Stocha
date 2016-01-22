@@ -22,15 +22,15 @@ rhyth.kickBuilder = function(outputConnection){
 	// set up paramaters interface
 	kick.params = {}
 	kick.params.resoHead = {
-		tuning: ctx.paramBuilder(20.0, 100.0),
-		slack: ctx.paramBuilder(35.0, 450.0),
-		decay: ctx.paramBuilder(75.0, 600.0),
+		tuning: ctx.paramBuilder(40.0, 80.0),
+		slack: ctx.paramBuilder(25.0, 250.0),
+		decay: ctx.paramBuilder(50.0, 500.0),
 		mix: ctx.paramBuilder(0.00001, 1.0)
 	}
 	kick.params.beaterHead = {
-		tuning: ctx.paramBuilder(1.0, 4.0),
-		slack: ctx.paramBuilder(2.3, 0.4),
-		material: ctx.paramBuilder(0.5, 2.0),
+		tuning: ctx.paramBuilder(1.0, 2.0),
+		slack: ctx.paramBuilder(0.75, 1.25),
+		material: ctx.paramBuilder(0.75, 1.25),
 		mix: ctx.paramBuilder(0.00001, 1.0)
 	};
 
