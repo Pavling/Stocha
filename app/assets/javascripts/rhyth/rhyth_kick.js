@@ -88,8 +88,8 @@ rhyth.kickBuilder = function(outputConnection){
 		vco.setValueAtTime(pitchEnvStart, time);
 
 		// decay
-		vca.linearRampToValueAtTime(0.0000001, time + decay);
-		vco.linearRampToValueAtTime(tuning, time + slack);
+		vca.exponentialRampToValueAtTime(0.0000001, time + decay);
+		vco.exponentialRampToValueAtTime(tuning, time + slack);
 	}
 
 	// ***************
@@ -126,7 +126,7 @@ rhyth.kickBuilder = function(outputConnection){
 		// attack
 		vca.setValueAtTime(mix, time);
 		// decay (always 50ms for beater)
-		vca.linearRampToValueAtTime(0.0000001, time + 0.03);
+		vca.exponentialRampToValueAtTime(0.0000001, time + 0.03);
 
 	}
 

@@ -17,7 +17,7 @@ rhyth.snareBuilder = function(outputConnection){
 	// ************************
 
 	// set up output node w/ lowpass filtering, and merger node to join the three sections together
-	snare.output = ctx.filterBuilder(outputConnection, 4000.0, "lowpass", 0.75);
+	snare.output = ctx.filterBuilder(outputConnection, 500.0, "lowpass", 0.5);
 
 	// set up paramaters interface
 	snare.params = {}
@@ -33,8 +33,8 @@ rhyth.snareBuilder = function(outputConnection){
 	};
 	snare.params.noise = {
 		decay: ctx.paramBuilder(25.0, 250.0),
-		locut: ctx.paramBuilder(1000.0, 2000.0),
-		hicut: ctx.paramBuilder(2000.0, 4000.0),
+		locut: ctx.paramBuilder(2000.0, 4000.0),
+		hicut: ctx.paramBuilder(4000.0, 8000.0),
 		mix: ctx.paramBuilder(0.00001, 2.0)
 	}
 
