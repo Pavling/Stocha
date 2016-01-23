@@ -10,12 +10,17 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
- *= require jquery-ui
+ * require jquery-ui
  *= require_tree .
  *= require_self
  */
 
-html, body { margin:0; padding:0; }
+html { 
+	font-family: 'Montserrat', sans-serif;
+	font-size: 18px;
+	margin:0; 
+	padding:0; 
+}
 
 .step{
 	height: 20px;
@@ -42,19 +47,14 @@ html, body { margin:0; padding:0; }
 	margin: 20px auto;
 }
 
-{
-	width: 90%;
-	margin: 20px auto;
-}
-
 .clear-float{
 	clear:both;
 }
 
-.step-slider{
+/*.step-slider{
 	width: 75%;
 	margin: 10px auto;
-}
+}*/
 
 #transport{
 	height: 30px;
