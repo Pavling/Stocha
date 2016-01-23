@@ -17,6 +17,7 @@ rhyth.GUIBuilder = function(voice){
 				var values = ui.values
 				voice.params[target.superParam][target.subParam].range.min = ui.values[0];
 				voice.params[target.superParam][target.subParam].range.max = ui.values[1];
+				console.log(voice.params[target.superParam][target.subParam].range);
 			}
 		});
 	};
@@ -54,7 +55,7 @@ rhyth.GUIBuilder = function(voice){
 		$('#'+id+"title").show();
 		$('#'+id+"slider").attr({'data-super-param': superParamKey, 'data-sub-param': subParamKey});
 		var setMin = voice.params[superParamKey][subParamKey].range.min;
-		var setMax = voice.params[superParamKey][subParamKey].range.max ;
+		var setMax = voice.params[superParamKey][subParamKey].range.max;
 		$('#'+id+"slider").slider('values', [setMin, setMax]);
 	};
 };

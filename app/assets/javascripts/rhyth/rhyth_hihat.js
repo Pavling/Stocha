@@ -20,18 +20,18 @@ rhyth.hihatBuilder = function(outputConnection){
 	// set up paramaters interface
 	hihat.params = {}
 	hihat.params.oscillators = {
-		tuning: ctx.paramBuilder(40.0, 80.0),
-		shimmer: ctx.paramBuilder(1.0, 3.0),
+		tuning: ctx.paramBuilder(80.0, 160.0),
+		shimmer: ctx.paramBuilder(0.25, 4.0),
 		ring: ctx.paramBuilder(-0.75, 0.75)
 	}
 	hihat.params.strike = {
-		decay: ctx.paramBuilder(25.0, 75.0),
-		tone: ctx.paramBuilder(8000.0, 12000.0),
+		decay: ctx.paramBuilder(25.0, 250.0),
+		tone: ctx.paramBuilder(6000.0, 16000.0),
 		mix: ctx.paramBuilder(0.00001, 1.0)
 	};
 	hihat.params.sizzle = {
-		decay: ctx.paramBuilder(50.0, 350.0),
-		tone: ctx.paramBuilder(6000.0, 10000.0),
+		decay: ctx.paramBuilder(50.0, 200.0),
+		tone: ctx.paramBuilder(4000.0, 12000.0),
 		mix: ctx.paramBuilder(0.00001, 1.0)
 	}
 
@@ -103,20 +103,13 @@ rhyth.hihatBuilder = function(outputConnection){
 	//trig method
 	hihat.oscillators.trig = function(velocity, time){
 
-		hihat.params.oscillators = {
-			tuning: ctx.paramBuilder(40.0, 80.0),
-			shimmer: ctx.paramBuilder(1.0, 2.0),
-			ring: ctx.paramBuilder(-0.25, 0.25)
-		}
-
-
 		// get scaled variables
 		var basePitch = hihat.params.oscillators.tuning.calc(velocity);
 		var scale = hihat.params.oscillators.shimmer.calc(velocity);
 		var offset = hihat.params.oscillators.ring.calc(velocity);
-
+		
 		for (var i = 1; i <= 6; i++){
-			var frequency = (basePitch * ((scale*i) + (offset * (6-i))));
+			var frequency = ( basePitch * ( (scale*i) + (offset * (6-i) ) ) );
 			hihat.oscillators["osc"+i].frequency.setValueAtTime(frequency, time)
 		}
 

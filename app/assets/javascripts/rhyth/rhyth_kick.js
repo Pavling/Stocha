@@ -22,16 +22,16 @@ rhyth.kickBuilder = function(outputConnection){
 	// set up paramaters interface
 	kick.params = {}
 	kick.params.resoHead = {
-		tuning: ctx.paramBuilder(40.0, 80.0),
-		slack: ctx.paramBuilder(25.0, 250.0),
-		decay: ctx.paramBuilder(50.0, 500.0),
-		mix: ctx.paramBuilder(0.00001, 1.0)
+		tuning: ctx.paramBuilder(20.0, 100.0),
+		pitchDecay: ctx.paramBuilder(0.0, 1.0),
+		volDecay: ctx.paramBuilder(50.0, 2000.0),
+		loudness: ctx.paramBuilder(0.00001, 1.0)
 	}
 	kick.params.beaterHead = {
-		tuning: ctx.paramBuilder(1.0, 2.0),
-		slack: ctx.paramBuilder(0.75, 1.25),
-		material: ctx.paramBuilder(0.75, 1.25),
-		mix: ctx.paramBuilder(0.00001, 1.0)
+		tuning: ctx.paramBuilder(1.0, 4.0),
+		beaterPitch: ctx.paramBuilder(40, 200),
+		beaterTimre: ctx.paramBuilder(0.75, 1.25),
+		loudness: ctx.paramBuilder(0.00001, 1.0)
 	};
 
 	// *************
@@ -49,25 +49,25 @@ rhyth.kickBuilder = function(outputConnection){
 		// get scaled variables
 		var params = kick.params.resoHead
 		var tuning = params.tuning.calc(velocity);
-		var decay = params.decay.calc(velocity)/1000;
-		var mix = params.mix.calc(velocity);
-		var slack = params.slack.calc(velocity)/1000;
+		var decay = params.volDecay.calc(velocity)/1000;
+		var loudness = params.loudness.calc(velocity);
+		var pitchDecay = params.pitchDecay.calc(velocity) *decay ;
 		var pitchEnvStart = tuning * kick.params.beaterHead.tuning.calc(velocity);
 		// get the gainNode and oscillatorNode we need to apply envelopes to
 		var vca = kick.resoHead.vca.gain;
 		var vco = kick.resoHead.vco.frequency;
 
 		// clear any still running envelopes
-		// vca.cancelScheduledValues(time);
-		// vco.cancelScheduledValues(time);
+		vca.cancelScheduledValues(time);
+		vco.cancelScheduledValues(time);
 		
 		// attack
-		vca.setValueAtTime(mix, time);
+		vca.setValueAtTime(loudness, time);
 		vco.setValueAtTime(pitchEnvStart, time);
 
 		// decay
 		vca.exponentialRampToValueAtTime(0.0000001, time + decay);
-		vco.exponentialRampToValueAtTime(tuning, time + slack);
+		vco.exponentialRampToValueAtTime(tuning, time + pitchDecay);
 	}
 
 	// ***************
@@ -92,17 +92,17 @@ rhyth.kickBuilder = function(outputConnection){
 	//trig method
 	kick.beaterHead.trig = function(velocity, time){
 		// get scaled variables
-		var material = kick.params.beaterHead.material.calc(velocity);
-		var mix = kick.params.beaterHead.mix.calc(velocity);
-		var basePitch = kick.params.resoHead.tuning.calc(velocity) * kick.params.beaterHead.slack.calc(velocity);
+		var beaterTimre = kick.params.beaterHead.beaterTimre.calc(velocity);
+		var loudness = kick.params.beaterHead.loudness.calc(velocity);
+		var basePitch = kick.params.beaterHead.beaterPitch.calc(velocity);
 		// shortcut to vca
 		var vca = kick.beaterHead.vca.gain;
 		// schedule pitch changes for beater emulator
 		for (var i = 1; i <= 6; i++){
-			this.beater["osc"+i].frequency.setValueAtTime(basePitch*((i*material)+1), time)
+			this.beater["osc"+i].frequency.setValueAtTime(basePitch*((i*beaterTimre)+1), time)
 		}
 		// attack
-		vca.setValueAtTime(mix, time);
+		vca.setValueAtTime(loudness, time);
 		// decay (always 50ms for beater)
 		vca.exponentialRampToValueAtTime(0.0000001, time + 0.03);
 

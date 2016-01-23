@@ -22,13 +22,13 @@ rhyth.snareBuilder = function(outputConnection){
 	// set up paramaters interface
 	snare.params = {}
 	snare.params.osc1 = {
-		tuning: ctx.paramBuilder(200.0, 300.0),
-		decay: ctx.paramBuilder(35.0, 500.0),
+		tuning: ctx.paramBuilder(100.0, 400.0),
+		decay: ctx.paramBuilder(35.0, 2000.0),
 		mix: ctx.paramBuilder(0.00001, 1.0)
 	}
 	snare.params.osc2 = {
 		offset: ctx.paramBuilder(1.25, 1.75),
-		decay: ctx.paramBuilder(1.0, 100.0),
+		decay: ctx.paramBuilder(0.0, 1.0),
 		mix: ctx.paramBuilder(0.00001, 1.0)
 	};
 	snare.params.noise = {
@@ -63,7 +63,7 @@ rhyth.snareBuilder = function(outputConnection){
 		var osc2Tuning = osc1Tuning * osc2Params.offset.calc(velocity);
 
 		var osc1Decay = osc1Params.decay.calc(velocity)/1000;
-		var osc2Decay = osc1Decay * (osc2Params.decay.calc(velocity)/100.0);
+		var osc2Decay = osc1Decay * osc2Params.decay.calc(velocity);
 
 		var osc1Mix = osc1Params.mix.calc(velocity);
 		var osc2Mix = osc2Params.mix.calc(velocity);
@@ -77,11 +77,11 @@ rhyth.snareBuilder = function(outputConnection){
 		var osc2vco = snare.oscillators.osc2.vco.frequency;
 
 		// clear any still running envelopes
-		// osc1vca.cancelScheduledValues(time);
-		// osc1vco.cancelScheduledValues(time);
+		osc1vca.cancelScheduledValues(time);
+		osc1vco.cancelScheduledValues(time);
 
-		// osc2vca.cancelScheduledValues(time);
-		// osc2vco.cancelScheduledValues(time);
+		osc2vca.cancelScheduledValues(time);
+		osc2vco.cancelScheduledValues(time);
 		
 		// attack
 		osc1vca.setValueAtTime(osc1Mix, time);
