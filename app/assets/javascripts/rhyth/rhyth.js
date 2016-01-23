@@ -27,6 +27,7 @@ rhyth.gui.draw = function(voice){
 	voice.sequencer.gui.drawSliders();
 	voice.sequencer.gui.activate();
 	voice.sequencer.gui.loadValuesIntoCheckboxes();
+	voice.sequencer.gui.drawSpinner();
 	voice.gui.drawSliders();
 	voice.gui.linkSlidersToParams();
 }

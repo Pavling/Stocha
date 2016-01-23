@@ -73,7 +73,7 @@ rhyth.sequencerBuilder = function(target){
 		sequencer.gui.addCheckboxListeners();
 		sequencer.gui.loadParamsIntoSliders();
 		sequencer.gui.loadValuesIntoCheckboxes();
-		sequencer.gui.loadSequenceLengthIntoSpinner();
+		sequencer.gui.drawSpinner();
 	}
 
 	sequencer.gui.addCheckboxListeners = function(){
@@ -115,13 +115,21 @@ rhyth.sequencerBuilder = function(target){
 	}
 
 	sequencer.gui.spinnerParams = {
-		max: 280,
-		min: 40,
-		step: 0.25,
-		change: function(ev, ui){ ctx.clock.bpm = parseFloat(ev.target.value); },
-		spin: function(ev, ui){ ctx.clock.bpm = parseFloat(ev.target.value);}
+		max: 32,
+		min: 1,
+		step: 1,
+		change: function(ev, ui){ sequencer.gui.changeSequenceLength(parseInt(ev.target.value)); },
+		spin: function(ev, ui){ sequencer.gui.changeSequenceLength(parseInt(ev.target.value));}
 	}
 
+	sequencer.gui.drawSpinner = function(){
+		$('#sequence-length').spinner(sequencer.gui.spinnerParams).val(sequencer.params.sequenceLength)
+	}
+
+	sequencer.gui.changeSequenceLength = function(newLength){
+		sequencer.params.sequenceLength = newLength;
+		// grey things out here
+	}
 
 	// *4* sequence length
 

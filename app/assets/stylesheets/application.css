@@ -41,24 +41,37 @@ body {
 	background-color: #066
 }
 
+.param-collection{
+	display: block;
+	clear: both;
+	width: 100%;
+}
+
 .param-slider{
 	float:left;
 	width: 22.5%;
 	padding: 0.25rem;
-	margin: 1.25%;
+/*	margin: 1.25%;*/
 	height: 1rem;
 	box-sizing: border-box;
 }
 
-}
 
 #param-display, #voice-selection {
 	width: 90%;
-	margin: 1rem auto;
+	margin: 0.5rem auto 1.5rem auto;
 }
 
-#sequencer {
+.sequencer {
 	margin-top: 1.5rem;
+	width: 90%;
+	margin: auto;
+}
+
+#sequence-length-container{
+	margin-top: 1.5rem;
+	width: 90%;
+	margin: auto;
 }
 
 .clear-float{
@@ -66,7 +79,13 @@ body {
 }
 
 .param-name{
-	margin-top: 1rem;
+	float:left;
+	width: 22.5%;
+	padding: 0.25rem;
+	height: 1rem;
+	display: block;
+	text-align: center;
+	box-sizing: border-box;
 }
 
 .param-title{
@@ -154,6 +173,11 @@ body {
 
 #voice-selection{
 	margin-top: 0.5rem;
+}
+
+#sequence-length{
+	height: 1.5rem;
+	width: 12rem;
 }
 
 @media screen and (max-width: 640px) {

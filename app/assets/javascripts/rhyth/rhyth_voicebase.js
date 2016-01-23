@@ -32,8 +32,9 @@ rhyth.GUIBuilder = function(voice){
 				sliderIndex++;
 			});
 			while (sliderIndex < 4) { 
-				var id = collectionIndex + "-" + sliderIndex + "-slider";
-				$('#'+id).hide();
+				var id = collectionIndex + "-" + sliderIndex;
+				$('#'+id+ "-slider").hide();
+				$('#'+id+ "-title").hide();
 				sliderIndex++
 			}
 			sliderIndex = 0;
@@ -50,6 +51,7 @@ rhyth.GUIBuilder = function(voice){
 		var id = collectionIndex + "-" + sliderIndex + "-";
 		$('#'+id+"slider").show();
 		$('#'+id+"title").text(subParamKey);
+		$('#'+id+"title").show();
 		$('#'+id+"slider").attr({'data-super-param': superParamKey, 'data-sub-param': subParamKey});
 		var setMin = voice.params[superParamKey][subParamKey].range.min;
 		var setMax = voice.params[superParamKey][subParamKey].range.max ;
