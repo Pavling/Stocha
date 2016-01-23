@@ -6,16 +6,13 @@ rhyth.output = ctx.gainBuilder(ctx.channel1, 1.0);
 
 rhyth.current_voice = rhyth.kick;
 
-rhyth.run = function(){
-	rhyth.kick.sequencer.run();
-	rhyth.snare.sequencer.run();
-	rhyth.hihat.sequencer.run();
-}
-
 rhyth.setup = function(){
-	rhyth.kick = rhyth.kickBuilder(rhyth.output);
-	rhyth.snare = rhyth.snareBuilder(rhyth.output);
-	rhyth.hihat = rhyth.hihatBuilder(rhyth.output);
+	rhyth.kick1 = rhyth.kickBuilder(rhyth.output);
+	rhyth.snare1 = rhyth.snareBuilder(rhyth.output);
+	rhyth.hihat1 = rhyth.hihatBuilder(rhyth.output);
+	rhyth.kick2 = rhyth.kickBuilder(rhyth.output);
+	rhyth.snare2 = rhyth.snareBuilder(rhyth.output);
+	rhyth.hihat2 = rhyth.hihatBuilder(rhyth.output);
 }
 
 // *2* gui functions
@@ -50,10 +47,13 @@ rhyth.gui.drawSliders = function(){
 
 rhyth.gui.activate = function(){
 	rhyth.gui.drawSliders();
-	rhyth.gui.draw(rhyth.kick);
-	$('#select_kick').click( function(){ rhyth.gui.draw(rhyth.kick); });
-	$('#select_snare').click( function(){ rhyth.gui.draw(rhyth.snare); });
-	$('#select_hihat').click( function(){ rhyth.gui.draw(rhyth.hihat); });
+	rhyth.gui.draw(rhyth.kick1);
+	$('#select_kick1').click( function(){ rhyth.gui.draw(rhyth.kick1); });
+	$('#select_snare1').click( function(){ rhyth.gui.draw(rhyth.snare1); });
+	$('#select_hihat1').click( function(){ rhyth.gui.draw(rhyth.hihat1); });
+	$('#select_kick2').click( function(){ rhyth.gui.draw(rhyth.kick2); });
+	$('#select_snare2').click( function(){ rhyth.gui.draw(rhyth.snare2); });
+	$('#select_hihat2').click( function(){ rhyth.gui.draw(rhyth.hihat2); });
 }
 
 // *3* save and load functions
@@ -75,8 +75,21 @@ rhyth.load = function(params){
 
 // *4* sequencer stop and start
 
+
+rhyth.run = function(){
+	rhyth.kick1.sequencer.run();
+	rhyth.kick2.sequencer.run();
+	rhyth.snare1.sequencer.run();
+	rhyth.snare2.sequencer.run();
+	rhyth.hihat1.sequencer.run();
+	rhyth.hihat2.sequencer.run();
+}
+
 rhyth.stop = function(){
-	rhyth.kick.sequencer.stop();
-	rhyth.snare.sequencer.stop();
-	rhyth.hihat.sequencer.stop();
+	rhyth.kick1.sequencer.stop();
+	rhyth.kick2.sequencer.stop();
+	rhyth.snare1.sequencer.stop();
+	rhyth.snare2.sequencer.stop();
+	rhyth.hihat1.sequencer.stop();
+	rhyth.hihat2.sequencer.stop();
 }
