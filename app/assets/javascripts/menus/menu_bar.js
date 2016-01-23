@@ -203,7 +203,7 @@ menu.updateSaveButton = function(){
 };
 
 menu.updateUpdateButton = function(){
-	if (menu.user_id === menu.current_song_owner) {
+	if ( menu.user_id && (menu.user_id === menu.current_song_owner)) {
 		$('#update_in_db').show();
 	} else {
 		$('#update_in_db').hide();

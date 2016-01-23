@@ -29,11 +29,11 @@ rhyth.sequencerBuilder = function(target){
 	sequencer.queueStart = null;
 
 	sequencer.params = {};
-	sequencer.params.sequenceLength = 16;
+	sequencer.params.sequenceLength = 32;
 	sequencer.params.steps = {};
 
 	//patch init
-	for (var i = 0; i <= 15; i++){
+	for (var i = 0; i <= 31; i++){
 		sequencer.params.steps[i] = {velocity: 50, active: false}
 	}
 
@@ -62,9 +62,9 @@ rhyth.sequencerBuilder = function(target){
 		return nextStepTime;
 	}
 
-	// *********************************
-	//  *3* gui events - reconsider gui
-	// *********************************
+	// ****************
+	//  *3* gui events 
+	// ****************
 
 	sequencer.gui = {};
 
@@ -73,6 +73,7 @@ rhyth.sequencerBuilder = function(target){
 		sequencer.gui.addCheckboxListeners();
 		sequencer.gui.loadParamsIntoSliders();
 		sequencer.gui.loadValuesIntoCheckboxes();
+		sequencer.gui.loadSequenceLengthIntoSpinner();
 	}
 
 	sequencer.gui.addCheckboxListeners = function(){
@@ -98,7 +99,7 @@ rhyth.sequencerBuilder = function(target){
 	};
 
 	sequencer.gui.loadParamsIntoSliders = function(){
-		for(var i = 0; i < 16; i++){ 
+		for(var i = 0; i < 32; i++){ 
 			var id = "#step"+i+"_slider";
 			var velocity = sequencer.params.steps[i].velocity
 			$(id).slider('value', velocity);
@@ -106,12 +107,23 @@ rhyth.sequencerBuilder = function(target){
 	};
 
 	sequencer.gui.loadValuesIntoCheckboxes = function(){
-		for(var i = 0; i < 16; i++){ 
+		for(var i = 0; i < 32; i++){ 
 			var id = "#step"+i+"_checkbox";
 			var active = sequencer.params.steps[i].active
 			$(id).prop('checked', active);
 		};
 	}
+
+	sequencer.gui.spinnerParams = {
+		max: 280,
+		min: 40,
+		step: 0.25,
+		change: function(ev, ui){ ctx.clock.bpm = parseFloat(ev.target.value); },
+		spin: function(ev, ui){ ctx.clock.bpm = parseFloat(ev.target.value);}
+	}
+
+
+	// *4* sequence length
 
 
 	// *************************

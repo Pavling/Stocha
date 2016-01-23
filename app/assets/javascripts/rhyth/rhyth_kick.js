@@ -58,8 +58,8 @@ rhyth.kickBuilder = function(outputConnection){
 		var vco = kick.resoHead.vco.frequency;
 
 		// clear any still running envelopes
-		vca.cancelScheduledValues(time);
-		vco.cancelScheduledValues(time);
+		// vca.cancelScheduledValues(time);
+		// vco.cancelScheduledValues(time);
 		
 		// attack
 		vca.setValueAtTime(mix, time);

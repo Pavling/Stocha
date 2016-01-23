@@ -67,8 +67,8 @@ rhyth.hihatBuilder = function(outputConnection){
 		var sizzleFilter = hihat.filters.sizzle.filter.frequency;
 
 		// clear any still running envelopes
-		strikeVCA.cancelScheduledValues(time);
-		sizzleVCA.cancelScheduledValues(time);
+		// strikeVCA.cancelScheduledValues(time);
+		// sizzleVCA.cancelScheduledValues(time);
 		
 		// attack
 		strikeVCA.setValueAtTime(strikeParams.mix.calc(velocity), time);

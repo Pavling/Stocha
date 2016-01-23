@@ -77,11 +77,11 @@ rhyth.snareBuilder = function(outputConnection){
 		var osc2vco = snare.oscillators.osc2.vco.frequency;
 
 		// clear any still running envelopes
-		osc1vca.cancelScheduledValues(time);
-		osc1vco.cancelScheduledValues(time);
+		// osc1vca.cancelScheduledValues(time);
+		// osc1vco.cancelScheduledValues(time);
 
-		osc2vca.cancelScheduledValues(time);
-		osc2vco.cancelScheduledValues(time);
+		// osc2vca.cancelScheduledValues(time);
+		// osc2vco.cancelScheduledValues(time);
 		
 		// attack
 		osc1vca.setValueAtTime(osc1Mix, time);

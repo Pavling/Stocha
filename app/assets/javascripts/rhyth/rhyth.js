@@ -14,9 +14,7 @@ rhyth.run = function(){
 
 rhyth.setup = function(){
 	rhyth.kick = rhyth.kickBuilder(rhyth.output);
-
 	rhyth.snare = rhyth.snareBuilder(rhyth.output);
-
 	rhyth.hihat = rhyth.hihatBuilder(rhyth.output);
 }
 

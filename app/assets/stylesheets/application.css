@@ -10,6 +10,7 @@
  * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
  * file per style scope.
  *
+ *= require normalise.css
  *= require jquery-ui
  *= require_tree .
  *= require_self
@@ -17,22 +18,19 @@
 
  html { 
  	font-family: 'Montserrat', sans-serif;
- 
  	font-size: 18px;
- 	color: rgba(256,256,256,0.8);
  	margin:0; 
  	padding:0; 
  }
 
 
-body { 
-	background-color: #000;
+body {
 	margin:0; 
 	padding:0; 
 }
 
 .step{
-	height: 1.5rem;
+	height: 8rem;
 	width: 6.25%;
 	float: left;
 	padding: 0.75rem;
@@ -52,19 +50,31 @@ body {
 	box-sizing: border-box;
 }
 
-#param-display, #voice-selection, #sequencer{
+}
+
+#param-display, #voice-selection {
 	width: 90%;
-	margin: 1.5rem auto;
+	margin: 1rem auto;
+}
+
+#sequencer {
+	margin-top: 1.5rem;
 }
 
 .clear-float{
 	clear:both;
 }
 
-/*.step-slider{
-	width: 75%;
-	margin: 10px auto;
-}*/
+.param-name{
+	margin-top: 1rem;
+}
+
+.param-title{
+	text-align: center;
+	margin-top: 1rem;
+	font-size: 1.5rem;
+	line-height: 2rem;
+}
 
 #transport{
 	height: 2rem;
@@ -107,8 +117,8 @@ body {
 #dbcontrols{
 	float: left;
 	height: 2rem;
-	padding: 0.25rem;
-	width: 70%;
+	/*padding: 0.25rem;*/
+/*	width: 70%;*/
 }
 
 #popup {
@@ -142,8 +152,8 @@ body {
 	float: right;
 }
 
-.param-name{
-	color: rgba(256,256,256,0.8);
+#voice-selection{
+	margin-top: 0.5rem;
 }
 
 @media screen and (max-width: 640px) {

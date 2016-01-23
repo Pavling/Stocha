@@ -707,7 +707,7 @@ button.ui-button::-moz-focus-inner {
 
 .ui-slider-vertical {
 	width: .8em;
-	height: 100px;
+	height: 6rem;
 }
 .ui-slider-vertical .ui-slider-handle {
 	left: -.3em;
