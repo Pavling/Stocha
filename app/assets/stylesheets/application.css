@@ -49,9 +49,8 @@ body {
 
 .param-slider{
 	float:left;
-	width: 22.5%;
-	padding: 0.25rem;
-/*	margin: 1.25%;*/
+	width: 20%;
+	margin: 0 2.5%;
 	height: 1rem;
 	box-sizing: border-box;
 }
@@ -80,8 +79,8 @@ body {
 
 .param-name{
 	float:left;
-	width: 22.5%;
-	padding: 0.25rem;
+	width: 20%;
+	margin: 0 2.5%;
 	height: 1rem;
 	display: block;
 	text-align: center;
