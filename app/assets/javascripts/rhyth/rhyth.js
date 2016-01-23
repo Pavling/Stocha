@@ -14,7 +14,9 @@ rhyth.run = function(){
 
 rhyth.setup = function(){
 	rhyth.kick = rhyth.kickBuilder(rhyth.output);
+
 	rhyth.snare = rhyth.snareBuilder(rhyth.output);
+
 	rhyth.hihat = rhyth.hihatBuilder(rhyth.output);
 }
 
@@ -27,7 +29,6 @@ rhyth.gui.draw = function(voice){
 	voice.sequencer.gui.drawSliders();
 	voice.sequencer.gui.activate();
 	voice.sequencer.gui.loadValuesIntoCheckboxes();
-	
 	voice.gui.drawSliders();
 	voice.gui.linkSlidersToParams();
 }

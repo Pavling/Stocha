@@ -38,29 +38,6 @@ rhyth.snareBuilder = function(outputConnection){
 		mix: ctx.paramBuilder(0.00001, 2.0)
 	}
 
-
-	snare.keysIndex = (function(){
-		var indexOfKeys = {};
-		$.each(snare.params, function(key, paramsObj){
-			indexOfKeys[key] = [];
-			$.each(paramsObj, function(subKey, storedParams){
-				indexOfKeys[key].push(subKey);
-			});
-		});
-		return indexOfKeys;
-	})();
-
-	snare.params.load = function(data){
-		$.each(data, function(paramGroupKey, paramGroupObject){
-			$.each(paramGroupObject, function(paramNameKey, paramValues){
-				var convertedValues = {max: parseFloat(paramValues.max), min: parseFloat(paramValues.min)}
-				rhyth.snare.params[paramGroupKey][paramNameKey].range = convertedValues
-			})
-		})
-	}
-
-	snare.sequencer = rhyth.sequencerBuilder(snare)
-
 	// *************
 	// *2* osc1 & 2
 	// *************
@@ -188,95 +165,13 @@ rhyth.snareBuilder = function(outputConnection){
 		snare.noise.trig(velocity, time);
 	}
 
-	// *************************
-	// *5* gui drawer and binder
-	// *************************
-
-	snare.gui = {};
-
-	snare.gui.focused = false;
-
-	snare.gui.drawSliders = function() {
-		snare.gui.focused = true
-	   $( ".param-slider" ).slider({
-	     range: true,
-	     min: 0,
-	     max: 100,
-	     slide: function(event, ui) {
-	      var target = ui.handle.parentNode.dataset
-	      var values = ui.values
-	      snare.params[target.superParam][target.subParam].range.min = ui.values[0];
-	     	snare.params[target.superParam][target.subParam].range.max = ui.values[1];
-	     }
-	   });
-	 };
-
- snare.gui.linkSlidersToParams = function(){
-  	var collectionIndex = 0;
-  	var sliderIndex = 0;
- 	$.each(snare.keysIndex, function(superParamKey, subParamArray){
- 		$('#collection-'+ collectionIndex).show();
- 		$('#collection-'+ collectionIndex +'-title').text(superParamKey);
- 		$.each(subParamArray, function(index, subParamKey){
- 			snare.gui.setAndTitleSlider(superParamKey, subParamKey, collectionIndex, sliderIndex);
- 			sliderIndex++;
- 		});
- 		while (sliderIndex < 4) { 
- 			var id = collectionIndex + "-" + sliderIndex + "-slider";
- 			$('#'+id).hide();
- 			sliderIndex++
- 		}
- 		sliderIndex = 0;
- 		collectionIndex++;
- 	});
- 	while (collectionIndex < 4) { 
- 		var id = "#collection-" + collectionIndex ;
- 		$(id).hide();
- 		collectionIndex++;
- 	}
- };
-
- snare.gui.setAndTitleSlider = function(superParamKey, subParamKey, collectionIndex, sliderIndex){
- 	var id = collectionIndex + "-" + sliderIndex + "-";
- 	$('#'+id+"slider").show();
- 	$('#'+id+"title").text(subParamKey);
- 	$('#'+id+"slider").attr({'data-super-param': superParamKey, 'data-sub-param': subParamKey});
- 	var setMin = snare.params[superParamKey][subParamKey].range.min;
- 	var setMax = snare.params[superParamKey][subParamKey].range.max ;
- 	$('#'+id+"slider").slider('values', [setMin, setMax]);
- };
-
  	// *************************
- 	// *6* save & load functions
+ 	// *6* builder functions
  	// *************************
 
-	snare.saveParams = function(){
-		var params = {};
-		$.each(snare.params, function(key, storedObj){
-			params[key] = {};
-			$.each(storedObj, function(subKey, value){
-				//begin of each for sub param
-					var max = value.range.max 
-					var min = value.range.min
-					params[key][subKey] = {max: max, min: min}
-				//end of each for sub param
-			})
-		})
-		return params
-	}	
-
- 	snare.save = function(){
- 		var data = {};
- 		data.params = snare.saveParams();
- 		data.sequencer = snare.sequencer.save();
- 		return data;
- 	}
-
- 	snare.load = function(data){
- 		snare.params.load(data.params);
- 		snare.gui.linkSlidersToParams();
- 		snare.sequencer.load(data.sequencer);
- 	}
+ 	snare.sequencer = rhyth.sequencerBuilder(snare);
+ 	rhyth.GUIBuilder(snare);
+ 	rhyth.loadAndSaveBuilder(snare);
 
 
  return snare;

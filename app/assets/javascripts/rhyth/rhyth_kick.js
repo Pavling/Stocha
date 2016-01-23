@@ -34,28 +34,6 @@ rhyth.kickBuilder = function(outputConnection){
 		mix: ctx.paramBuilder(0.00001, 1.0)
 	};
 
-	kick.keysIndex = (function(){
-		var indexOfKeys = {};
-		$.each(kick.params, function(key, paramsObj){
-			indexOfKeys[key] = [];
-			$.each(paramsObj, function(subKey, storedParams){
-				indexOfKeys[key].push(subKey);
-			});
-		});
-		return indexOfKeys;
-	})();
-
-	kick.params.load = function(data){
-		$.each(data, function(paramGroupKey, paramGroupObject){
-			$.each(paramGroupObject, function(paramNameKey, paramValues){
-				var convertedValues = {max: parseFloat(paramValues.max), min: parseFloat(paramValues.min)}
-				rhyth.kick.params[paramGroupKey][paramNameKey].range = convertedValues
-			})
-		})
-	}
-
-	kick.sequencer = rhyth.sequencerBuilder(kick)
-
 	// *************
 	// *2* resoHead
 	// *************
@@ -139,92 +117,14 @@ rhyth.kickBuilder = function(outputConnection){
 		kick.beaterHead.trig(velocity, time);
 	}
 
-	// *************************
-	// *5* gui drawer and binder
-	// *************************
-
-	kick.gui = {};
-
-	kick.gui.drawSliders = function() {
-	   $( ".param-slider" ).slider({
-	     range: true,
-	     min: 0,
-	     max: 100,
-	     slide: function(event, ui) {
-	      var values = ui.values;
-	      var target = ui.handle.parentNode.dataset
-	      kick.params[target.superParam][target.subParam].range.min = ui.values[0];
-	     	kick.params[target.superParam][target.subParam].range.max = ui.values[1];
-	     }
-	   });
-	 };
-
- kick.gui.linkSlidersToParams = function(){
- 	var collectionIndex = 0;
- 	var sliderIndex = 0;
-	$.each(kick.keysIndex, function(superParamKey, subParamArray){
-		$('#collection-'+ collectionIndex +'-title').text(superParamKey);
-		$.each(subParamArray, function(index, subParamKey){
-			kick.gui.setAndTitleSlider(superParamKey, subParamKey, collectionIndex, sliderIndex);
-			sliderIndex++;
-		});
-		while (sliderIndex < 4) { 
-			var id = collectionIndex + "-" + sliderIndex + "-slider";
-			$('#'+id).hide();
-			sliderIndex++
-		}
-		sliderIndex = 0;
-		collectionIndex++;
-	});
-	while (collectionIndex < 4) { 
-		var id = "#collection-" + collectionIndex ;
-		$(id).hide();
-		collectionIndex++;
-	}
- };
-
- kick.gui.setAndTitleSlider = function(superParamKey, subParamKey, collectionIndex, sliderIndex){
- 	var id = collectionIndex + "-" + sliderIndex + "-";
- 	$('#'+id+"slider").show();
- 	$('#'+id+"title").text(subParamKey);
- 	$('#'+id+"slider").attr({'data-super-param': superParamKey, 'data-sub-param': subParamKey});
- 	var setMin = kick.params[superParamKey][subParamKey].range.min;
- 	var setMax = kick.params[superParamKey][subParamKey].range.max ;
- 	$('#'+id+"slider").slider('values', [setMin, setMax]);
- 	$('#'+id).show();
- };
-
  	// *************************
- 	// *6* save & load functions
+ 	// *6* builder functions
  	// *************************
 
-	kick.saveParams = function(){
-		var params = {};
-		$.each(kick.params, function(key, storedObj){
-			params[key] = {};
-			$.each(storedObj, function(subKey, value){
-				//begin of each for sub param
-					var max = value.range.max 
-					var min = value.range.min
-					params[key][subKey] = {max: max, min: min}
-				//end of each for sub param
-			})
-		})
-		return params
-	}	
 
- 	kick.save = function(){
- 		var data = {};
- 		data.params = kick.saveParams();
- 		data.sequencer = kick.sequencer.save();
- 		return data;
- 	}
-
- 	kick.load = function(data){
- 		kick.params.load(data.params);
- 		kick.sequencer.load(data.sequencer);
- 	}
-
+ 	kick.sequencer = rhyth.sequencerBuilder(kick);
+ 	rhyth.GUIBuilder(kick);
+ 	rhyth.loadAndSaveBuilder(kick);
 
  return kick;
 

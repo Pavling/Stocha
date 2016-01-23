@@ -9,9 +9,7 @@ rhyth.hihatBuilder = function(outputConnection){
 	// *2* resoHead
 	// *3* beaterHead
 	// *4* master trigger function
-	// *5* gui drawer and listeners
-	// *6* save & load functions
-
+	
 	// ************************
 	// *1* params & main output
 	// ************************
@@ -23,8 +21,8 @@ rhyth.hihatBuilder = function(outputConnection){
 	hihat.params = {}
 	hihat.params.oscillators = {
 		tuning: ctx.paramBuilder(40.0, 80.0),
-		shimmer: ctx.paramBuilder(1.0, 2.0),
-		ring: ctx.paramBuilder(-0.25, 0.25)
+		shimmer: ctx.paramBuilder(1.0, 3.0),
+		ring: ctx.paramBuilder(-0.75, 0.75)
 	}
 	hihat.params.strike = {
 		decay: ctx.paramBuilder(25.0, 75.0),
@@ -36,29 +34,6 @@ rhyth.hihatBuilder = function(outputConnection){
 		tone: ctx.paramBuilder(6000.0, 10000.0),
 		mix: ctx.paramBuilder(0.00001, 1.0)
 	}
-
-
-	hihat.keysIndex = (function(){
-		var indexOfKeys = {};
-		$.each(hihat.params, function(key, paramsObj){
-			indexOfKeys[key] = [];
-			$.each(paramsObj, function(subKey, storedParams){
-				indexOfKeys[key].push(subKey);
-			});
-		});
-		return indexOfKeys;
-	})();
-
-	hihat.params.load = function(data){
-		$.each(data, function(paramGroupKey, paramGroupObject){
-			$.each(paramGroupObject, function(paramNameKey, paramValues){
-				var convertedValues = {max: parseFloat(paramValues.max), min: parseFloat(paramValues.min)}
-				rhyth.hihat.params[paramGroupKey][paramNameKey].range = convertedValues
-			})
-		})
-	}
-
-	hihat.sequencer = rhyth.sequencerBuilder(hihat)
 
 	// ******************************
 	// *2* filter, output & envelopes
@@ -156,96 +131,11 @@ rhyth.hihatBuilder = function(outputConnection){
 		hihat.filters.trig(velocity, time);
 	}
 
-	// *************************
-	// *5* gui drawer and binder
-	// *************************
+	//  *5* build gui, sequencer and load/save
 
-	hihat.gui = {};
-
-	hihat.gui.focused = false;
-
-	hihat.gui.drawSliders = function() {
-		hihat.gui.focused = true
-	   $( ".param-slider" ).slider({
-	     range: true,
-	     min: 0,
-	     max: 100,
-	     slide: function(event, ui) {
-	      var target = ui.handle.parentNode.dataset
-	      var values = ui.values
-	      hihat.params[target.superParam][target.subParam].range.min = ui.values[0];
-	     	hihat.params[target.superParam][target.subParam].range.max = ui.values[1];
-	     }
-	   });
-	 };
-
- hihat.gui.linkSlidersToParams = function(){
-  	var collectionIndex = 0;
-  	var sliderIndex = 0;
- 	$.each(hihat.keysIndex, function(superParamKey, subParamArray){
- 		$('#collection-'+ collectionIndex).show();
- 		$('#collection-'+ collectionIndex +'-title').text(superParamKey);
- 		$.each(subParamArray, function(index, subParamKey){
- 			hihat.gui.setAndTitleSlider(superParamKey, subParamKey, collectionIndex, sliderIndex);
- 			sliderIndex++;
- 		});
- 		while (sliderIndex < 4) { 
- 			var id = collectionIndex + "-" + sliderIndex + "-slider";
- 			$('#'+id).hide();
- 			sliderIndex++
- 		}
- 		sliderIndex = 0;
- 		collectionIndex++;
- 	});
- 	while (collectionIndex < 4) { 
- 		var id = "#collection-" + collectionIndex ;
- 		$(id).hide();
- 		collectionIndex++;
- 	}
- };
-
- hihat.gui.setAndTitleSlider = function(superParamKey, subParamKey, collectionIndex, sliderIndex){
- 	var id = collectionIndex + "-" + sliderIndex + "-";
- 	$('#'+id+"slider").show();
- 	$('#'+id+"title").text(subParamKey);
- 	$('#'+id+"slider").attr({'data-super-param': superParamKey, 'data-sub-param': subParamKey});
- 	var setMin = hihat.params[superParamKey][subParamKey].range.min;
- 	var setMax = hihat.params[superParamKey][subParamKey].range.max ;
- 	$('#'+id+"slider").slider('values', [setMin, setMax]);
- };
-
- 	// *************************
- 	// *6* save & load functions
- 	// *************************
-
-	hihat.saveParams = function(){
-		var params = {};
-		$.each(hihat.params, function(key, storedObj){
-			params[key] = {};
-			$.each(storedObj, function(subKey, value){
-				//begin of each for sub param
-					var max = value.range.max 
-					var min = value.range.min
-					params[key][subKey] = {max: max, min: min}
-				//end of each for sub param
-			})
-		})
-		return params
-	}	
-
- 	hihat.save = function(){
- 		var data = {};
- 		data.params = hihat.saveParams();
- 		data.sequencer = hihat.sequencer.save();
- 		return data;
- 	}
-
- 	hihat.load = function(data){
- 		hihat.params.load(data.params);
- 		hihat.gui.linkSlidersToParams();
- 		hihat.sequencer.load(data.sequencer);
- 	}
-
+	hihat.sequencer = rhyth.sequencerBuilder(hihat);
+	rhyth.GUIBuilder(hihat);
+	rhyth.loadAndSaveBuilder(hihat);
 
  return hihat;
 
