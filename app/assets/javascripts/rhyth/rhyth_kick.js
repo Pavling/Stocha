@@ -30,7 +30,7 @@ rhyth.kickBuilder = function(outputConnection){
 	kick.params.beaterHead = {
 		tuning: ctx.paramBuilder(1.0, 4.0),
 		beaterPitch: ctx.paramBuilder(40, 200),
-		beaterTimre: ctx.paramBuilder(0.75, 1.25),
+		beaterTimbre: ctx.paramBuilder(0.75, 1.25),
 		loudness: ctx.paramBuilder(0.00001, 1.0)
 	};
 
@@ -92,14 +92,14 @@ rhyth.kickBuilder = function(outputConnection){
 	//trig method
 	kick.beaterHead.trig = function(velocity, time){
 		// get scaled variables
-		var beaterTimre = kick.params.beaterHead.beaterTimre.calc(velocity);
+		var beaterTimbre = kick.params.beaterHead.beaterTimbre.calc(velocity);
 		var loudness = kick.params.beaterHead.loudness.calc(velocity);
 		var basePitch = kick.params.beaterHead.beaterPitch.calc(velocity);
 		// shortcut to vca
 		var vca = kick.beaterHead.vca.gain;
 		// schedule pitch changes for beater emulator
 		for (var i = 1; i <= 6; i++){
-			this.beater["osc"+i].frequency.setValueAtTime(basePitch*((i*beaterTimre)+1), time)
+			this.beater["osc"+i].frequency.setValueAtTime(basePitch*((i*beaterTimbre)+1), time)
 		}
 		// attack
 		vca.setValueAtTime(loudness, time);
