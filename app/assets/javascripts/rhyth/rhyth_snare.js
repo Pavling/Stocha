@@ -24,18 +24,18 @@ rhyth.snareBuilder = function(outputConnection){
 	snare.params.osc1 = {
 		tuning: ctx.paramBuilder(100.0, 400.0),
 		decay: ctx.paramBuilder(35.0, 2000.0),
-		mix: ctx.paramBuilder(0.00001, 1.0)
+		loudness: ctx.paramBuilder(0.00001, 1.0)
 	}
 	snare.params.osc2 = {
 		offset: ctx.paramBuilder(1.25, 1.75),
 		decay: ctx.paramBuilder(0.0, 1.0),
-		mix: ctx.paramBuilder(0.00001, 1.0)
+		loudness: ctx.paramBuilder(0.00001, 1.0)
 	};
 	snare.params.noise = {
 		decay: ctx.paramBuilder(25.0, 250.0),
 		locut: ctx.paramBuilder(500.0, 2000.0),
 		hicut: ctx.paramBuilder(6000.0, 8000.0),
-		mix: ctx.paramBuilder(0.00001, 2.0)
+		loudness: ctx.paramBuilder(0.00001, 2.0)
 	}
 
 	// *************
@@ -65,8 +65,8 @@ rhyth.snareBuilder = function(outputConnection){
 		var osc1Decay = osc1Params.decay.calc(velocity)/1000;
 		var osc2Decay = osc1Decay * osc2Params.decay.calc(velocity);
 
-		var osc1Mix = osc1Params.mix.calc(velocity);
-		var osc2Mix = osc2Params.mix.calc(velocity);
+		var osc1loudness = osc1Params.loudness.calc(velocity);
+		var osc2loudness = osc2Params.loudness.calc(velocity);
 
 		
 		// get the gainNode and oscillatorNode we need to apply envelopes to
@@ -84,10 +84,10 @@ rhyth.snareBuilder = function(outputConnection){
 		osc2vco.cancelScheduledValues(time);
 		
 		// attack
-		osc1vca.setValueAtTime(osc1Mix, time);
+		osc1vca.setValueAtTime(osc1loudness, time);
 		osc1vco.setValueAtTime(osc1Tuning, time);
 
-		osc2vca.setValueAtTime(osc2Mix, time);
+		osc2vca.setValueAtTime(osc2loudness, time);
 		osc2vco.setValueAtTime(osc2Tuning, time);
 
 		// decay
@@ -133,7 +133,7 @@ rhyth.snareBuilder = function(outputConnection){
 	//trig method
 	snare.noise.trig = function(velocity, time){
 		// get scaled variables
-		var mix = snare.params.noise.mix.calc(velocity);
+		var loudness = snare.params.noise.loudness.calc(velocity);
 		var decay = snare.params.noise.decay.calc(velocity)/1000;
 		var locutFreq = snare.params.noise.locut.calc(velocity);
 		var hicutFreq = snare.params.noise.hicut.calc(velocity);
@@ -147,9 +147,9 @@ rhyth.snareBuilder = function(outputConnection){
 		// vca.cancelScheduledValues(time);
 
 		// attack
-		vca.setValueAtTime(mix, time-0.01);
-		hicut.setValueAtTime(hicutFreq, time-0.01);
-		locut.setValueAtTime(locutFreq, time-0.01);
+		vca.setValueAtTime(loudness, time);
+		hicut.setValueAtTime(hicutFreq, time);
+		locut.setValueAtTime(locutFreq, time);
 
 		// decay
 		vca.exponentialRampToValueAtTime(0.0000001, time + decay);

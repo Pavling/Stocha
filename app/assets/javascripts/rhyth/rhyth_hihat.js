@@ -27,12 +27,12 @@ rhyth.hihatBuilder = function(outputConnection){
 	hihat.params.strike = {
 		decay: ctx.paramBuilder(25.0, 250.0),
 		tone: ctx.paramBuilder(6000.0, 16000.0),
-		mix: ctx.paramBuilder(0.00001, 1.0)
+		loudness: ctx.paramBuilder(0.00001, 1.0)
 	};
 	hihat.params.sizzle = {
-		decay: ctx.paramBuilder(50.0, 200.0),
+		decay: ctx.paramBuilder(50.0, 1000.0),
 		tone: ctx.paramBuilder(4000.0, 12000.0),
-		mix: ctx.paramBuilder(0.00001, 1.0)
+		loudness: ctx.paramBuilder(0.00001, 1.0)
 	}
 
 	// ******************************
@@ -70,10 +70,10 @@ rhyth.hihatBuilder = function(outputConnection){
 		// sizzleVCA.cancelScheduledValues(time);
 		
 		// attack
-		strikeVCA.setValueAtTime(strikeParams.mix.calc(velocity), time);
+		strikeVCA.setValueAtTime(strikeParams.loudness.calc(velocity), time);
 		strikeFilter.setValueAtTime(strikeParams.tone.calc(velocity), time);
 
-		sizzleVCA.setValueAtTime(sizzleParams.mix.calc(velocity), time);
+		sizzleVCA.setValueAtTime(sizzleParams.loudness.calc(velocity), time);
 		sizzleFilter.setValueAtTime(sizzleParams.tone.calc(velocity), time);
 
 

@@ -20,12 +20,14 @@ rhyth.mixer = {};
 
 rhyth.mixer.output = ctx.gainBuilder(ctx.channel1, 1.0);
 
-rhyth.mixer.kick1 = ctx.gainBuilder(rhyth.mixer.output, 0.5);
-rhyth.mixer.kick2 = ctx.gainBuilder(rhyth.mixer.output, 0.5);
-rhyth.mixer.snare1 = ctx.gainBuilder(rhyth.mixer.output, 0.5);
-rhyth.mixer.snare2 = ctx.gainBuilder(rhyth.mixer.output, 0.5);
-rhyth.mixer.hihat1 = ctx.gainBuilder(rhyth.mixer.output, 0.5);
-rhyth.mixer.hihat2 = ctx.gainBuilder(rhyth.mixer.output, 0.5);
+rhyth.mixer.channels = {};
+
+rhyth.mixer.channels.kick1 = ctx.gainBuilder(rhyth.mixer.output, 0.5);
+rhyth.mixer.channels.kick2 = ctx.gainBuilder(rhyth.mixer.output, 0.5);
+rhyth.mixer.channels.snare1 = ctx.gainBuilder(rhyth.mixer.output, 0.5);
+rhyth.mixer.channels.snare2 = ctx.gainBuilder(rhyth.mixer.output, 0.5);
+rhyth.mixer.channels.hihat1 = ctx.gainBuilder(rhyth.mixer.output, 0.5);
+rhyth.mixer.channels.hihat2 = ctx.gainBuilder(rhyth.mixer.output, 0.5);
 
 
 // *******************
@@ -38,23 +40,37 @@ rhyth.mixer.draw = function(){
 	$('.mixer-channel').slider({
 		max:100,
 		min: 0,
-		value: 50,
 		range: "min",
 		slide: function(ev,ui){
-			// console.log(ui);
-			rhyth.mixer[ui.handle.parentNode.id].gain.value = (ui.value/100);
+			rhyth.mixer.channels[ui.handle.parentNode.id].gain.value = (ui.value/100);
 		}
+	});
+	$.each(rhyth.mixer.channels, function(key, gainNode){
+		$('#'+key).slider('value', gainNode.gain.value*100);
+	})
+}
+
+rhyth.mixer.save = function(){
+	var data = {}
+	$.each(rhyth.mixer.channels, function(key, gainNode){
+		data[key] = gainNode.gain.value;
+	})
+}
+
+rhyth.mixer.load = function(data){
+	$.each(data, function(key, value){
+		rhyth.mixer.channels[key].gain.value = value;
 	})
 }
 
 
 rhyth.setup = function(){
-	rhyth.kick1 = rhyth.kickBuilder(rhyth.mixer.kick1);
-	rhyth.snare1 = rhyth.snareBuilder(rhyth.mixer.kick2);
-	rhyth.hihat1 = rhyth.hihatBuilder(rhyth.mixer.snare1);
-	rhyth.kick2 = rhyth.kickBuilder(rhyth.mixer.snare2);
-	rhyth.snare2 = rhyth.snareBuilder(rhyth.mixer.hihat1);
-	rhyth.hihat2 = rhyth.hihatBuilder(rhyth.mixer.hihat2);
+	rhyth.kick1 = rhyth.kickBuilder(rhyth.mixer.channels.kick1);
+	rhyth.kick2 = rhyth.kickBuilder(rhyth.mixer.channels.kick2);
+	rhyth.snare1 = rhyth.snareBuilder(rhyth.mixer.channels.snare1);
+	rhyth.snare2 = rhyth.snareBuilder(rhyth.mixer.channels.snare2);
+	rhyth.hihat1 = rhyth.hihatBuilder(rhyth.mixer.channels.hihat1);
+	rhyth.hihat2 = rhyth.hihatBuilder(rhyth.mixer.channels.hihat2);
 }
 
 // *****************
@@ -111,6 +127,7 @@ rhyth.gui.activate = function(){
 
 rhyth.save = function(){
 	var data = {};
+	data.mixer = rhyth.mixer.save();
 	data.kick1 = rhyth.kick1.save();
 	data.kick2 = rhyth.kick2.save();
 	data.snare1 = rhyth.snare1.save();
@@ -120,13 +137,14 @@ rhyth.save = function(){
 	return data
 }
 
-rhyth.load = function(params){
-	rhyth.kick1.load(params.kick1);
-	rhyth.kick2.load(params.kick2)
-	rhyth.snare1.load(params.snare1);
-	rhyth.snare2.load(params.snare2);
-	rhyth.hihat1.load(params.hihat1);
-	rhyth.hihat2.load(params.hihat2);
+rhyth.load = function(data){
+	rhyth.mixer.save(data.mixer)
+	rhyth.kick1.load(data.kick1);
+	rhyth.kick2.load(data.kick2)
+	rhyth.snare1.load(data.snare1);
+	rhyth.snare2.load(data.snare2);
+	rhyth.hihat1.load(data.hihat1);
+	rhyth.hihat2.load(data.hihat2);
 	rhyth.gui.draw(rhyth.current_voice);
 }
 
