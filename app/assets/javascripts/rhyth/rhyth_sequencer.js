@@ -152,7 +152,7 @@ rhyth.sequencerBuilder = function(target){
 		sequencer.gui.flash = function(nextStepTime, stepNumber){
 			var targetId = '#step'+stepNumber;
 			var timeout = (nextStepTime - ctx.now())*1000;
-			$(targetId).delay(timeout).effect("highlight", {color:"#03A9F4"}, 50);
+			$(targetId).delay(timeout).effect("highlight", {color:"#03A9F4"}, 250);
 		};
 	
 		sequencer.gui.colorAnimation = function(target){
