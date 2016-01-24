@@ -60,16 +60,22 @@ rhyth.gui.activate = function(){
 
 rhyth.save = function(){
 	var data = {};
-	data.kick = rhyth.kick.save();
-	data.snare = rhyth.snare.save();
-	data.hihat = rhyth.hihat.save()
+	data.kick1 = rhyth.kick1.save();
+	data.kick2 = rhyth.kick1.save();
+	data.snare1 = rhyth.snare1.save();
+	data.snare2 = rhyth.snare1.save();
+	data.hihat1 = rhyth.hihat1.save();
+	data.hihat2 = rhyth.hihat1.save();
 	return data
 }
 
 rhyth.load = function(params){
-	rhyth.kick.load(params.kick);
-	rhyth.snare.load(params.snare);
-	rhyth.hihat.load(params.hihat)
+	rhyth.kick1.load(params.kick);
+	rhyth.kick2.load(params.kick)
+	rhyth.snare1.load(params.snare);
+	rhyth.snare2.load(params.snare);
+	rhyth.hihat1.load(params.hihat);
+	rhyth.hihat2.load(params.hihat);
 	rhyth.gui.draw(rhyth.current_voice);
 }
 

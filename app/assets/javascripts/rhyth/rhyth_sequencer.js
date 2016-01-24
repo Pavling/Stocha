@@ -156,19 +156,22 @@ rhyth.sequencerBuilder = function(target){
 
 	sequencer.save = function(){
 		var data = {};
+		data.steps = {};
+		data.sequencerLength = sequencer.params.sequenceLength;
 		for (var i = 0; i <= 15; i++){
-			data[i] = sequencer.params.steps[i];
+			data.steps[i] = sequencer.params.steps[i];
 		}
 		return data;
 	}
 
 	sequencer.load = function(data){
-		$.each(data, function(key, value){
+		$.each(data.steps, function(key, value){
 			var converted = {velocity: parseFloat(value.velocity), active: $.parseJSON(value.active)}
 			sequencer.params.steps[key] = converted
 		});
-		sequencer.gui.loadParamsIntoSliders();
-		sequencer.gui.loadValuesIntoCheckboxes();
+		sequencer.params.sequenceLength = data.sequencerLength;
+		// sequencer.gui.loadParamsIntoSliders();
+		// sequencer.gui.loadValuesIntoCheckboxes();
 	}
 
 	return sequencer;
