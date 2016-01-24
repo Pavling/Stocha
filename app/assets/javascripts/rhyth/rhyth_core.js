@@ -1,19 +1,52 @@
 var rhyth = rhyth || {};
 
+
+// index
 // *1* initializations and setup
+// *2* gui functions
+// *3* save and load functions
+// *4* sequencer stop and start
+// *5* mixer interface
+
+// *****************************
+// *1* initializations and setup
+// *****************************
+
+
+rhyth.current_voice = rhyth.kick;
+
 
 rhyth.mixer = {};
 
 rhyth.mixer.output = ctx.gainBuilder(ctx.channel1, 1.0);
 
-rhyth.mixer.kick1 = ctx.gainBuilder(rhyth.mixer.output, 1.0);
-rhyth.mixer.kick2 = ctx.gainBuilder(rhyth.mixer.output, 1.0);
-rhyth.mixer.snare1 = ctx.gainBuilder(rhyth.mixer.output, 1.0);
-rhyth.mixer.snare2 = ctx.gainBuilder(rhyth.mixer.output, 1.0);
-rhyth.mixer.hihat1 = ctx.gainBuilder(rhyth.mixer.output, 1.0);
-rhyth.mixer.hihat2 = ctx.gainBuilder(rhyth.mixer.output, 1.0);
+rhyth.mixer.kick1 = ctx.gainBuilder(rhyth.mixer.output, 0.5);
+rhyth.mixer.kick2 = ctx.gainBuilder(rhyth.mixer.output, 0.5);
+rhyth.mixer.snare1 = ctx.gainBuilder(rhyth.mixer.output, 0.5);
+rhyth.mixer.snare2 = ctx.gainBuilder(rhyth.mixer.output, 0.5);
+rhyth.mixer.hihat1 = ctx.gainBuilder(rhyth.mixer.output, 0.5);
+rhyth.mixer.hihat2 = ctx.gainBuilder(rhyth.mixer.output, 0.5);
 
-rhyth.current_voice = rhyth.kick;
+
+// *******************
+// *1.2* mixer interface
+// *******************
+
+rhyth.mixer.draw = function(){
+	$('#mixer').show();
+	$('#param-display').hide();
+	$('.mixer-channel').slider({
+		max:100,
+		min: 0,
+		value: 50,
+		range: "min",
+		slide: function(ev,ui){
+			// console.log(ui);
+			rhyth.mixer[ui.handle.parentNode.id].gain.value = (ui.value/100);
+		}
+	})
+}
+
 
 rhyth.setup = function(){
 	rhyth.kick1 = rhyth.kickBuilder(rhyth.mixer.kick1);
@@ -24,11 +57,15 @@ rhyth.setup = function(){
 	rhyth.hihat2 = rhyth.hihatBuilder(rhyth.mixer.hihat2);
 }
 
+// *****************
 // *2* gui functions
+// *****************
 
 rhyth.gui = {};
 
 rhyth.gui.draw = function(voice){
+	$('#mixer').hide();
+	$('#param-display').show();
 	rhyth.current_voice = voice;
 	voice.sequencer.gui.drawSliders();
 	voice.sequencer.gui.activate();
@@ -65,9 +102,12 @@ rhyth.gui.activate = function(){
 	$('#select_kick2').click( function(){ rhyth.gui.draw(rhyth.kick2); });
 	$('#select_snare2').click( function(){ rhyth.gui.draw(rhyth.snare2); });
 	$('#select_hihat2').click( function(){ rhyth.gui.draw(rhyth.hihat2); });
+	$('#select_mixer').click( function(){ rhyth.mixer.draw(); });
 }
 
+// ***************************
 // *3* save and load functions
+// ***************************
 
 rhyth.save = function(){
 	var data = {};
@@ -90,7 +130,9 @@ rhyth.load = function(params){
 	rhyth.gui.draw(rhyth.current_voice);
 }
 
+// ****************************
 // *4* sequencer stop and start
+// ****************************
 
 
 rhyth.run = function(){

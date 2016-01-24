@@ -142,7 +142,6 @@ rhyth.sequencerBuilder = function(target){
 			var id = "#step"+i;
 			$(id).addClass('inactive');
 		};
-		console.log("i WAS called")
 	}
 
 
