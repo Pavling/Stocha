@@ -2,17 +2,22 @@ var rhyth = rhyth || {};
 
 // *1* initializations and setup
 
-rhyth.output = ctx.gainBuilder(ctx.channel1, 1.0);
+
+rhyth.mixer = {};
+
+rhyth.merger = ctx.gainBuilder(ctx.channel1, 1.0);
+
+
 
 rhyth.current_voice = rhyth.kick;
 
 rhyth.setup = function(){
-	rhyth.kick1 = rhyth.kickBuilder(rhyth.output);
-	rhyth.snare1 = rhyth.snareBuilder(rhyth.output);
-	rhyth.hihat1 = rhyth.hihatBuilder(rhyth.output);
-	rhyth.kick2 = rhyth.kickBuilder(rhyth.output);
-	rhyth.snare2 = rhyth.snareBuilder(rhyth.output);
-	rhyth.hihat2 = rhyth.hihatBuilder(rhyth.output);
+	rhyth.kick1 = rhyth.kickBuilder(rhyth.merger);
+	rhyth.snare1 = rhyth.snareBuilder(rhyth.merger);
+	rhyth.hihat1 = rhyth.hihatBuilder(rhyth.merger);
+	rhyth.kick2 = rhyth.kickBuilder(rhyth.merger);
+	rhyth.snare2 = rhyth.snareBuilder(rhyth.merger);
+	rhyth.hihat2 = rhyth.hihatBuilder(rhyth.merger);
 }
 
 // *2* gui functions

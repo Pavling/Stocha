@@ -74,6 +74,7 @@ rhyth.sequencerBuilder = function(target){
 		sequencer.gui.loadParamsIntoSliders();
 		sequencer.gui.loadValuesIntoCheckboxes();
 		sequencer.gui.drawSpinner();
+		sequencer.gui.greyOutUnusedSteps
 	}
 
 	sequencer.gui.addCheckboxListeners = function(){
@@ -128,10 +129,21 @@ rhyth.sequencerBuilder = function(target){
 
 	sequencer.gui.changeSequenceLength = function(newLength){
 		sequencer.params.sequenceLength = newLength;
-		// grey things out here
+		sequencer.gui.greyOutUnusedSteps();
 	}
 
-	// *4* sequence length
+	sequencer.gui.greyOutUnusedSteps = function(){
+		var length = sequencer.params.sequenceLength
+		for (var i = 0; i < length; i++){
+			var id = "#step"+i;
+			$(id).removeClass('inactive');
+		}
+		for(var i = length; i < 32; i++){ 
+			var id = "#step"+i;
+			$(id).addClass('inactive');
+		};
+		console.log("i WAS called")
+	}
 
 
 	// *************************

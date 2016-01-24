@@ -179,6 +179,10 @@ body {
 	width: 12rem;
 }
 
+.inactive{
+	background-color: #EEE;
+}
+
 @media screen and (max-width: 640px) {
   html { 
   	font-size: 12px;
