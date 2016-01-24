@@ -30,7 +30,7 @@ rhyth.hihatBuilder = function(outputConnection){
 		loudness: ctx.paramBuilder(0.00001, 1.0)
 	};
 	hihat.params.sizzle = {
-		decay: ctx.paramBuilder(50.0, 1000.0),
+		decay: ctx.paramBuilder(50.0, 2000.0),
 		tone: ctx.paramBuilder(4000.0, 12000.0),
 		loudness: ctx.paramBuilder(0.00001, 1.0)
 	}
@@ -66,8 +66,8 @@ rhyth.hihatBuilder = function(outputConnection){
 		var sizzleFilter = hihat.filters.sizzle.filter.frequency;
 
 		// clear any still running envelopes
-		// strikeVCA.cancelScheduledValues(time);
-		// sizzleVCA.cancelScheduledValues(time);
+		strikeVCA.cancelScheduledValues(time);
+		sizzleVCA.cancelScheduledValues(time);
 		
 		// attack
 		strikeVCA.setValueAtTime(strikeParams.loudness.calc(velocity), time);
@@ -75,11 +75,10 @@ rhyth.hihatBuilder = function(outputConnection){
 
 		sizzleVCA.setValueAtTime(sizzleParams.loudness.calc(velocity), time);
 		sizzleFilter.setValueAtTime(sizzleParams.tone.calc(velocity), time);
-
-
+		
 		// decay
-		sizzleVCA.exponentialRampToValueAtTime(0.0000001, time + (sizzleParams.decay.calc(velocity)/1000));
-		strikeVCA.exponentialRampToValueAtTime(0.0000001, time + (strikeParams.decay.calc(velocity)/1000));
+		ctx.envelopeBuilder(time, (sizzleParams.decay.calc(velocity)/1000), 0.0000001, sizzleVCA);
+		ctx.envelopeBuilder(time, (strikeParams.decay.calc(velocity)/1000), 0.0000001, strikeVCA);
 		
 	}
 

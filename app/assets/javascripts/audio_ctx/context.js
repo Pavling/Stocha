@@ -67,12 +67,12 @@ ctx.delayBuilder = function(connection, max_time, initial_time){
 	return delay
 }
 
-ctx.envelopeBuilder = function(start, decay, target){
+ctx.envelopeBuilder = function(start, decay, targetValue, targetParam){
 	for (var i=1; i <= 8; i++){
-		var envelopeEndValue = target * ( Math.exp(-i/8) );
+		var envelopeEndValue = targetValue * ( Math.exp(-i/8) );
 		var envelopeEndTime = start + (decay/8);
-		target.linearRampToValueAtTime(envelopeEndValue, envelopeEndTime);
-		target.setValueAtTime(envelopeEndValue, envelopeEndTime);
+		targetParam.linearRampToValueAtTime(envelopeEndValue, envelopeEndTime);
+		targetParam.setValueAtTime(envelopeEndValue, envelopeEndTime);
 	}
 }
 
