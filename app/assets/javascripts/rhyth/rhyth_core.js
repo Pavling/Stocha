@@ -2,22 +2,26 @@ var rhyth = rhyth || {};
 
 // *1* initializations and setup
 
-
 rhyth.mixer = {};
 
-rhyth.merger = ctx.gainBuilder(ctx.channel1, 1.0);
+rhyth.mixer.output = ctx.gainBuilder(ctx.channel1, 1.0);
 
-
+rhyth.mixer.kick1 = ctx.gainBuilder(rhyth.mixer.output, 1.0);
+rhyth.mixer.kick2 = ctx.gainBuilder(rhyth.mixer.output, 1.0);
+rhyth.mixer.snare1 = ctx.gainBuilder(rhyth.mixer.output, 1.0);
+rhyth.mixer.snare2 = ctx.gainBuilder(rhyth.mixer.output, 1.0);
+rhyth.mixer.hihat1 = ctx.gainBuilder(rhyth.mixer.output, 1.0);
+rhyth.mixer.hihat2 = ctx.gainBuilder(rhyth.mixer.output, 1.0);
 
 rhyth.current_voice = rhyth.kick;
 
 rhyth.setup = function(){
-	rhyth.kick1 = rhyth.kickBuilder(rhyth.merger);
-	rhyth.snare1 = rhyth.snareBuilder(rhyth.merger);
-	rhyth.hihat1 = rhyth.hihatBuilder(rhyth.merger);
-	rhyth.kick2 = rhyth.kickBuilder(rhyth.merger);
-	rhyth.snare2 = rhyth.snareBuilder(rhyth.merger);
-	rhyth.hihat2 = rhyth.hihatBuilder(rhyth.merger);
+	rhyth.kick1 = rhyth.kickBuilder(rhyth.mixer.kick1);
+	rhyth.snare1 = rhyth.snareBuilder(rhyth.mixer.kick2);
+	rhyth.hihat1 = rhyth.hihatBuilder(rhyth.mixer.snare1);
+	rhyth.kick2 = rhyth.kickBuilder(rhyth.mixer.snare2);
+	rhyth.snare2 = rhyth.snareBuilder(rhyth.mixer.hihat1);
+	rhyth.hihat2 = rhyth.hihatBuilder(rhyth.mixer.hihat2);
 }
 
 // *2* gui functions
@@ -30,8 +34,10 @@ rhyth.gui.draw = function(voice){
 	voice.sequencer.gui.activate();
 	voice.sequencer.gui.loadValuesIntoCheckboxes();
 	voice.sequencer.gui.drawSpinner();
+	voice.sequencer.gui.greyOutUnusedSteps();
 	voice.gui.drawSliders();
 	voice.gui.linkSlidersToParams();
+
 }
 
 rhyth.gui.drawSliders = function(){
@@ -66,11 +72,11 @@ rhyth.gui.activate = function(){
 rhyth.save = function(){
 	var data = {};
 	data.kick1 = rhyth.kick1.save();
-	data.kick2 = rhyth.kick1.save();
+	data.kick2 = rhyth.kick2.save();
 	data.snare1 = rhyth.snare1.save();
-	data.snare2 = rhyth.snare1.save();
+	data.snare2 = rhyth.snare2.save();
 	data.hihat1 = rhyth.hihat1.save();
-	data.hihat2 = rhyth.hihat1.save();
+	data.hihat2 = rhyth.hihat2.save();
 	return data
 }
 

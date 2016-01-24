@@ -15,7 +15,7 @@ rhyth.hihatBuilder = function(outputConnection){
 	// ************************
 
 	// set up output node w/ lowpass filtering, and merger node to join the three sections together
-	hihat.output = ctx.filterBuilder(outputConnection, 6000.0, "highpass", 0.75);
+	hihat.output = ctx.filterBuilder(outputConnection, 8000.0, "highpass", 0.75);
 
 	// set up paramaters interface
 	hihat.params = {}
@@ -39,7 +39,6 @@ rhyth.hihatBuilder = function(outputConnection){
 	// *2* filter, output & envelopes
 	// ******************************
 
-	hihat.output = ctx.gainBuilder(rhyth.output, 1.0);
 
 	hihat.filters = {};
 
