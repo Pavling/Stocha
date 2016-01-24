@@ -17,7 +17,6 @@ rhyth.GUIBuilder = function(voice){
 				var values = ui.values
 				voice.params[target.superParam][target.subParam].range.min = ui.values[0];
 				voice.params[target.superParam][target.subParam].range.max = ui.values[1];
-				console.log(voice.params[target.superParam][target.subParam].range);
 			}
 		});
 	};

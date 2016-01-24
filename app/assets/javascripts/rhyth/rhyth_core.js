@@ -70,12 +70,12 @@ rhyth.save = function(){
 }
 
 rhyth.load = function(params){
-	rhyth.kick1.load(params.kick);
-	rhyth.kick2.load(params.kick)
-	rhyth.snare1.load(params.snare);
-	rhyth.snare2.load(params.snare);
-	rhyth.hihat1.load(params.hihat);
-	rhyth.hihat2.load(params.hihat);
+	rhyth.kick1.load(params.kick1);
+	rhyth.kick2.load(params.kick2)
+	rhyth.snare1.load(params.snare1);
+	rhyth.snare2.load(params.snare2);
+	rhyth.hihat1.load(params.hihat1);
+	rhyth.hihat2.load(params.hihat2);
 	rhyth.gui.draw(rhyth.current_voice);
 }
 
