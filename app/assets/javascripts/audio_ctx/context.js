@@ -67,6 +67,15 @@ ctx.delayBuilder = function(connection, max_time, initial_time){
 	return delay
 }
 
+ctx.envelopeBuilder = function(start, decay, target){
+	for (var i=1; i <= 8; i++){
+		var envelopeEndValue = target * ( Math.exp(-i/8) );
+		var envelopeEndTime = start + (decay/8);
+		target.linearRampToValueAtTime(envelopeEndValue, envelopeEndTime);
+		target.setValueAtTime(envelopeEndValue, envelopeEndTime);
+	}
+}
+
 // *****************************
 // *2* audioConext query helpers
 // *****************************
