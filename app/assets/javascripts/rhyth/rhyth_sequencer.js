@@ -56,8 +56,12 @@ rhyth.sequencerBuilder = function(target){
 		var nextStepTime = previousStepTime + ctx.clock.interval();
 		var stepParams = sequencer.params.steps[sequencer.step]
 		if (stepParams.active){
-			sequencer.target.trig(stepParams.velocity, nextStepTime)
+			sequencer.target.trig(stepParams.velocity, nextStepTime);
 		};
+		if (sequencer.focused){
+			sequencer.gui.flash(nextStepTime, sequencer.step);
+		};
+		
 		sequencer.incrementStep();
 		return nextStepTime;
 	}
@@ -143,6 +147,18 @@ rhyth.sequencerBuilder = function(target){
 			$(id).addClass('inactive');
 		};
 	}
+
+		sequencer.gui.flash = function(nextStepTime, stepNumber){
+			var targetId = '#step'+stepNumber;
+			var timeout = (nextStepTime - ctx.now())*1000;
+			$(targetId).delay(timeout).effect("highlight", {color:"#03A9F4"}, 500);
+			// console.log(timeout);
+			// setTimeout(sequencer.gui.colorAnimation(targetId), timeout)
+		};
+	
+		sequencer.gui.colorAnimation = function(target){
+		
+		}
 
 
 	// *************************

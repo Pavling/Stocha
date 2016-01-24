@@ -189,6 +189,10 @@ body {
 	margin: 1rem auto;
 }
 
+.flash-color{
+	background-color: #03A9F4;
+}
+
 @media screen and (max-width: 640px) {
   html { 
   	font-size: 12px;

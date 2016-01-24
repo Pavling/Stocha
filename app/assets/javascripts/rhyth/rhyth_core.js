@@ -83,6 +83,7 @@ rhyth.setup = function(){
 rhyth.gui = {};
 
 rhyth.gui.draw = function(voice){
+	rhyth.gui.setAllSequencersToUnfocused();
 	$('#mixer').hide();
 	$('.sequencer').show();
 	$('#param-display').show();
@@ -95,7 +96,15 @@ rhyth.gui.draw = function(voice){
 	voice.sequencer.gui.greyOutUnusedSteps();
 	voice.gui.drawSliders();
 	voice.gui.linkSlidersToParams();
+}
 
+rhyth.gui.setAllSequencersToUnfocused = function(){
+	rhyth.kick1.sequencer.focused = false;
+	rhyth.kick2.sequencer.focused = false;
+	rhyth.snare1.sequencer.focused = false;
+	rhyth.snare2.sequencer.focused = false;
+	rhyth.hihat1.sequencer.focused = false;
+	rhyth.hihat2.sequencer.focused = false;
 }
 
 rhyth.gui.drawSliders = function(){
