@@ -37,6 +37,8 @@ rhyth.mixer.channels.hihat2 = ctx.gainBuilder(rhyth.mixer.output, 0.5);
 rhyth.mixer.draw = function(){
 	$('#mixer').show();
 	$('#param-display').hide();
+	$('.sequencer').hide();
+	$('#sequence-length-container').hide();
 	$('.mixer-channel').slider({
 		max:100,
 		min: 0,
@@ -54,7 +56,8 @@ rhyth.mixer.save = function(){
 	var data = {}
 	$.each(rhyth.mixer.channels, function(key, gainNode){
 		data[key] = gainNode.gain.value;
-	})
+	});
+	return data;
 }
 
 rhyth.mixer.load = function(data){
@@ -81,7 +84,9 @@ rhyth.gui = {};
 
 rhyth.gui.draw = function(voice){
 	$('#mixer').hide();
+	$('.sequencer').show();
 	$('#param-display').show();
+	$('#sequence-length-container').show();
 	rhyth.current_voice = voice;
 	voice.sequencer.gui.drawSliders();
 	voice.sequencer.gui.activate();
@@ -138,7 +143,7 @@ rhyth.save = function(){
 }
 
 rhyth.load = function(data){
-	rhyth.mixer.save(data.mixer)
+	rhyth.mixer.load(data.mixer)
 	rhyth.kick1.load(data.kick1);
 	rhyth.kick2.load(data.kick2)
 	rhyth.snare1.load(data.snare1);
