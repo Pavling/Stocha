@@ -150,12 +150,14 @@ rhyth.sequencerBuilder = function(target){
 		sequencer.gui.flash = function(nextStepTime, stepNumber){
 			var targetId = '#step'+stepNumber;
 			var timeout = (nextStepTime - ctx.now())*1000;
-			$(targetId).attr('style', "background-color: rgba(255,255,255,0.0)")
 			$(targetId).delay(timeout).effect("highlight", {color:"#BBDEFB"}, 150);
 		};
 	
-		sequencer.gui.colorAnimation = function(target){
-		
+		sequencer.gui.stopAllAnimation = function(target){
+			for(var i = 0; i < 32; i++){ 
+				var id = "#step"+i;
+				$(id).stop();
+			};
 		}
 
 
@@ -170,6 +172,7 @@ rhyth.sequencerBuilder = function(target){
 	};
 
 	sequencer.stop = function(){
+		sequencer.gui.stopAllAnimation();
 		sequencer.lastStep = null;
 		sequencer.step = 0;
 		sequencer.gui.step = 0
