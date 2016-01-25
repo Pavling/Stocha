@@ -48,9 +48,6 @@ rhyth.sequencerBuilder = function(target){
 		var thisStep = sequencer.lastStep || ctx.now();
 		while ((sequencer.lastStep < (sequencer.queueStart + ctx.clock.timeoutInterval/1000)) && ctx.clock.running){
 			sequencer.lastStep = sequencer.audio.nextStep(sequencer.lastStep);
-			if (sequencer.focused){
-				sequencer.gui.flash(sequencer.lastStep, sequencer.step);
-			};
 		}
 	};
 
@@ -60,9 +57,10 @@ rhyth.sequencerBuilder = function(target){
 		var stepParams = sequencer.params.steps[sequencer.step]
 		if (stepParams.active){
 			sequencer.target.trig(stepParams.velocity, nextStepTime);
+			if (sequencer.focused){
+				sequencer.gui.flash(sequencer.lastStep, sequencer.step);
+			};
 		};
-		
-		
 		sequencer.incrementStep();
 		return nextStepTime;
 	}
@@ -152,7 +150,8 @@ rhyth.sequencerBuilder = function(target){
 		sequencer.gui.flash = function(nextStepTime, stepNumber){
 			var targetId = '#step'+stepNumber;
 			var timeout = (nextStepTime - ctx.now())*1000;
-			$(targetId).delay(timeout).effect("highlight", {color:"#03A9F4"}, 250);
+			$(targetId).attr('style', "background-color: rgba(255,255,255,0.0)")
+			$(targetId).delay(timeout).effect("highlight", {color:"#BBDEFB"}, 150);
 		};
 	
 		sequencer.gui.colorAnimation = function(target){
