@@ -32,26 +32,15 @@ rhyth.visualisations.vuScriptBuilder = function(analyserObject){
   analyserObject.javascriptNode.onaudioprocess = function(audioProcessingEvent) {
     var array = new Uint8Array(analyserObject.analyserNode.frequencyBinCount);
     analyserObject.analyserNode.getByteFrequencyData(array);
-    var average = getAverageVolume(array)
+    var max = Math.max.apply(Math, array)
 
     var canvas = analyserObject.canvas;
 
     canvas.clearRect(0, 0, 600, 25);
     canvas.fillStyle="#BBDEFB";
     // create the meters
-    canvas.fillRect(0,0,(average*6),25);
+    canvas.fillRect(0,0,(max*2.25),25);
   }
-}
-
-function getAverageVolume(array) {
-	var values = 0;
-	var length = array.length;
-	// get all the frequency amplitudes
-	for (var i = 0; i < length; i++) {
-		values += array[i];
-	}
-	var average = values / length;
-	return average;
 }
 
 // ***************

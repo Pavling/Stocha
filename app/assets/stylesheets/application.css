@@ -194,9 +194,9 @@ body {
 }
 
 canvas{
-	margin-top: 0.5rem;
-	/*margin-left: 0.5rem;*/
+	margin-top: 0.25rem;
 	border: 1px solid #eee;
+	width: 100%;
 }
 
 #channels{
@@ -211,7 +211,7 @@ canvas{
 	float: left;
 }
 
-#spectograph{
+#spectrograph{
 	width:25%;
 	float:left;
 }
