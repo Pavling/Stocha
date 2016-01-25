@@ -33,8 +33,8 @@ rhyth.snareBuilder = function(outputConnection){
 	};
 	snare.params.noise = {
 		decay: ctx.paramBuilder(25.0, 1000.0),
-		locut: ctx.paramBuilder(500.0, 2000.0),
-		hicut: ctx.paramBuilder(6000.0, 8000.0),
+		body: ctx.paramBuilder(1000.0, 4000.0),
+		hicut: ctx.paramBuilder(2000.0, 8000.0),
 		loudness: ctx.paramBuilder(0.00001, 2.0)
 	}
 
@@ -106,7 +106,7 @@ rhyth.snareBuilder = function(outputConnection){
 	snare.noise.vca = ctx.gainBuilder(snare.output);
 
 	snare.noise.hicut = ctx.filterBuilder(snare.noise.vca, 2000.0, "lowpass", 0.8, 1.5);
-	snare.noise.locut = ctx.filterBuilder(snare.noise.hicut, 250.0, "highpass", 0.8, 1.5);
+	snare.noise.body = ctx.filterBuilder(snare.noise.hicut, 250.0, "notch", 0.5, 1.5);
 
 
 	// create noise wavetable
@@ -128,19 +128,19 @@ rhyth.snareBuilder = function(outputConnection){
 			return whiteNoise;
 		})();
 
-	snare.noise.osc.connect(snare.noise.locut);
+	snare.noise.osc.connect(snare.noise.body);
 
 	//trig method
 	snare.noise.trig = function(velocity, time){
 		// get scaled variables
 		var loudness = snare.params.noise.loudness.calc(velocity);
 		var decay = snare.params.noise.decay.calc(velocity)/1000;
-		var locutFreq = snare.params.noise.locut.calc(velocity);
+		var bodyFreq = snare.params.noise.body.calc(velocity);
 		var hicutFreq = snare.params.noise.hicut.calc(velocity);
 
 		// shortcut to vca and filters
 		var vca = snare.noise.vca.gain;
-		var locut = snare.noise.locut.frequency;
+		var body = snare.noise.body.frequency;
 		var hicut = snare.noise.hicut.frequency;
 
 		// clear any still running envelopes
@@ -149,7 +149,7 @@ rhyth.snareBuilder = function(outputConnection){
 		// attack
 		vca.setValueAtTime(loudness, time);
 		hicut.setValueAtTime(hicutFreq, time);
-		locut.setValueAtTime(locutFreq, time);
+		body.setValueAtTime(bodyFreq, time);
 
 		// decay
 		ctx.envelopeBuilder(time, decay, 0.0000001, vca);
