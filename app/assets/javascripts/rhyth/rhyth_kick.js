@@ -28,9 +28,9 @@ rhyth.kickBuilder = function(outputConnection){
 		loudness: ctx.paramBuilder(0.00001, 1.0)
 	}
 	kick.params.beaterHead = {
-		tuning: ctx.paramBuilder(1.0, 4.0),
-		beaterPitch: ctx.paramBuilder(40, 200),
-		beaterTimbre: ctx.paramBuilder(0.75, 1.25),
+		tuning: ctx.paramBuilder(1.0, 6.0),
+		beaterPitch: ctx.paramBuilder(40, 400),
+		beaterTimbre: ctx.paramBuilder(0.5, 2.0),
 		loudness: ctx.paramBuilder(0.00001, 1.0)
 	};
 
