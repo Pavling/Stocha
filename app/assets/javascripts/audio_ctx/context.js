@@ -76,15 +76,14 @@ ctx.envelopeBuilder = function(start, decay, targetValue, targetParam){
 	}
 }
 
-ctx.analyserBuilder = function(source, sourceName){
+ctx.analyserBuilder = function(source, smoothing){
 	var analyser = {};
-	analyser.sourceName = sourceName;
 	analyser.analyserNode = ctx.context.createAnalyser();
 	analyser.javascriptNode = ctx.context.createScriptProcessor(2048, 1, 1);
 	source.connect(analyser.analyserNode);
 	analyser.javascriptNode.connect(analyser.analyserNode);
-	analyser.analyserNode.smoothingTimeConstant = 0.3;
-	analyser.analyserNode.fftSize = 64;
+	analyser.analyserNode.smoothingTimeConstant = smoothing || 0.3;
+	analyser.analyserNode.fftSize = 256;
 	return analyser;
 }
 

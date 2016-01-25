@@ -86,7 +86,6 @@ menu.loadDialogAjaxRetreival = function (songId){
 }
 
 menu.loadSongData = function(data){
-	console.log(data);
 	menu.current_song_owner = data.user_id.$oid;
 	ctx.load(data.song_data);
 	menu.song_id = data.song_id.$oid;

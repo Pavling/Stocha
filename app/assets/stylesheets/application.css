@@ -194,7 +194,26 @@ body {
 }
 
 canvas{
-	margin-top: 1rem;
+	margin-top: 0.5rem;
+	/*margin-left: 0.5rem;*/
+	border: 1px solid #eee;
+}
+
+#channels{
+	width: 75%;
+	float: left;
+	padding: 1rem;
+	box-sizing: border-box;
+}
+
+#oscilloscope{
+	width: 25%;
+	float: left;
+}
+
+#spectograph{
+	width:25%;
+	float:left;
 }
 
 @media screen and (max-width: 640px) {
