@@ -26,11 +26,11 @@ rhyth.hihatBuilder = function(outputConnection){
 	}
 	hihat.params.strike = {
 		decay: ctx.paramBuilder(25.0, 250.0),
-		tone: ctx.paramBuilder(6000.0, 16000.0),
+		tone: ctx.paramBuilder(4000.0, 10000.0),
 		loudness: ctx.paramBuilder(0.00001, 1.0)
 	};
 	hihat.params.sizzle = {
-		decay: ctx.paramBuilder(50.0, 2000.0),
+		decay: ctx.paramBuilder(50.0, 5000.0),
 		tone: ctx.paramBuilder(4000.0, 12000.0),
 		loudness: ctx.paramBuilder(0.00001, 1.0)
 	}
@@ -44,11 +44,12 @@ rhyth.hihatBuilder = function(outputConnection){
 
 	hihat.filters.sizzle = {};
 	hihat.filters.sizzle.output = ctx.gainBuilder(hihat.output);
-	hihat.filters.sizzle.filter = ctx.filterBuilder(hihat.filters.sizzle.output, 6000.0, "highpass", 0.75, 1.0);
+	hihat.filters.sizzle.highpass = ctx.filterBuilder(hihat.filters.sizzle.output, 6000.0, "highpass", 0.75, 1.0);
+	hihat.filters.sizzle.filter = ctx.filterBuilder(hihat.filters.sizzle.output, 10000.0, "notch", 0.5, 1.0);
 
 	hihat.filters.strike = {}
 	hihat.filters.strike.output = ctx.gainBuilder(hihat.output)
-	hihat.filters.strike.filter = ctx.filterBuilder(hihat.filters.strike.output, 8000.0, "bandpass", 0.75, 1.0);
+	hihat.filters.strike.filter = ctx.filterBuilder(hihat.filters.strike.output, 8000.0, "bandpass", 0.95, 1.0);
 
 
 	//trig method
