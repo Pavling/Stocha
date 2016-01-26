@@ -151,7 +151,7 @@ rhyth.sequencerBuilder = function(target){
 
 			var targetId = '#step'+stepNumber;
 			var timeout = (nextStepTime-ctx.now())*1000;
-			console.log({nextStepTime: nextStepTime, stepNumber: stepNumber, ctx_now: ctx.now(), timeout: timeout, queueStart: sequencer.queueStart, lastStep: sequencer.lastStep, interval: (ctx.clock.timeoutInterval/1000), lastStep: sequencer.lastStep})
+			// console.log({nextStepTime: nextStepTime, stepNumber: stepNumber, ctx_now: ctx.now(), timeout: timeout, queueStart: sequencer.queueStart, lastStep: sequencer.lastStep, interval: (ctx.clock.timeoutInterval/1000), lastStep: sequencer.lastStep})
 			$(targetId).delay(timeout).effect("highlight", {color:"#BBDEFB"}, 150);
 		};
 	
