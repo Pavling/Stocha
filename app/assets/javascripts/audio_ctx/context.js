@@ -13,20 +13,25 @@ ctx.context = new (window.AudioContext || window.webkitAudioContext)()
 // *1* webAudioAPI builders
 // ************************
 
-ctx.paramBuilder = function(minIn, maxIn){
+ctx.paramBuilder = function(minIn, maxIn, scale){
 	return {
 		range: {
 			max: 60,
 			min: 40
 		},
+		scalingFactor: (scale || 0.63093),
 		absoluteMaximum: maxIn,
 		absoluteMinimum: minIn,
 		calc: function(velocity){
-			var precentage = (((this.range.max-this.range.min)*(velocity/100))+this.range.min)/100
-			return ((this.absoluteMaximum - this.absoluteMinimum)*precentage)+this.absoluteMinimum
+			var velocityAsPercentage = velocity/100.0
+			var trueVelocity = (((this.range.max - this.range.min)*velocityAsPercentage)+this.range.min)/100
+			var scaled = Math.pow(trueVelocity, (1.0/this.scalingFactor));
+			return ((this.absoluteMaximum - this.absoluteMinimum)*scaled)+this.absoluteMinimum
 		}
 	}
 };
+
+
 
 ctx.filterBuilder = function(connection, freq, topology, res, gain){
 	var filter = this.context.createBiquadFilter();
@@ -127,6 +132,7 @@ ctx.clock.interval = function(){
 }
 
 ctx.clock.start = function(){
+	console.log("clock start")
 	ctx.clock.running = true;
 	setInterval(function(){ctx.clock.continue()}, ctx.clock.timeoutInterval-75);
 	ctx.clock.runAll();
