@@ -24,207 +24,205 @@
  }
 
 
-body {
-	margin:0; 
-	padding:0; 
-}
+ body {
+ 	margin:0; 
+ 	padding:0; 
+ }
 
-.step{
-	height: 8rem;
-	width: 6.25%;
-	float: left;
-	padding: 0.75rem;
-	box-sizing: border-box;
-}
+ .step{
+ 	height: 8rem;
+ 	width: 6.25%;
+ 	float: left;
+ 	padding: 0.75rem;
+ 	box-sizing: border-box;
+ }
 
-.active{
-	background-color: #066
-}
+ .active{
+ 	background-color: #066
+ }
 
-.param-collection{
-	display: block;
-	clear: both;
-	width: 100%;
-}
+ .param-collection{
+ 	display: block;
+ 	clear: both;
+ 	width: 100%;
+ }
 
-.param-slider{
-	float:left;
-	width: 20%;
-	margin: 0 2.5%;
-	height: 1rem;
-	box-sizing: border-box;
-}
+ .param-slider{
+ 	float:left;
+ 	width: 20%;
+ 	margin: 0 2.5%;
+ 	height: 1rem;
+ 	box-sizing: border-box;
+ }
 
 
-#param-display, #voice-selection {
-	width: 90%;
-	margin: 0.5rem auto 1.5rem auto;
-}
+ #param-display, #voice-selection {
+ 	width: 90%;
+ 	margin: 0.5rem auto 1.5rem auto;
+ }
 
-.sequencer {
-	margin-top: 1.5rem;
-	width: 90%;
-	margin: auto;
-}
+ .sequencer {
+ 	margin-top: 1.5rem;
+ 	width: 90%;
+ 	margin: auto;
+ }
 
-#sequence-length-container{
-	margin-top: 1.5rem;
-	width: 90%;
-	margin: auto;
-}
+ #sequence-length-container{
+ 	margin-top: 1.5rem;
+ 	width: 90%;
+ 	margin: auto;
+ }
 
-.clear-float{
-	clear:both;
-}
+ .clear-float{
+ 	clear:both;
+ }
 
-.param-name{
-	float:left;
-	width: 23%;
-	margin: 0 1%;
-	height: 1rem;
-	display: block;
-	text-align: center;
-	box-sizing: border-box;
-}
+ .param-name{
+ 	float:left;
+ 	width: 23%;
+ 	margin: 0 1%;
+ 	height: 1rem;
+ 	display: block;
+ 	text-align: center;
+ 	box-sizing: border-box;
+ }
 
-.param-title{
-	text-align: center;
-	margin-top: 1rem;
-	font-size: 1.5rem;
-	line-height: 2rem;
-}
+ .param-title{
+ 	text-align: center;
+ 	margin-top: 1rem;
+ 	font-size: 1.5rem;
+ 	line-height: 2rem;
+ }
 
-#transport{
-	height: 2rem;
-	padding: 0.25rem;
-	line-height: 1.5rem;
-	background-color: #EEE;
-	color: rgba(0,0,0, 0.8);
-}
+ #transport{
+ 	height: 2rem;
+ 	padding: 0.25rem;
+ 	line-height: 1.5rem;
+ 	background-color: #EEE;
+ 	color: rgba(0,0,0, 0.8);
+ }
 
-#userloginout{
-	float:right;
-	padding-top: 0.25rem;
-}
+ #userloginout{
+ 	float:right;
+ 	padding-top: 0.25rem;
+ }
 
-#bpminput{
-	width: 3rem;
-	height: 1.5rem;
-}
+ #bpminput{
+ 	width: 3rem;
+ 	height: 1.5rem;
+ }
 
-.verticaldivider{
-	height: 100%;
-	box-sizing: border-box;
-	border: 2px solid rgba(0,0,0,0.25);
-	margin: 1px 1rem;
-	float: left;
-}
+ .verticaldivider{
+ 	height: 100%;
+ 	box-sizing: border-box;
+ 	border: 2px solid rgba(0,0,0,0.25);
+ 	margin: 1px 1rem;
+ 	float: left;
+ }
 
-.verticaldivider_right{
-	height: 100%;
-	box-sizing: border-box;
-	border: 2px solid rgba(0,0,0,0.25);
-	margin: 1px 1rem;
-	float: right;
-}
+ .verticaldivider_right{
+ 	height: 100%;
+ 	box-sizing: border-box;
+ 	border: 2px solid rgba(0,0,0,0.25);
+ 	margin: 1px 1rem;
+ 	float: right;
+ }
 
-#clockcontrols{
-	float:left;
-}
+ #clockcontrols{
+ 	float:left;
+ }
 
-#dbcontrols{
-	float: left;
-	height: 2rem;
-	/*padding: 0.25rem;*/
-/*	width: 70%;*/
-}
+ #dbcontrols{
+ 	float: left;
+ 	height: 2rem;
+ }
 
-#popup {
-  position: relative;
-  background: #FFF;
-  padding: 1.5rem;
-  width: auto;
-  max-width: 75%;
-  max-height: 15rem;
-  margin: 1.5rem auto;
-  overflow: scroll;
-}
+ #popup {
+ 	position: relative;
+ 	background: #FFF;
+ 	padding: 1.5rem;
+ 	width: auto;
+ 	max-width: 75%;
+ 	max-height: 15rem;
+ 	margin: 1.5rem auto;
+ 	overflow: scroll;
+ }
 
-.songdisplay{
-	height: 3rem;
-	line-height: 3rem;
-	width: 80%;
-	margin: 1rem auto;
-	padding: 0 0.5rem;
-	border-radius: 0.5rem;
-	background-color: #EEE;
-	cursor: pointer;
-}
+ .songdisplay{
+ 	height: 3rem;
+ 	line-height: 3rem;
+ 	width: 80%;
+ 	margin: 1rem auto;
+ 	padding: 0 0.5rem;
+ 	border-radius: 0.5rem;
+ 	background-color: #EEE;
+ 	cursor: pointer;
+ }
 
-#song_title{
-	margin: 0px 0.75rem 0px 0.75rem;
-	display: inline-block;
-}
+ #song_title{
+ 	margin: 0px 0.75rem 0px 0.75rem;
+ 	display: inline-block;
+ }
 
-.float_right_button{
-	float: right;
-}
+ .float_right_button{
+ 	float: right;
+ }
 
-#voice-selection{
-	margin-top: 0.5rem;
-}
+ #voice-selection{
+ 	margin-top: 0.5rem;
+ }
 
-#sequence-length{
-	height: 1.5rem;
-	width: 12rem;
-}
+ #sequence-length{
+ 	height: 1.5rem;
+ 	width: 12rem;
+ }
 
-.inactive{
-	background-color: #EEE;
-}
+ .inactive{
+ 	background-color: #EEE;
+ }
 
-#mixer{
-	text-align: center;
-	width: 80%;
-	margin: 1rem auto;
-}
+ #mixer{
+ 	text-align: center;
+ 	width: 80%;
+ 	margin: 1rem auto;
+ }
 
-.flash-color{
-	background-color: #03A9F4;
-}
+ .flash-color{
+ 	background-color: #03A9F4;
+ }
 
-canvas{
-	margin-top: 0.25rem;
-	border: 1px solid #eee;
-	width: 100%;
-}
+ canvas{
+ 	margin-top: 0.25rem;
+ 	border: 1px solid #eee;
+ 	width: 100%;
+ }
 
-#channels{
-	width: 75%;
-	float: left;
-	padding: 1rem;
-	box-sizing: border-box;
-}
+ #channels{
+ 	width: 75%;
+ 	float: left;
+ 	padding: 1rem;
+ 	box-sizing: border-box;
+ }
 
-#oscilloscope{
-	width: 25%;
-	float: left;
-}
+ #oscilloscope{
+ 	width: 25%;
+ 	float: left;
+ }
 
-#spectrograph{
-	width:25%;
-	float:left;
-}
+ #spectrograph{
+ 	width:25%;
+ 	float:left;
+ }
 
-@media screen and (max-width: 640px) {
-  html { 
-  	font-size: 12px;
-  }
-}
+ @media screen and (max-width: 640px) {
+ 	html { 
+ 		font-size: 12px;
+ 	}
+ }
 
-@media screen and (max-width: 1024){
-	  html { 
-	  	font-size: 15px;
-	  }
-	}
-}
+ @media screen and (max-width: 1024){
+ 	html { 
+ 		font-size: 15px;
+ 	}
+ }
+
