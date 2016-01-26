@@ -183,5 +183,4 @@ rhyth.stop = function(){
 	rhyth.snare2.sequencer.stop();
 	rhyth.hihat1.sequencer.stop();
 	rhyth.hihat2.sequencer.stop();
-	rhyth.current_voice.sequencer.focused = true;
 }
