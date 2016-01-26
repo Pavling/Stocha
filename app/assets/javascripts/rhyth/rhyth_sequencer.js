@@ -45,8 +45,8 @@ rhyth.sequencerBuilder = function(target){
 
 	sequencer.audio.queueEvents = function(){
 		sequencer.queueStart = ctx.now();
-		var thisStep = sequencer.lastStep || ctx.now();
-		while ((sequencer.lastStep < (sequencer.queueStart + ctx.clock.timeoutInterval/1000)) && ctx.clock.running){
+		sequencer.lastStep = sequencer.lastStep || sequencer.queueStart;
+		while ((sequencer.lastStep <= (sequencer.queueStart +( ctx.clock.timeoutInterval/1000))) && ctx.clock.running){
 			sequencer.lastStep = sequencer.audio.nextStep(sequencer.lastStep);
 		}
 	};
@@ -58,7 +58,7 @@ rhyth.sequencerBuilder = function(target){
 		if (stepParams.active){
 			sequencer.target.trig(stepParams.velocity, nextStepTime);
 			if (sequencer.focused){
-				sequencer.gui.flash(sequencer.lastStep, sequencer.step);
+				sequencer.gui.flash(nextStepTime, sequencer.step);
 			};
 		};
 		sequencer.incrementStep();
@@ -148,8 +148,10 @@ rhyth.sequencerBuilder = function(target){
 	}
 
 		sequencer.gui.flash = function(nextStepTime, stepNumber){
+
 			var targetId = '#step'+stepNumber;
-			var timeout = (nextStepTime - ctx.now())*1000;
+			var timeout = (nextStepTime-ctx.now())*1000;
+			console.log({nextStepTime: nextStepTime, stepNumber: stepNumber, ctx_now: ctx.now(), timeout: timeout, queueStart: sequencer.queueStart, lastStep: sequencer.lastStep, interval: (ctx.clock.timeoutInterval/1000), lastStep: sequencer.lastStep})
 			$(targetId).delay(timeout).effect("highlight", {color:"#BBDEFB"}, 150);
 		};
 	
