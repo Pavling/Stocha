@@ -157,6 +157,7 @@ rhyth.sequencerBuilder = function(target){
 			for(var i = 0; i < 32; i++){ 
 				var id = "#step"+i;
 				$(id).stop();
+				$(id).attr("style", "")
 			};
 		}
 
