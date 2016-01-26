@@ -8,7 +8,7 @@
 
 		<div class="step" id="<%="step#{i}"%>">
 		<div class="step-slider" id="<%= "step#{i}_slider"%>"></div>
-			<%= check_box_tag "step#{i}_checkbox", i, false, {class: "step-checkbox"}%>
+			<%= check_box_tag "step#{i}_checkbox", i, false, {class: "step-checkbox", title: "clicking this box adds or removes a hit at this step for the active drum"}%>
 		</div>
 
 	<% end %>
@@ -19,7 +19,7 @@
 	<% i = d+16 %>
 		<div class="step" id="<%="step#{i}"%>">
 		<div class="step-slider" id="<%= "step#{i}_slider"%>"></div>
-			<%= check_box_tag "step#{i}_checkbox", i, false, {class: "step-checkbox"}%>
+			<%= check_box_tag "step#{i}_checkbox", i, false, {class: "step-checkbox", title: "clicking this box adds or removes a hit at this step for the active drum"}%>
 		</div>
 
 	<% end %>
