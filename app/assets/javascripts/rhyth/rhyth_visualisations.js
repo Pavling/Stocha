@@ -47,7 +47,7 @@ rhyth.visualisations.vuScriptBuilder = function(analyserObject){
 // *2*oscilloscope
 // ***************
 
-rhyth.visualisations.oscilloscope = ctx.analyserBuilder(rhyth.mixer.output, 0.3);
+rhyth.visualisations.oscilloscope = ctx.analyserBuilder(rhyth.mixer.output, 0.5);
 
 rhyth.visualisations.drawOscilloscope = function(){
   // aliases
@@ -88,7 +88,7 @@ rhyth.visualisations.drawOscilloscope = function(){
 // *4* spectograph
 // ***************
 
-rhyth.visualisations.spectograph = ctx.analyserBuilder(rhyth.mixer.output, 0.1);
+rhyth.visualisations.spectograph = ctx.analyserBuilder(rhyth.mixer.output, 0.9);
 
 rhyth.visualisations.drawSpectograph = function(){
   // aliases

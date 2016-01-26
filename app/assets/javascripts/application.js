@@ -24,4 +24,5 @@ rhyth.setup();
 $(function(){	
 	menu.setup();
 	rhyth.gui.activate();
+	tooltips.create();
 })
