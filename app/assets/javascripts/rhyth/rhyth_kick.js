@@ -22,9 +22,9 @@ rhyth.kickBuilder = function(outputConnection){
 	// set up paramaters interface
 	kick.params = {}
 	kick.params.resoHead = {
-		tuning: ctx.paramBuilder(20.0, 100.0),
-		pitchDecay: ctx.paramBuilder(0.0, 1.0),
-		volDecay: ctx.paramBuilder(50.0, 5000.0),
+		tuning: ctx.paramBuilder(100.0, 300.0),
+		pitchDecay: ctx.paramBuilder(0.1, 1.0),
+		volDecay: ctx.paramBuilder(250.0, 5000.0),
 		loudness: ctx.paramBuilder(0.00001, 1.0)
 	}
 	kick.params.beaterHead = {
@@ -104,8 +104,8 @@ rhyth.kickBuilder = function(outputConnection){
 		}
 		// attack
 		vca.setValueAtTime(loudness, time);
-		// decay (always 50ms for beater)
-		ctx.envelopeBuilder(time, 0.05, 0.0000001, vca);
+		// decay (always 100ms for beater)
+		ctx.envelopeBuilder(time, 0.1, 0.0000001, vca);
 
 	}
 

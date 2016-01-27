@@ -66,12 +66,12 @@ rhyth.visualisations.drawOscilloscope = function(){
 
  canvas.beginPath();
 
- var sliceWidth = 250 / analyser.fftSize;
+ var sliceWidth = 250.0 / analyser.fftSize;
  var x = 0;
 
  for(var i = 0; i < analyser.fftSize; i++) {
    var v = array[i] / 128.0;
-   var y = v * 250/2;
+   var y = v * 250/2.0;
 
    if(i === 0) {
      canvas.moveTo(x, y);
@@ -102,7 +102,7 @@ rhyth.visualisations.drawSpectograph = function(){
   canvas.fillStyle = '#FFF';
   canvas.fillRect(0, 0, 250, 250);
 
-  var barWidth = (250 / analyser.fftSize)*2;
+  var barWidth = (250 / analyser.fftSize)*8;
   var barHeight;
   var x = 0;
 

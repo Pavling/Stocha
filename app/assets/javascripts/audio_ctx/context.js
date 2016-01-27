@@ -16,8 +16,8 @@ ctx.context = new (window.AudioContext || window.webkitAudioContext)()
 ctx.paramBuilder = function(minIn, maxIn){
 	return {
 		range: {
-			max: 60,
-			min: 40
+			max: 75,
+			min: 25
 		},
 		absoluteMaximum: maxIn,
 		absoluteMinimum: minIn,

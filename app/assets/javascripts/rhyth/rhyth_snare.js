@@ -22,19 +22,19 @@ rhyth.snareBuilder = function(outputConnection){
 	// set up paramaters interface
 	snare.params = {}
 	snare.params.osc1 = {
-		tuning: ctx.paramBuilder(100.0, 400.0),
-		decay: ctx.paramBuilder(35.0, 5000.0),
+		tuning: ctx.paramBuilder(200.0, 800.0),
+		decay: ctx.paramBuilder(250.0, 5000.0),
 		loudness: ctx.paramBuilder(0.00001, 1.0)
 	}
 	snare.params.osc2 = {
-		offset: ctx.paramBuilder(1.25, 1.75),
+		offset: ctx.paramBuilder(1.15, 2.5),
 		decay: ctx.paramBuilder(0.0, 1.0),
 		loudness: ctx.paramBuilder(0.00001, 1.0)
 	};
 	snare.params.noise = {
-		decay: ctx.paramBuilder(25.0, 1000.0),
-		body: ctx.paramBuilder(1000.0, 4000.0),
-		hicut: ctx.paramBuilder(2000.0, 8000.0),
+		decay: ctx.paramBuilder(100.0, 2000.0),
+		body: ctx.paramBuilder(500.0, 2000.0),
+		hicut: ctx.paramBuilder(500.0, 4000.0),
 		loudness: ctx.paramBuilder(0.00001, 2.0)
 	}
 

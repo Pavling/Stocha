@@ -25,12 +25,12 @@ rhyth.hihatBuilder = function(outputConnection){
 		ring: ctx.paramBuilder(-0.75, 0.75)
 	}
 	hihat.params.strike = {
-		decay: ctx.paramBuilder(25.0, 250.0),
-		tone: ctx.paramBuilder(4000.0, 10000.0),
+		decay: ctx.paramBuilder(100.0, 500.0),
+		tone: ctx.paramBuilder(2000.0, 16000.0),
 		loudness: ctx.paramBuilder(0.00001, 1.0)
 	};
 	hihat.params.sizzle = {
-		decay: ctx.paramBuilder(50.0, 5000.0),
+		decay: ctx.paramBuilder(250.0, 5000.0),
 		tone: ctx.paramBuilder(4000.0, 12000.0),
 		loudness: ctx.paramBuilder(0.00001, 1.0)
 	}
@@ -49,7 +49,8 @@ rhyth.hihatBuilder = function(outputConnection){
 
 	hihat.filters.strike = {}
 	hihat.filters.strike.output = ctx.gainBuilder(hihat.output)
-	hihat.filters.strike.filter = ctx.filterBuilder(hihat.filters.strike.output, 8000.0, "bandpass", 0.95, 1.0);
+	hihat.filters.strike.filter1 = ctx.filterBuilder(hihat.filters.strike.output, 8000.0, "bandpass", 0.95, 1.0);
+	hihat.filters.strike.filter2 = ctx.filterBuilder(hihat.filters.strike.filter1, 8000.0, "bandpass", 0.95, 1.0);
 
 
 	//trig method
@@ -63,8 +64,10 @@ rhyth.hihatBuilder = function(outputConnection){
 		var strikeVCA = hihat.filters.strike.output.gain;
 		var sizzleVCA = hihat.filters.sizzle.output.gain;
 
-		var strikeFilter = hihat.filters.strike.filter.frequency;
+		var strikeFilter1 = hihat.filters.strike.filter1.frequency;
+		var strikeFilter2 = hihat.filters.strike.filter2.frequency;
 		var sizzleFilter = hihat.filters.sizzle.filter.frequency;
+
 
 		// clear any still running envelopes
 		strikeVCA.cancelScheduledValues(time);
@@ -72,7 +75,8 @@ rhyth.hihatBuilder = function(outputConnection){
 		
 		// attack
 		strikeVCA.setValueAtTime(strikeParams.loudness.calc(velocity), time);
-		strikeFilter.setValueAtTime(strikeParams.tone.calc(velocity), time);
+		strikeFilter1.setValueAtTime(strikeParams.tone.calc(velocity), time);
+		strikeFilter2.setValueAtTime(strikeParams.tone.calc(velocity), time);
 
 		sizzleVCA.setValueAtTime(sizzleParams.loudness.calc(velocity), time);
 		sizzleFilter.setValueAtTime(sizzleParams.tone.calc(velocity), time);
@@ -89,7 +93,7 @@ rhyth.hihatBuilder = function(outputConnection){
 
 	hihat.oscillators = {};
 	hihat.oscillators.output = ctx.gainBuilder(hihat.filters.sizzle.filter, 1.0);
-	hihat.oscillators.output.connect(hihat.filters.strike.filter);
+	hihat.oscillators.output.connect(hihat.filters.strike.filter2);
 
 	hihat.oscillators.osc1 = ctx.oscillatorBuilder(hihat.oscillators.output, 40, 'square');
 	hihat.oscillators.osc2 = ctx.oscillatorBuilder(hihat.oscillators.output, 40, 'square');
