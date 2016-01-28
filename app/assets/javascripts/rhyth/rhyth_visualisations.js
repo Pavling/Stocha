@@ -80,7 +80,7 @@ rhyth.visualisations.drawOscilloscope = function(){
    }
    x += sliceWidth;
  }
- canvas.lineTo(250, 125);
+ // canvas.lineTo(250, 125);
  canvas.stroke();
 }
 
@@ -102,7 +102,7 @@ rhyth.visualisations.drawSpectograph = function(){
   canvas.fillStyle = '#FFF';
   canvas.fillRect(0, 0, 250, 250);
 
-  var barWidth = (250 / analyser.fftSize)*8;
+  var barWidth = (250 / analyser.fftSize)*4;
   var barHeight;
   var x = 0;
 

@@ -35,7 +35,7 @@ rhyth.snareBuilder = function(outputConnection){
 		decay: ctx.paramBuilder(100.0, 2000.0),
 		body: ctx.paramBuilder(500.0, 2000.0),
 		hicut: ctx.paramBuilder(500.0, 4000.0),
-		loudness: ctx.paramBuilder(0.00001, 2.0)
+		loudness: ctx.paramBuilder(0.00001, 1.0)
 	}
 
 	// *************
@@ -105,8 +105,8 @@ rhyth.snareBuilder = function(outputConnection){
 	// create vca and connect filters
 	snare.noise.vca = ctx.gainBuilder(snare.output);
 
-	snare.noise.hicut = ctx.filterBuilder(snare.noise.vca, 2000.0, "lowpass", 0.8, 1.5);
-	snare.noise.body = ctx.filterBuilder(snare.noise.hicut, 250.0, "notch", 0.5, 1.5);
+	snare.noise.hicut = ctx.filterBuilder(snare.noise.vca, 2000.0, "lowpass", 0.8, 1);
+	snare.noise.body = ctx.filterBuilder(snare.noise.hicut, 250.0, "notch", 0.5, 1);
 
 
 	// create noise wavetable
