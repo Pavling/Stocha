@@ -8,7 +8,7 @@ class SongsController < ApplicationController
 		render json: {content: render_to_string(partial: 'index.html.erb')}
 	end
 
-	def new 
+	def new
 		@song = Song.new
 		render json: {content: render_to_string(partial: 'new.html.erb')}
 	end
@@ -19,12 +19,12 @@ class SongsController < ApplicationController
 	end
 
 	def show
-		@song = Song.find_by(_id: params["id"])
-		render json: {title: @song.title, song_data: @song.song_data, user_id: @song.user_id, song_id: @song._id}
+		@song = Song.find(params["id"])
+		render json: {title: @song.title, song_data: @song.song_data, user_id: @song.user_id, song_id: @song.id}
 	end
 
 	def update
-		@song = Song.find_by(_id: params["id"])
+		@song = Song.find(params["id"])
 		@song.update(song_data: params["songData"])
 		render :nothing => true, :status => 200, :content_type => 'text/html'
 	end

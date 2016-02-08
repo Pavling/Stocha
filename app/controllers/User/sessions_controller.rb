@@ -1,12 +1,13 @@
 class User::SessionsController < Devise::SessionsController
 
-  clear_respond_to 
+  clear_respond_to
   respond_to :json
   layout false
   before_action :authenticate_user!
   before_filter :redirect_unless_ajax
   skip_before_action :verify_authenticity_token
   skip_before_filter :verify_signed_out_user
+
   # GET /resource/sign_in
   def new
     @user = User.new
@@ -14,6 +15,7 @@ class User::SessionsController < Devise::SessionsController
   end
 
   def get_current_user
+    # binding.pry
     if user_signed_in?
       respond_with current_user
     else

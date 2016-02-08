@@ -41,7 +41,7 @@ menu.saveDialog = function(ev){
 
 menu.saveDialogAjaxSubmission = function(){
 	$('#new_song').submit(function(ev){
-		ev.preventDefault(); 
+		ev.preventDefault();
 		var songData = rhyth.save(); // update later with master save function
 		var title = ev.target[2].value;
 		$.ajax({
@@ -86,9 +86,9 @@ menu.loadDialogAjaxRetreival = function (songId){
 }
 
 menu.loadSongData = function(data){
-	menu.current_song_owner = data.user_id.$oid;
+	menu.current_song_owner = data.user_id;
 	ctx.load(data.song_data);
-	menu.song_id = data.song_id.$oid;
+	menu.song_id = data.song_id;
 	$('#song_title').text(data.title)
 	$( "#bpminput" ).spinner("value", data.song_data.bpm);
 	menu.updateMenu();
@@ -136,10 +136,10 @@ menu.loginPostViaAJAX = function(dataIn){
 	$.ajax({
 		url: '/users/sign_in',
 		method: 'POST',
-		data: {user: dataIn}, 
-		success: function(data){ 
+		data: {user: dataIn},
+		success: function(data){
 			menu.popup('Log in successful');
-			menu.user_id = data._id.$oid;
+			menu.user_id = data.id;
 			menu.updateMenu();
 			// some way of changing the button to a log out then loginoutlisteners
 		},
@@ -172,7 +172,7 @@ menu.getCurrentUser = function(){
 		async: false,
 		url: 'get_current_user',
 		success: function(data){
-			if(data){menu.user_id = data._id.$oid;};
+			if(data){menu.user_id = data.id;};
 		},
 		error: function(data){
 			console.log(data);
@@ -249,7 +249,7 @@ menu.sequencerControlButtonListeners = function(){
 	$('#stop_play').click(function() { ctx.clock.stop(); });
 }
 
-menu.setup = function(){	
+menu.setup = function(){
 	menu.getCurrentUser();
 	menu.logInOutListeners();
 	menu.dbButtonListeners();
